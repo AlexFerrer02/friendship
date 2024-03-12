@@ -24,7 +24,12 @@ class Consultas{
     List<Evento> eventos = [];
     for (var item in response) {
       //print(item);
-      List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
+      //List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
+      var filtrosAux = item["filtros"];
+      List<String> filtros = [];
+      for (var item in filtrosAux) {
+        filtros.add(item);
+      }
       Type tipo = Type(1, item["tipo"]);
       eventos.add(Evento(item["id"], item["nombre"], tipo , item["descripcion"], filtros, item["fechainicio"],item["fechafin"], item["horainicio"], item["horafin"],item["lugar"],item["usuario"] ));
     }
@@ -47,7 +52,12 @@ class Consultas{
           .eq("tipo", "publico");
       for(var evento in rowAmigo){
         //print(rowAmigo);
-        List<Filtro> filtros = [Filtro(1, evento["filtro"]), Filtro(2, evento["filtro2"])];
+        //List<Filtro> filtros = [Filtro(1, evento["filtro"]), Filtro(2, evento["filtro2"])];
+        var filtrosAux = evento["filtros"];
+        List<String> filtros = [];
+        for (var item in filtrosAux) {
+          filtros.add(item);
+        }
         Type tipo = Type(1, evento["tipo"]);
         eventos.add(Evento(evento["id"], evento["nombre"], tipo , evento["descripcion"], filtros, evento["fechainicio"],evento["fechafin"], evento["horainicio"], evento["horafin"],evento["lugar"],evento["usuario"] ));
       }
@@ -66,7 +76,12 @@ class Consultas{
     ;
 
     for (var item in response) {
-      List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
+      //List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
+      var filtrosAux = item["filtros"];
+      List<String> filtros = [];
+      for (var item in filtrosAux) {
+        filtros.add(item);
+      }
       Type tipo = Type(1, item["tipo"]);
       eventos.add(Evento(item["id"], item["nombre"], tipo , item["descripcion"], filtros, item["fechainicio"],item["fechafin"], item["horainicio"], item["horafin"],item["lugar"],item["usuario"] ));
     }
@@ -77,7 +92,12 @@ class Consultas{
         .neq("usuario", UserData.usuarioLog?.username)
     ;
     for (var item in response2) {
-      List<Filtro> filtros2 = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
+      //List<Filtro> filtros2 = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
+      var filtrosAux = item["filtros"];
+      List<String> filtros2 = [];
+      for (var item in filtrosAux) {
+        filtros2.add(item);
+      }
       Type tipo2 = Type(1, item["tipo"]);
       eventos.add(Evento(item["id"], item["nombre"], tipo2 , item["descripcion"], filtros2, item["fechainicio"],item["fechafin"], item["horainicio"], item["horafin"], item["lugar"],item["usuario"] ));
     }
@@ -94,7 +114,12 @@ class Consultas{
     List<Evento> eventos = [];
     for (var item in response) {
       if(item["filtro1"] == filtro1 || item["filtro2"] == filtro1 || item["filtro1"] == filtro2 || item["filtro2"] == filtro2){
-        List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
+        //List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
+        var filtrosAux = item["filtros"];
+        List<String> filtros = [];
+        for (var item in filtrosAux) {
+          filtros.add(item);
+        }
         Type tipo = Type(1, item["tipo"]);
         eventos.add(Evento(item["id"], item["nombre"], tipo , item["descripcion"], filtros, item["fechainicio"],item["fechafin"], item["horainicio"], item["horafin"],item["lugar"],item["usuario"] ));
       }
@@ -111,7 +136,12 @@ class Consultas{
     List<Evento> eventos = [];
     for (var item in response) {
       if(item["filtro1"] == filtro1 || item["filtro2"] == filtro1){
-        List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
+        //List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
+        var filtrosAux = item["filtros"];
+        List<String> filtros = [];
+        for (var item in filtrosAux) {
+          filtros.add(item);
+        }
         Type tipo = Type(1, item["tipo"]);
         eventos.add(Evento(item["id"], item["nombre"], tipo , item["descripcion"], filtros, item["fechainicio"],item["fechafin"], item["horainicio"], item["horafin"],item["lugar"],item["usuario"] ));
       }
@@ -130,7 +160,12 @@ class Consultas{
         .eq("usuario", UserData.usuarioLog?.username);
     List<Evento> eventos = [];
     for (var item in response) {
-      List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
+      //List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
+      var filtrosAux = item["filtros"];
+      List<String> filtros = [];
+      for (var item in filtrosAux) {
+        filtros.add(item);
+      }
       Type tipo = Type(1, item["tipo"]);
       eventos.add(Evento(item["id"], item["nombre"], tipo , item["descripcion"], filtros, item["fechainicio"],item["fechafin"], item["horainicio"], item["horafin"],item["lugar"],item["usuario"] ));
       //print(eventos[0].name + eventos[0].fechaHoraFin+"llamada");
@@ -138,7 +173,12 @@ class Consultas{
     response = await  supabase.from('eventos')
         .select('*').contains("amigos", [UserData.usuarioLog?.username]);
     for (var item in response) {
-      List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
+      //List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
+      var filtrosAux = item["filtros"];
+      List<String> filtros = [];
+      for (var item in filtrosAux) {
+        filtros.add(item);
+      }
       Type tipo = Type(1, item["tipo"]);
       eventos.add(Evento(item["id"], item["nombre"], tipo , item["descripcion"], filtros, item["fechainicio"],item["fechafin"], item["horainicio"], item["horafin"],item["lugar"],item["usuario"] ));
       //print(eventos[0].name + eventos[0].fechaHoraFin+"llamada");
@@ -191,8 +231,12 @@ class Consultas{
 
   Future<Evento> obtenerEventoNombre(String nombre) async {
     var response = await supabase.from("eventos").select("*").eq("nombre", nombre);
+    List<String> filtros = [];
+    for (var item in response[0]["filtros"]) {
+      filtros.add(item);
+    }
     return Evento(response[0]["id"], response[0]["nombre"], Type(1, response[0]["tipo"]),
-        response[0]["descripcion"], [Filtro(1, response[0]["filtro"]), Filtro(2, response[0]["filtro2"])],
+        response[0]["descripcion"], filtros,
         response[0]["fechainicio"], response[0]["fechafin"], response[0]["horainicio"], response[0]["horafin"],
         response[0]["lugar"], response[0]["usuario"]);
   }
@@ -310,7 +354,12 @@ class Consultas{
     var response = await supabase.from("eventos").select("*").eq("usuario", nombre);
     List<Evento> eventos = [];
     for (var item in response) {
-      List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
+      //List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
+      var filtrosAux = item["filtros"];
+      List<String> filtros = [];
+      for (var item in filtrosAux) {
+        filtros.add(item);
+      }
       Type tipo = Type(1, item["tipo"]);
       eventos.add(Evento(item["id"], item["nombre"], tipo , item["descripcion"], filtros, item["fechainicio"],item["fechafin"], item["horainicio"], item["horafin"],item["lugar"],item["usuario"] ));
       //print(eventos[0].name + eventos[0].fechaHoraFin+"llamada");

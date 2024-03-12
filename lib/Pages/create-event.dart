@@ -424,6 +424,7 @@ class _createEventState extends State<createEvent> {
                           'fechafin': fechaFormateadaFinal,
                           'filtro': filtro,
                           'filtro2': filtro2,
+                          'filtros': [filtro, filtro2],
                           'amigos': null
                         });
                         _showPopup(context, 'Evento añadido', 'El evento se ha añadido con éxito');

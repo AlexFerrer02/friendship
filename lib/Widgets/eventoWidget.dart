@@ -5,6 +5,7 @@ import 'package:friendship/Class/evento.dart';
 import 'package:friendship/Widgets/filtroWidget.dart';
 
 import '../Class/consultas.dart';
+import '../Class/filtro.dart';
 import '../Pages/EditEventPage.dart';
 
 class EventoWidget extends StatelessWidget {
@@ -108,11 +109,11 @@ class EventoWidget extends StatelessWidget {
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-                          FiltroWidget(filtro: evento.filtros[0]),
+                          FiltroWidget(filtro: Filtro(1,evento.filtros[0])),
                           const SizedBox(
                             width: 10,
                           ),
-                          FiltroWidget(filtro: evento.filtros[1])
+                          FiltroWidget(filtro: Filtro(2,evento.filtros[1]))
                         ],
                       ),
                       Container(

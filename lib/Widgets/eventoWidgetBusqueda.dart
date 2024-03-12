@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:friendship/Class/evento.dart';
 import 'package:friendship/Widgets/filtroWidget.dart';
 
+import '../Class/filtro.dart';
+
 class EventoBusquedaWidget extends StatelessWidget {
   final Evento evento;
 
@@ -53,11 +55,11 @@ class EventoBusquedaWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Row(children: <Widget>[
-                        FiltroWidget(filtro: evento.filtros[0]),
+                        FiltroWidget(filtro: Filtro(1,evento.filtros[0])),
                         const SizedBox(
                           width: 10,
                         ),
-                        FiltroWidget(filtro: evento.filtros[1])
+                        FiltroWidget(filtro: Filtro(2,evento.filtros[1]))
                       ]),
                       Container(
                           padding: const EdgeInsets.only(left: 30),

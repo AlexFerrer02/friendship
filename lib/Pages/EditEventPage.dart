@@ -66,12 +66,12 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   children: [
                     SizedBox(height: 20),
                     Image.network(
-                      obtenerImagenFiltro(widget.event.filtros.first.nombre),
+                      obtenerImagenFiltro(widget.event.filtros.first.toString()),
                       width: 60,
                       height: 60,
                     ),
                     SizedBox(height: 10),
-                    Text(capitalize(widget.event.filtros.first.nombre)),
+                    Text(capitalize(widget.event.filtros.first.toString())),
                   ],
                 ),
                 SizedBox(width: 50),
@@ -81,12 +81,12 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   children: [
                     SizedBox(height: 20),
                     Image.network(
-                      obtenerImagenFiltro(widget.event.filtros.last.nombre),
+                      obtenerImagenFiltro(widget.event.filtros.last.toString()),
                       width: 60,
                       height: 60,
                     ),
                     SizedBox(height: 10),
-                    Text(capitalize(widget.event.filtros.last.nombre)),
+                    Text(capitalize(widget.event.filtros.last.toString())),
                   ],
                 ),
               ],
@@ -430,13 +430,13 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Image.network(
-                                            obtenerImagenFiltro(widget.event.filtros.first.nombre),
+                                            obtenerImagenFiltro(widget.event.filtros.first.toString()),
                                             width: 60,
                                             height: 60,
                                           ),
                                           SizedBox(width: 10,),
                                           Image.network(
-                                            obtenerImagenFiltro(widget.event.filtros.last.nombre),
+                                            obtenerImagenFiltro(widget.event.filtros.last.toString()),
                                             width: 60,
                                             height: 60,
                                           ),

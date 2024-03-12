@@ -6,7 +6,7 @@ class Evento {
   late String name;
   late Type type;
   late String descripcion;
-  late List<Filtro> filtros;
+  late List<String> filtros;
   late String fechaInicio;
   late String fechaFin;
   late String horaInicio;
