@@ -53,9 +53,7 @@ class _createEventState extends State<createEvent> {
       if (selectedImages.contains(imagePath)) {
         selectedImages.remove(imagePath);
       } else {
-        if (selectedImages.length < 2) {
-          selectedImages.add(imagePath);
-        }
+        selectedImages.add(imagePath);
       }
     });
   }
@@ -394,15 +392,15 @@ class _createEventState extends State<createEvent> {
                       int minutosTiempoFin = horaFinal!.hour * 60 + horaFinal!.minute;
                       if(minutosTiempoFin <= minutosTiempoIni){
                         _showPopup(context, 'Error', 'La hora de fin no puede ser menor o igual que la hora de inicio');
-                      } else if (selectedImages.length < 2){
-                        _showPopup(context, 'Error', 'Tienes que seleccionar 2 filtros');
                       } else {
                         String fechaFormateada = DateFormat('yyyy-MM-dd').format(fechaEscogida);
                         String fechaFormateadaFinal = DateFormat('yyyy-MM-dd').format(fechaEscogida_final);
                         String horaFormateada = "${horaInicial?.format(context)}:00";
                         String horaFinalFormateada = "${horaFinal?.format(context)}:00";
-                        filtro = asignarFiltro(1);
-                        filtro2 = asignarFiltro(2);
+                        List<String> filtrosFinales = [];
+                        for(var item in selectedImages){
+                          filtrosFinales.add(asignarFiltro(item));
+                        }
                         String usuario = '';
                         if(widget.isFriendGroup && widget.grupoAmigos != ''){
                           usuario = widget.grupoAmigos!;
@@ -422,9 +420,7 @@ class _createEventState extends State<createEvent> {
                           'lugar': lugar,
                           'horafin': horaFinalFormateada,
                           'fechafin': fechaFormateadaFinal,
-                          'filtro': filtro,
-                          'filtro2': filtro2,
-                          'filtros': [filtro, filtro2],
+                          'filtros': filtrosFinales,
                           'amigos': null
                         });
                         _showPopup(context, 'Evento añadido', 'El evento se ha añadido con éxito');
@@ -444,12 +440,12 @@ class _createEventState extends State<createEvent> {
     );
   }
 
-  String asignarFiltro(int filtro){
-    if(selectedImages[filtro-1] == musica){
+  String asignarFiltro(String filtro){
+    if(filtro == musica){
       return 'musica';
-    } else if(selectedImages[filtro-1] == deportes){
+    } else if(filtro == deportes){
       return 'deportes';
-    } else if(selectedImages[filtro-1] == ocio){
+    } else if(filtro == ocio){
       return 'ocio';
     } else {
       return 'estudio';

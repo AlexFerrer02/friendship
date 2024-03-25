@@ -109,11 +109,11 @@ class EventoWidget extends StatelessWidget {
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-                          FiltroWidget(filtro: Filtro(1,evento.filtros[0])),
+                          FiltroWidget(filtro: Filtro(1,evento.filtros.isNotEmpty ? evento.filtros[0] : "")),
                           const SizedBox(
                             width: 10,
                           ),
-                          FiltroWidget(filtro: Filtro(2,evento.filtros[1]))
+                          FiltroWidget(filtro: Filtro(2,evento.filtros.length > 1 ? evento.filtros[1] : ""))
                         ],
                       ),
                       Container(

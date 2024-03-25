@@ -54,52 +54,42 @@ class _CreateEventPageState extends State<CreateEventPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Filtros'),
-          content: IntrinsicHeight(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
+        return FittedBox(
+          child: AlertDialog(
+            title: Text('Filtros'),
+            content: IntrinsicHeight(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 20),
-                    Image.network(
-                      obtenerImagenFiltro(widget.event.filtros.first.toString()),
-                      width: 60,
-                      height: 60,
-                    ),
-                    SizedBox(height: 10),
-                    Text(capitalize(widget.event.filtros.first.toString())),
-                  ],
+                  children: widget.event.filtros.map((filtro) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 20),
+                        Image.network(
+                          obtenerImagenFiltro(filtro),
+                          width: 60,
+                          height: 60,
+                        ),
+                        SizedBox(height: 10),
+                        Text(capitalize(filtro)),
+                      ],
+                    );
+                  }).toList(),
                 ),
-                SizedBox(width: 50),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 20),
-                    Image.network(
-                      obtenerImagenFiltro(widget.event.filtros.last.toString()),
-                      width: 60,
-                      height: 60,
-                    ),
-                    SizedBox(height: 10),
-                    Text(capitalize(widget.event.filtros.last.toString())),
-                  ],
-                ),
-              ],
+              ),
             ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Ok'),
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Ok'),
-            ),
-          ],
         );
       },
     );
@@ -426,21 +416,21 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                           ),
                                         ),
                                       ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Image.network(
-                                            obtenerImagenFiltro(widget.event.filtros.first.toString()),
-                                            width: 60,
-                                            height: 60,
-                                          ),
-                                          SizedBox(width: 10,),
-                                          Image.network(
-                                            obtenerImagenFiltro(widget.event.filtros.last.toString()),
-                                            width: 60,
-                                            height: 60,
-                                          ),
-                                        ],
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal, // Para hacer que la lista sea deslizable horizontalmente
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: widget.event.filtros.map((filtro) {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(right: 10), // Ajusta el espacio entre las imágenes
+                                              child: Image.network(
+                                                obtenerImagenFiltro(filtro),
+                                                width: 60,
+                                                height: 60,
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
                                       ),
                                     ),
                                   )
