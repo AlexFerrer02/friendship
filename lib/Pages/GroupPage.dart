@@ -134,7 +134,7 @@ class GroupPageState extends State<GroupPage> {
         child: Column(
           children: [
             Container(
-              height: MediaQuery.of(context).size.height / 2.5,
+              height: MediaQuery.of(context).size.height / 2.9,
               width: MediaQuery.of(context).size.width,
               child:
                   Center(child: Image.asset("assets/SistemaSolarMorado.png")),
@@ -179,7 +179,7 @@ class GroupPageState extends State<GroupPage> {
                           isEditingDescription
                               ? TextFormField(
                                   controller: _descriptionController,
-                                  maxLines: 5,
+                                  maxLines: 3,
                                   decoration: const InputDecoration(
                                     hintText: 'Ingrese la descripción',
                                   ),
@@ -187,7 +187,7 @@ class GroupPageState extends State<GroupPage> {
                               : TextFormField(
                                   enabled: false,
                                   controller: _descriptionController,
-                                  maxLines: 5,
+                                  maxLines: 3,
                                   decoration: const InputDecoration(
                                     hintText: 'Ingrese la descripción',
                                   ),
