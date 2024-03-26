@@ -400,7 +400,9 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      _showDialog(context);
+                                      if(widget.event.filtros.isNotEmpty){
+                                        _showDialog(context);
+                                      }
                                     },
                                     child: Container(
                                       width: 150,
