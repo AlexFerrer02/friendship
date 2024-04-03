@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:friendship/Pages/pantalla_registro_ampliacion.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:friendship/main.dart';
 import 'package:friendship/Pages/home.dart';
@@ -228,7 +229,7 @@ class _LoginPageState extends State<LoginPage> {
                       Text('Nuevo Usuario?'),
                       const SizedBox(width: 4),
                       GestureDetector(
-                        onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) =>  Register(supabase: widget.supabase)));},
+                        onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) =>  Registro_ampl(supabase: widget.supabase)));},
                         child: const Text(
                           'Hazte una cuenta en 2 minutos!',
                           style: TextStyle(

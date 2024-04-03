@@ -8,8 +8,9 @@ import 'package:friendship/components/my_textfield.dart';
 import '../components/cuadrado.dart';
 
 class Register extends StatefulWidget {
-  Register ({super.key, required this.supabase});
+  Register ({super.key, required this.supabase, required this.gustos});
   final SupabaseClient supabase;
+  final List<String> gustos;
 
   @override
   State<Register> createState() => _RegisterState();
@@ -59,6 +60,7 @@ class _RegisterState extends State<Register> {
             'username': aliasController.text,
             'contraseña': passwordController.text,
             'email': usernameController.text,
+            'gustos': widget.gustos
           },
         ]);
         usernameController.clear();
