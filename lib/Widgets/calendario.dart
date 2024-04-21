@@ -8,12 +8,12 @@ import '../Class/usernameAuxiliar.dart';
 import '../Class/utils.dart';
 
 
-class Calendario extends StatefulWidget{
+class Calendario extends StatefulWidget {
   @override
   _CalendarioState createState() => _CalendarioState();
 }
 
-class _CalendarioState extends State<Calendario>{
+class _CalendarioState extends State<Calendario> {
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
@@ -28,14 +28,12 @@ class _CalendarioState extends State<Calendario>{
     hashCode: getHashCode,
   );
 
+  late Future<void> _fetchDataFuture;
+
   @override
   void initState() {
     super.initState();
-
-    fetchData();
-    print(_eventosPorFecha);
-    _selectedDay = _focusedDay;
-    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+    _fetchDataFuture = fetchData();
   }
 
   @override
@@ -49,8 +47,6 @@ class _CalendarioState extends State<Calendario>{
         .select('*')
         .eq('usuario', UserData.usuarioLog?.username);
 
-    print(eventosG);
-
     // Limpia los datos anteriores
     _eventosPorFecha.clear();
 
@@ -59,6 +55,7 @@ class _CalendarioState extends State<Calendario>{
 
       String horaString = evento["horainicio"];
       String fechaString = evento["fechainicio"];
+      String textoSinUltimosTres = horaString.substring(0, horaString.length - 3);
 
       // Parsear la hora y la fecha en objetos DateTime
       DateTime hora = parseHora(horaString);
@@ -68,7 +65,7 @@ class _CalendarioState extends State<Calendario>{
       DateTime fechaEvento = combinarFechaYHora(fecha, hora);
 
       // Crea el evento
-      Event nuevoEvento = Event(evento["nombre"], evento["id"]);
+      Event nuevoEvento = Event(evento["nombre"], evento["id"], textoSinUltimosTres);
 
       // Si la fecha ya existe en el mapa, agrega el evento a la lista correspondiente
       if (_eventosPorFecha.containsKey(fechaEvento)) {
@@ -77,6 +74,9 @@ class _CalendarioState extends State<Calendario>{
         _eventosPorFecha[fechaEvento] = [nuevoEvento];
       }
     }
+
+    _selectedDay = _focusedDay;
+    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
 
   // Función para parsear la hora en un objeto DateTime
@@ -85,13 +85,13 @@ class _CalendarioState extends State<Calendario>{
     return DateFormat('HH:mm:ss').parse(horaString);
   }
 
-// Función para parsear la fecha en un objeto DateTime
+  // Función para parsear la fecha en un objeto DateTime
   DateTime parseFecha(String fechaString) {
     // Parsear la cadena de texto en un objeto DateTime utilizando un formato específico
     return DateFormat('yyyy-MM-dd').parse(fechaString);
   }
 
-// Función para combinar la fecha y la hora en un objeto DateTime
+  // Función para combinar la fecha y la hora en un objeto DateTime
   DateTime combinarFechaYHora(DateTime fecha, DateTime hora) {
     // Combina la fecha y la hora utilizando los componentes de DateTime
     return DateTime(
@@ -153,64 +153,89 @@ class _CalendarioState extends State<Calendario>{
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TableCalendar<Event>(
-          firstDay: kFirstDay,
-          lastDay: kLastDay,
-          focusedDay: _focusedDay,
-          selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-          rangeStartDay: _rangeStart,
-          rangeEndDay: _rangeEnd,
-          calendarFormat: _calendarFormat,
-          rangeSelectionMode: _rangeSelectionMode,
-          eventLoader: _getEventsForDay,
-          startingDayOfWeek: StartingDayOfWeek.monday,
-          calendarStyle: CalendarStyle(
-            // Use `CalendarStyle` to customize the UI
-            outsideDaysVisible: false,
-          ),
-          onDaySelected: _onDaySelected,
-          onRangeSelected: _onRangeSelected,
-          onFormatChanged: (format) {
-            if (_calendarFormat != format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            }
-          },
-          onPageChanged: (focusedDay) {
-            _focusedDay = focusedDay;
-          },
-        ),
-        const SizedBox(height: 8.0),
-        Expanded(
-          child: ValueListenableBuilder<List<Event>>(
-            valueListenable: _selectedEvents,
-            builder: (context, value, _) {
-              return ListView.builder(
-                itemCount: value.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 4.0,
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    child: ListTile(
-                      onTap: () => print('${value[index]}'),
-                      title: Text(value[index].title),
-                    ),
-                  );
+    return FutureBuilder<void>(
+      future: _fetchDataFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          return Column(
+            children: [
+              TableCalendar<Event>(
+                firstDay: kFirstDay,
+                lastDay: kLastDay,
+                calendarBuilders: CalendarBuilders(
+                  dowBuilder: (context, day) {
+                    if (day.weekday == DateTime.sunday || day.weekday == DateTime.saturday) {
+                      final text = DateFormat.E().format(day);
+
+                      return Center(
+                        child: Text(
+                          text,
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      );
+                    }
+                  },
+                ),
+                focusedDay: _focusedDay,
+                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                rangeStartDay: _rangeStart,
+                rangeEndDay: _rangeEnd,
+                calendarFormat: _calendarFormat,
+                rangeSelectionMode: _rangeSelectionMode,
+                eventLoader: _getEventsForDay,
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                calendarStyle: CalendarStyle(
+                  // Use `CalendarStyle` to customize the UI
+                  outsideDaysVisible: false,
+                ),
+                onDaySelected: _onDaySelected,
+                onRangeSelected: _onRangeSelected,
+                onFormatChanged: (format) {
+                  if (_calendarFormat != format) {
+                    setState(() {
+                      _calendarFormat = format;
+                    });
+                  }
                 },
-              );
-            },
-          ),
-        ),
-      ],
+                onPageChanged: (focusedDay) {
+                  _focusedDay = focusedDay;
+                },
+              ),
+              const SizedBox(height: 8.0),
+              Expanded(
+                child: ValueListenableBuilder<List<Event>>(
+                  valueListenable: _selectedEvents,
+                  builder: (context, value, _) {
+                    return ListView.builder(
+                      itemCount: value.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 4.0,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: ListTile(
+                            onTap: () => print('${value[index]}'),
+                            title: Text(value[index].title+ '  ' +value[index].hora),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        }
+      },
     );
   }
 }

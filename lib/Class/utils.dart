@@ -11,8 +11,9 @@ class Event {
 
   final int id;
 
+  final String hora;
 
-  const Event(this.title, this.id);
+  const Event(this.title, this.id, this.hora);
 
   @override
   String toString() => title;
