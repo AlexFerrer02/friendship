@@ -74,33 +74,40 @@ class GroupPageState extends State<GroupPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Lista de Amigos'),
-          content: Column(
-            children: [
-              for (User user in users)
-                GestureDetector(
-                  onTap: () async {
-                    int id = await widget.group.ObtenerId();
-                    await Consultas().addAmigoAGrupoAmigos(id, user);
-                    Navigator.of(context).pop();
-                    build(context);
-                  },
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        maxRadius: 15,
-                        backgroundColor: Color(0xFF032A64),
-                        child: Text(
-                          user.username.substring(0, 1),
-                          style: TextStyle(
-                            color: Colors.white,
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                for (User user in users)
+                  Container(
+                    margin: EdgeInsets.only(bottom: 15.0),
+                    child: GestureDetector(
+                      onTap: () async {
+                        int id = await widget.group.ObtenerId();
+                        await Consultas().addAmigoAGrupoAmigos(id, user);
+                        Navigator.of(context).pop();
+                        build(context);
+                      },
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            maxRadius: 15,
+                            backgroundColor: Color(0xFF032A64),
+                            child: Text(
+                              user.username.substring(0, 1),
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
-                        ),
+                          SizedBox(width: 12),
+                          Text(user.username),
+                        ],
                       ),
-                      Text(user.username),
-                    ],
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
           actions: [
             ElevatedButton(

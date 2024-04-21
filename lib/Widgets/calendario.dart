@@ -4,8 +4,11 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../Class/consultas.dart';
+import '../Class/evento.dart';
 import '../Class/usernameAuxiliar.dart';
 import '../Class/utils.dart';
+import '../Pages/EditEventPage.dart';
 
 
 class Calendario extends StatefulWidget {
@@ -45,7 +48,8 @@ class _CalendarioState extends State<Calendario> {
   Future<void> fetchData() async {
     var eventosG = await supabase.from('eventos')
         .select('*')
-        .eq('usuario', UserData.usuarioLog?.username);
+        .eq('usuario', UserData.usuarioLog?.username)
+        .order('horainicio',ascending: true);
 
     // Limpia los datos anteriores
     _eventosPorFecha.clear();
@@ -215,18 +219,73 @@ class _CalendarioState extends State<Calendario> {
                     return ListView.builder(
                       itemCount: value.length,
                       itemBuilder: (context, index) {
-                        return Container(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 12.0,
-                            vertical: 4.0,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          child: ListTile(
-                            onTap: () => print('${value[index]}'),
-                            title: Text(value[index].title+ '  ' +value[index].hora),
+                        return GestureDetector(
+                          onTap: () async {
+                            Evento eventoActual = await Consultas().obtenerEventoId(value[index].id);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CreateEventPage(event: eventoActual, esCalendario: true,),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                              vertical: 4.0,
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10.0),
+                                        bottomLeft: Radius.circular(10.0),
+                                      ),
+                                    ),
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(
+                                      value[index].title,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(11.0),
+                                        bottomRight: Radius.circular(11.0),
+                                      ),
+                                    ),
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(
+                                      value[index].hora,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },

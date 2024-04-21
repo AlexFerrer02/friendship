@@ -268,6 +268,19 @@ class Consultas{
         response[0]["fechainicio"], response[0]["fechafin"], response[0]["horainicio"], response[0]["horafin"],
         response[0]["lugar"], response[0]["usuario"]);
   }
+
+  Future<Evento> obtenerEventoId(int id) async {
+    var response = await supabase.from("eventos").select("*").eq("id", id);
+    List<String> filtros = [];
+    for (var item in response[0]["filtros"]) {
+      filtros.add(item);
+    }
+    return Evento(response[0]["id"], response[0]["nombre"], Type(1, response[0]["tipo"]),
+        response[0]["descripcion"], filtros,
+        response[0]["fechainicio"], response[0]["fechafin"], response[0]["horainicio"], response[0]["horafin"],
+        response[0]["lugar"], response[0]["usuario"]);
+  }
+
   Future<List<GrupoAmigos>> ObtenerGrupos() async {
     print("inicio");
     var response = await supabase.from("gruposamigos").select("*").contains("participantes", [UserData.usuarioLog?.username]);
@@ -432,13 +445,17 @@ class Consultas{
       var userresponse = await supabase.from("usuarios").select("*").eq("username", amigo.toString());
       if (userresponse.isNotEmpty) {
         print("entro");
+        List<String> gustosAux = [];
+        for(var gusto in userresponse[0]["gustos"]){
+          gustosAux.add(gusto);
+        }
 
         amigos.add(user.User(
           userresponse[0]["username"],
           userresponse[0]["email"],
           userresponse[0]["telefono"],
           userresponse[0]["num_eventos"],
-          userresponse[0]["gustos"]
+          gustosAux
         ));
       }
     }
