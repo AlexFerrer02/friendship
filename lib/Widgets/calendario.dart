@@ -9,6 +9,7 @@ import '../Class/evento.dart';
 import '../Class/usernameAuxiliar.dart';
 import '../Class/utils.dart';
 import '../Pages/EditEventPage.dart';
+import '../Pages/home.dart';
 
 
 class Calendario extends StatefulWidget {
@@ -210,6 +211,31 @@ class _CalendarioState extends State<Calendario> {
                 onPageChanged: (focusedDay) {
                   _focusedDay = focusedDay;
                 },
+              ),
+              GestureDetector(
+                onTap: () async {
+                  await Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => Home(indiceInicial: 0,isFriendGroup: false,)),
+                  );
+                  Navigator.of(context).pop();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    border: Border.all(),
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Hoy',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
               const SizedBox(height: 8.0),
               Expanded(
