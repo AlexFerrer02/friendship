@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:friendship/Pages/home.dart';
 import 'package:friendship/components/my_textfield.dart';
+import '../Class/usernameAuxiliar.dart';
 import '../components/cuadrado.dart';
 import '../components/phone_textfield.dart';
 
@@ -64,6 +65,9 @@ class _RegisterState extends State<Register> {
             'gustos': widget.gustos
           },
         ]);
+        UserData.emailActual=usernameController.text;
+        UserData userData = UserData();
+        await userData.construirUsuarioPorEmail(UserData.emailActual);
         usernameController.clear();
         passwordController.clear();
 

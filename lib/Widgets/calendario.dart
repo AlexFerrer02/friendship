@@ -1,6 +1,10 @@
 
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../Class/usernameAuxiliar.dart';
 import '../Class/utils.dart';
 
 
@@ -19,10 +23,17 @@ class _CalendarioState extends State<Calendario>{
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
+  LinkedHashMap<DateTime, List<Event>> _eventosPorFecha = LinkedHashMap(
+    equals: isSameDay,
+    hashCode: getHashCode,
+  );
+
   @override
   void initState() {
     super.initState();
 
+    fetchData();
+    print(_eventosPorFecha);
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
@@ -33,9 +44,69 @@ class _CalendarioState extends State<Calendario>{
     super.dispose();
   }
 
+  Future<void> fetchData() async {
+    var eventosG = await supabase.from('eventos')
+        .select('*')
+        .eq('usuario', UserData.usuarioLog?.username);
+
+    print(eventosG);
+
+    // Limpia los datos anteriores
+    _eventosPorFecha.clear();
+
+    // Recorre la respuesta y agrega los eventos al LinkedHashMap
+    for (var evento in eventosG) {
+
+      String horaString = evento["horainicio"];
+      String fechaString = evento["fechainicio"];
+
+      // Parsear la hora y la fecha en objetos DateTime
+      DateTime hora = parseHora(horaString);
+      DateTime fecha = parseFecha(fechaString);
+
+      // Combina la fecha y la hora para obtener un objeto DateTime completo
+      DateTime fechaEvento = combinarFechaYHora(fecha, hora);
+
+      // Crea el evento
+      Event nuevoEvento = Event(evento["nombre"], evento["id"]);
+
+      // Si la fecha ya existe en el mapa, agrega el evento a la lista correspondiente
+      if (_eventosPorFecha.containsKey(fechaEvento)) {
+        _eventosPorFecha[fechaEvento]!.add(nuevoEvento);
+      } else {
+        _eventosPorFecha[fechaEvento] = [nuevoEvento];
+      }
+    }
+  }
+
+  // Función para parsear la hora en un objeto DateTime
+  DateTime parseHora(String horaString) {
+    // Parsear la cadena de texto en un objeto DateTime utilizando un formato específico
+    return DateFormat('HH:mm:ss').parse(horaString);
+  }
+
+// Función para parsear la fecha en un objeto DateTime
+  DateTime parseFecha(String fechaString) {
+    // Parsear la cadena de texto en un objeto DateTime utilizando un formato específico
+    return DateFormat('yyyy-MM-dd').parse(fechaString);
+  }
+
+// Función para combinar la fecha y la hora en un objeto DateTime
+  DateTime combinarFechaYHora(DateTime fecha, DateTime hora) {
+    // Combina la fecha y la hora utilizando los componentes de DateTime
+    return DateTime(
+      fecha.year,
+      fecha.month,
+      fecha.day,
+      hora.hour,
+      hora.minute,
+      hora.second,
+    );
+  }
+
   List<Event> _getEventsForDay(DateTime day) {
     // Implementation example
-    return kEvents[day] ?? [];
+    return _eventosPorFecha[day] ?? [];
   }
 
   List<Event> _getEventsForRange(DateTime start, DateTime end) {
@@ -131,7 +202,7 @@ class _CalendarioState extends State<Calendario>{
                     ),
                     child: ListTile(
                       onTap: () => print('${value[index]}'),
-                      title: Text('${value[index]}'),
+                      title: Text(value[index].title),
                     ),
                   );
                 },

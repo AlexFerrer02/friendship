@@ -19,7 +19,7 @@ class UserData {
         .match({ 'username': usuarioLog!.username });
   }
 
-  void construirUsuarioPorEmail(String? email) async {
+  Future<void> construirUsuarioPorEmail(String? email) async {
     var usernameAux = '';
     var telefonoAux = 0;
     var eventosAux = 0;

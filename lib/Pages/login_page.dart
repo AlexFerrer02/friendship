@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
       if (mounted) {
         UserData.emailActual=usernameController.text;
         UserData userData = UserData();
-        userData.construirUsuarioPorEmail(UserData.emailActual);
+        await userData.construirUsuarioPorEmail(UserData.emailActual);
         usernameController.clear();
         passwordController.clear();
 
