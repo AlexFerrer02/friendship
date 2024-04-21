@@ -191,6 +191,8 @@ class _CalendarioState extends State<Calendario> {
                 calendarStyle: CalendarStyle(
                   // Use `CalendarStyle` to customize the UI
                   outsideDaysVisible: false,
+                  weekNumberTextStyle:TextStyle(color: Colors.red),
+                  weekendTextStyle:TextStyle(color: Colors.red),
                 ),
                 onDaySelected: _onDaySelected,
                 onRangeSelected: _onRangeSelected,

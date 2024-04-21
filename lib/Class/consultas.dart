@@ -276,13 +276,16 @@ class Consultas{
     if (response.isNotEmpty) {
       for (final group in response) {
         var responsecreador = await supabase.from("usuarios").select("*").eq("username", group["creador"].toString().replaceAll('"', ""));
-        print(responsecreador);
+        List<String> gustos = [];
+        for(var gusto in responsecreador[0]["gustos"]){
+          gustos.add(gusto);
+        }
         user.User creador = user.User(
           responsecreador[0]["username"],
           responsecreador[0]["email"],
           responsecreador[0]["telefono"],
           responsecreador[0]["num_eventos"],
-          responsecreador[0]["gustos"]
+          gustos
         );
 
         GrupoAmigos grupo = GrupoAmigos(group["nombre"], creador, group["descripcion"]);
@@ -294,18 +297,23 @@ class Consultas{
             var userresponse = await supabase.from("usuarios").select("*").eq("username", amigo.toString());
 
             if (userresponse.isNotEmpty) {
+              List<String> gustosAux = [];
+              for(var gusto in userresponse[0]["gustos"]){
+                gustosAux.add(gusto);
+              }
               grupo.amigos.add(user.User(
                 userresponse[0]["username"],
                 userresponse[0]["email"],
                 userresponse[0]["telefono"],
                 userresponse[0]["num_eventos"],
-                userresponse[0]["gustos"]
+                gustosAux
               ));
             }
           }
         }
         grupos.add(grupo);
       }
+      print(grupos);
       return grupos;
     } else {
       return grupos;
