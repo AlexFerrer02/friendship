@@ -13,6 +13,7 @@ import 'package:friendship/Pages/perfil.dart';
 import 'package:friendship/Widgets/dayview.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:friendship/Class/pantalla_confirmacion.dart';
+import 'package:friendship/Widgets/calendario.dart';
 import 'package:friendship/Class/usernameAuxiliar.dart';
 import 'package:friendship/Class/consultas.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -50,7 +51,7 @@ class HomeState extends State<Home> {
 
 
     List<Widget> pages = [
-      Day(),
+      Calendario(),
       Planes(),
       FriendList(),
       createEvent(isFriendGroup: widget.isFriendGroup,grupoAmigos: widget.grupoAmigos),

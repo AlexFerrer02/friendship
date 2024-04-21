@@ -23,34 +23,42 @@ class UserData {
     var usernameAux = '';
     var telefonoAux = 0;
     var eventosAux = 0;
-    final usernameResponse = await supabase
+    List<String> gustos = [];
+    final Response = await supabase
         .from('usuarios')
         .select('username')
         .eq('email', email);
 
-      if (usernameResponse.isNotEmpty) {
-        usernameAux = usernameResponse[0]['username'];
-      }
-
-    final phoneResponse = await supabase
+    final ResponseTel = await supabase
         .from('usuarios')
         .select('telefono')
         .eq('email', email);
 
-    if (phoneResponse.isNotEmpty) {
-      telefonoAux = phoneResponse[0]['telefono'];
-    }
-
-    final eventosResponse = await supabase
+    final ResponseEv = await supabase
         .from('usuarios')
         .select('num_eventos')
         .eq('email', email);
 
-    if (eventosResponse.isNotEmpty) {
-      eventosAux = eventosResponse[0]['num_eventos'];
-    }
+    final ResponseGust = await supabase
+        .from('usuarios')
+        .select('gustos')
+        .eq('email', email);
 
-    usuarioLog = new usuario.User(usernameAux, email!, telefonoAux, eventosAux);
+    if (Response.isNotEmpty) {
+      usernameAux = Response[0]['username'];
+    }
+    if (ResponseTel.isNotEmpty) {
+      telefonoAux = ResponseTel[0]['telefono'];
+    }
+    if (ResponseEv.isNotEmpty) {
+      eventosAux = ResponseEv[0]['num_eventos'];
+    }
+    if (ResponseGust.isNotEmpty) {
+      for(var gusto in ResponseGust[0]['gustos']){
+        gustos.add(gusto);
+      }
+    }
+    usuarioLog = new usuario.User(usernameAux, email!, telefonoAux, eventosAux, gustos);
     //print(usuarioLog!.username + "evento");
     }
   }

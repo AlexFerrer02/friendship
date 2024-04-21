@@ -44,26 +44,54 @@ class Consultas{
         .select('*')
         .eq("username", username);
 
-    for (var amigo in response[0]["lista_amigos"]) {
-      var rowAmigo = await  supabase.from('eventos')
-          .select('*')
-          .gte("fechainicio", DateTime.now())
-          .eq("usuario", amigo)
-          .eq("tipo", "publico");
-      for(var evento in rowAmigo){
-        //print(rowAmigo);
-        //List<Filtro> filtros = [Filtro(1, evento["filtro"]), Filtro(2, evento["filtro2"])];
-        var filtrosAux = evento["filtros"];
-        List<String> filtros = [];
-        for (var item in filtrosAux) {
-          filtros.add(item);
+    if(response[0]["lista_amigos"]!=null){
+      for (var amigo in response[0]["lista_amigos"]) {
+        var rowAmigo = await  supabase.from('eventos')
+            .select('*')
+            .gte("fechainicio", DateTime.now())
+            .eq("usuario", amigo)
+            .eq("tipo", "publico");
+        for(var evento in rowAmigo){
+          //print(rowAmigo);
+          //List<Filtro> filtros = [Filtro(1, evento["filtro"]), Filtro(2, evento["filtro2"])];
+          var filtrosAux = evento["filtros"];
+          List<String> filtros = [];
+          for (var item in filtrosAux) {
+            filtros.add(item);
+          }
+          Type tipo = Type(1, evento["tipo"]);
+          eventos.add(Evento(evento["id"], evento["nombre"], tipo , evento["descripcion"], filtros, evento["fechainicio"],evento["fechafin"], evento["horainicio"], evento["horafin"],evento["lugar"],evento["usuario"] ));
         }
-        Type tipo = Type(1, evento["tipo"]);
-        eventos.add(Evento(evento["id"], evento["nombre"], tipo , evento["descripcion"], filtros, evento["fechainicio"],evento["fechafin"], evento["horainicio"], evento["horafin"],evento["lugar"],evento["usuario"] ));
       }
     }
     return eventos;
 
+  }
+
+  Future<List<Evento>> EventosGustos() async
+  {
+    List<Evento> eventos = [];
+    final username =UserData.usuarioLog?.username;
+    final gustosUsuario = UserData.usuarioLog!.gustos;
+    var eventosG = await  supabase.from('eventos')
+        .select('*')
+        .neq("usuario", username)
+        .eq("tipo", "publico");
+
+    for(var eventoAux in eventosG){
+      List<String> gustosAux = [];
+      for(var gusto in eventoAux['filtros']){
+        gustosAux.add(gusto);
+      }
+      for(var gustoUsuario in gustosUsuario){
+        if(gustosAux.contains(gustoUsuario)){
+          Type tipo = Type(1, eventoAux["tipo"]);
+          eventos.add(Evento(eventoAux["id"], eventoAux["nombre"], tipo , eventoAux["descripcion"], gustosAux, eventoAux["fechainicio"],eventoAux["fechafin"], eventoAux["horainicio"], eventoAux["horafin"],eventoAux["lugar"],eventoAux["usuario"] ));
+          break;
+        }
+      }
+    }
+    return eventos;
   }
 
   Future<List<Evento>> EventosRecomendados() async
@@ -254,6 +282,7 @@ class Consultas{
           responsecreador[0]["email"],
           responsecreador[0]["telefono"],
           responsecreador[0]["num_eventos"],
+          responsecreador[0]["gustos"]
         );
 
         GrupoAmigos grupo = GrupoAmigos(group["nombre"], creador, group["descripcion"]);
@@ -270,6 +299,7 @@ class Consultas{
                 userresponse[0]["email"],
                 userresponse[0]["telefono"],
                 userresponse[0]["num_eventos"],
+                userresponse[0]["gustos"]
               ));
             }
           }
@@ -400,6 +430,7 @@ class Consultas{
           userresponse[0]["email"],
           userresponse[0]["telefono"],
           userresponse[0]["num_eventos"],
+          userresponse[0]["gustos"]
         ));
       }
     }

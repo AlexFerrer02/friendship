@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:friendship/Pages/home.dart';
 import 'package:friendship/components/my_textfield.dart';
 import '../components/cuadrado.dart';
+import '../components/phone_textfield.dart';
 
 class Register extends StatefulWidget {
   Register ({super.key, required this.supabase, required this.gustos});
@@ -37,7 +38,7 @@ class _RegisterState extends State<Register> {
 
   @override
   void initState() {
-    widget.supabase.auth.onAuthStateChange.listen((data) {
+    /*widget.supabase.auth.onAuthStateChange.listen((data) {
       if (_isredirecting) return;
       final session = data.session;
       if (session != null) {
@@ -46,7 +47,7 @@ class _RegisterState extends State<Register> {
           MaterialPageRoute(builder: (context) => Home(indiceInicial: 0,isFriendGroup: false,)),
         );
       }
-    });
+    });*/
     super.initState();
   }
 
@@ -122,10 +123,11 @@ class _RegisterState extends State<Register> {
                     obscureText: false,
                   ),
                   //Numero de telefono textfield
-                  MyTextField(
+                  PhoneTextField(
                     controller: phoneController,
                     hintText: 'Phone number ej. 666 666 666',
                     obscureText: false,
+                    maxLength: 9,
                   ),
                   //username textfield
                   MyTextField(

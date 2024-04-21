@@ -6,6 +6,7 @@ class User{
   late String email;
   late int numberphone;
   late int eventosCreados;
-  User(this.username, this.email , this.numberphone, this.eventosCreados);
+  late List<String> gustos;
+  User(this.username, this.email , this.numberphone, this.eventosCreados, this.gustos);
 
 }

@@ -21,14 +21,14 @@ class PlanesState extends State<Planes> {
       children: [
         const SizedBox(
           height: 50,
-          child: Text("Recomendados",  style: TextStyle(
+          child: Text("Según tus gustos",  style: TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.bold,
           ),
           ),
         ),
         FutureBuilder<List<Evento>>(
-          future: Consultas().Recomendaciones(),
+          future: Consultas().EventosGustos(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Column(
