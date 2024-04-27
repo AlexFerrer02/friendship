@@ -171,6 +171,9 @@ class _createEventState extends State<createEvent> {
                       onChanged: (text){
                         nombreDelEvento = text;
                       },
+                      onEditingComplete: (){
+                        FocusScope.of(context).unfocus();
+                      },
                     ),
                   ),
                   Text("Descripción del evento",
@@ -184,6 +187,9 @@ class _createEventState extends State<createEvent> {
                       ),
                       onChanged: (text){
                         descripcionDelEvento = text;
+                      },
+                      onEditingComplete: (){
+                        FocusScope.of(context).unfocus();
                       },
                     ),
                   ),
@@ -210,6 +216,7 @@ class _createEventState extends State<createEvent> {
                           fechaEscogida_final = escogida;
                           cambiarTexto(DateFormat('yyyy-MM-dd').format(escogida).toString());
                         }
+                        FocusScope.of(context).unfocus();
                       },
                       child: Row(
                         children: [
@@ -254,6 +261,7 @@ class _createEventState extends State<createEvent> {
                             initialTime:horaInicial ?? TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute)
                         );
                         cambiarHoraIni(horaInicial!.format(context).toString());
+                        FocusScope.of(context).unfocus();
                       },
                       child: Row(
                         children: [
@@ -292,6 +300,7 @@ class _createEventState extends State<createEvent> {
                             initialTime:horaFinal ?? TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute)
                         );
                         cambiarHoraFin(horaFinal!.format(context).toString());
+                        FocusScope.of(context).unfocus();
                       },
                       child: Row(
                         children: [
@@ -340,6 +349,7 @@ class _createEventState extends State<createEvent> {
                     }).toList(),
                     onChanged: (text){
                       lugar = text;
+                      FocusScope.of(context).unfocus();
                     }
                 ),
               ),
@@ -359,6 +369,7 @@ class _createEventState extends State<createEvent> {
                     }).toList(),
                     onChanged: (text){
                       tipoEvento = text;
+                      FocusScope.of(context).unfocus();
                     }
                 ),
               ),
