@@ -47,10 +47,11 @@ class _CalendarioState extends State<Calendario> {
   }
 
   Future<void> fetchData() async {
+    String user = UserData.usuarioLog!.username;
     var eventosG = await supabase.from('eventos')
         .select('*')
-        .eq('usuario', UserData.usuarioLog?.username)
-        .order('horainicio',ascending: true);
+        .or('usuario.eq.${user}, amigos.cs.{${user}}')
+        .order('horainicio', ascending: true);
 
     // Limpia los datos anteriores
     _eventosPorFecha.clear();

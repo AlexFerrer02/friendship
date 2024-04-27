@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    /*if(cerrarSesion){
+    if(cerrarSesion){
       cerrarSesion=false;
       supabase.auth.signOut();
       sleep(Duration(seconds: 1));
@@ -56,13 +56,13 @@ class _LoginPageState extends State<LoginPage> {
         UserData.emailActual= data.session!.user.email;
 
         UserData userData = UserData();
-        userData.construirUsuarioPorEmail(UserData.emailActual);
+        await userData.construirUsuarioPorEmail(UserData.emailActual);
 
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => Home(indiceInicial: 0,isFriendGroup: false,)),
         );
       }
-    });*/
+    });
     super.initState();
   }
 

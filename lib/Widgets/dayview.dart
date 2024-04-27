@@ -36,7 +36,7 @@ class _DayViewState extends State<Day> {
       controller: controller,
       dateStringBuilder: myDateStringBuilder,
       onEventTap: (event, date) async {
-        Evento eventoActual = await Consultas().obtenerEventoNombre(event.first.title);
+        Evento eventoActual = await Consultas().obtenerEventoNombre(event.first.title, event.first.description);
         Navigator.push(
           context,
           MaterialPageRoute(

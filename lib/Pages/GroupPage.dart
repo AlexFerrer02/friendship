@@ -3,9 +3,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:friendship/Class/consultas.dart';
 import 'package:friendship/Class/grupo-amigos.dart';
+import 'package:friendship/Class/usernameAuxiliar.dart';
+import 'package:friendship/Pages/crearEventoGrupo.dart';
+import 'package:friendship/Pages/create-event.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../Class/appbar.dart';
 import '../Class/evento.dart';
-import '../Class/user.dart';
+import '../Class/user.dart' as Users;
 import '../Widgets/listEventos.dart';
 import 'home.dart';
 import 'package:provider/provider.dart' as provider;
@@ -22,7 +26,8 @@ class GroupPage extends StatefulWidget {
 class GroupPageState extends State<GroupPage> {
   late TextEditingController _descriptionController;
   bool isEditingDescription = false;
-  List<User> amigos = [];
+  final supabase = Supabase.instance.client;
+  List<Users.User> amigos = [];
 
   @override
   void initState() {
@@ -36,7 +41,7 @@ class GroupPageState extends State<GroupPage> {
   List<Widget> _buildAvatars() {
     List<Widget> avatars = [];
 
-    for (User participante in amigos) {
+    for (Users.User participante in amigos) {
       String initials = participante.username.substring(0, 1).toUpperCase();
       avatars.add(
         Center(
@@ -68,7 +73,7 @@ class GroupPageState extends State<GroupPage> {
     });
   }
 
-  void _showListPopup(BuildContext context, List<User> users) {
+  void _showListPopup(BuildContext context, List<Users.User> users) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -78,7 +83,7 @@ class GroupPageState extends State<GroupPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                for (User user in users)
+                for (Users.User user in users)
                   Container(
                     margin: EdgeInsets.only(bottom: 15.0),
                     child: GestureDetector(
@@ -215,7 +220,7 @@ class GroupPageState extends State<GroupPage> {
                                   alignment: Alignment.centerRight,
                                   child: ElevatedButton(
                                     onPressed: () async {
-                                      List<User> users =
+                                      List<Users.User> users =
                                           await Consultas().ObtenerAmigos();
                                       _showListPopup(context, users);
                                     },
@@ -239,9 +244,18 @@ class GroupPageState extends State<GroupPage> {
                                 Container(
                                   alignment: Alignment.centerRight,
                                   child: ElevatedButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       provider.Provider.of<AppBarProvider>(context, listen: false).updateAppBar(
                                         AppBar(title: Text("Crear Evento"), centerTitle: true,
+                                          leading: IconButton(
+                                            icon: Icon(Icons.arrow_back),
+                                            onPressed: () {
+                                              UserData.idGrupoAmigos = null;
+                                              Navigator.of(context).pushReplacement(
+                                                MaterialPageRoute(builder: (context) => Home(indiceInicial: 2,isFriendGroup: false,)),
+                                              );
+                                            },
+                                          ),
                                           flexibleSpace: Container(
                                             decoration: BoxDecoration(
                                               border: Border(
@@ -254,8 +268,16 @@ class GroupPageState extends State<GroupPage> {
                                           ),
                                         ),
                                       );
+                                      /*Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(builder: (context) => Home(indiceInicial: 3,isFriendGroup: true,grupoAmigos: widget.group,)),
+                                      );*/
+                                      var response = await  supabase.from('gruposamigos')
+                                          .select('id')
+                                          .eq("nombre", widget.group.name)
+                                          .eq("descripcion", widget.group.descripcion);
+                                      UserData.idGrupoAmigos = response[0]['id'];
                                       Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(builder: (context) => Home(indiceInicial: 3,isFriendGroup: true,grupoAmigos: widget.group.name,)),
+                                        MaterialPageRoute(builder: (context) => CrearEventoGrupo(isFriendGroup: true,)),
                                       );
                                     },
                                     child: const Icon(Icons.add),

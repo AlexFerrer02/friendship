@@ -44,7 +44,7 @@ class EventoWidget extends StatelessWidget {
     Color colorSeleccionado = getColor();
     return GestureDetector(
       onTap: () async {
-        Evento eventoActual = await Consultas().obtenerEventoNombre(evento.name);
+        Evento eventoActual = await Consultas().obtenerEventoNombre(evento.name, evento.descripcion);
         Navigator.push(
           context,
           MaterialPageRoute(

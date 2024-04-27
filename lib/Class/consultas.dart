@@ -257,8 +257,8 @@ class Consultas{
     return response[0]["id"];
   }
 
-  Future<Evento> obtenerEventoNombre(String nombre) async {
-    var response = await supabase.from("eventos").select("*").eq("nombre", nombre);
+  Future<Evento> obtenerEventoNombre(String nombre, String descripcion) async {
+    var response = await supabase.from("eventos").select("*").eq("nombre", nombre).eq("descripcion", descripcion);
     List<String> filtros = [];
     for (var item in response[0]["filtros"]) {
       filtros.add(item);
@@ -377,8 +377,43 @@ class Consultas{
           .from('gruposamigos')
           .update({ 'participantes': participantes })
           .match({ 'id': id });
+      updateEventosGrupoAmigos(id,nuevo,'add');
       }
     }
+
+  Future<void> updateEventosGrupoAmigos(int id, user.User nuevo, String operacion) async {
+    var group = await supabase.from("gruposamigos").select("*").eq("id", id);
+    var nombre ;
+    if (group.isNotEmpty) {
+      var grupo = group[0];
+      if (grupo != null) {
+        nombre= grupo['nombre'];
+        var response = await supabase
+            .from('eventos')
+            .select("*")
+            .eq("usuario", nombre);
+        for(var evento in response){
+          List<String> amigosAux = [];
+          for(var amigo in evento){
+            amigosAux.add(amigo);
+          }
+          if(operacion == 'add'){
+            if(!amigosAux.contains(nuevo.username)){
+              amigosAux.add(nuevo.username);
+            }
+          } else {
+            if(amigosAux.contains(nuevo.username)){
+              amigosAux.remove(nuevo.username);
+            }
+          }
+          await supabase
+              .from('eventos')
+              .update({ 'amigos': amigosAux })
+              .match({ 'id': evento["id"] });
+        }
+      }
+    }
+  }
   Future<void> rmAmigoDeGrupoAmigos(int id, user.User eliminado) async {
     var group = await supabase.from("gruposamigos").select("*").eq("id", id);
     var participantes ;
@@ -398,6 +433,7 @@ class Consultas{
           .from('gruposamigos')
           .update({ 'participantes': participantes })
           .match({ 'id': id });
+      updateEventosGrupoAmigos(id,eliminado,'remove');
     }
   }
 

@@ -5,6 +5,7 @@ class UserData {
   static String? username;
   static String? emailActual;
   static usuario.User? usuarioLog;
+  static int? idGrupoAmigos;
 
   final supabase = SupabaseClient(
     'https://peaoifidogwgoxzrpjft.supabase.co',

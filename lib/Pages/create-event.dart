@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:friendship/Class/grupo-amigos.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -14,8 +15,7 @@ import 'package:friendship/Class/appbar.dart';
 
 class createEvent extends StatefulWidget {
   final bool isFriendGroup;
-  final String? grupoAmigos;
-  const createEvent({Key? key, required this.isFriendGroup, this.grupoAmigos}) : super(key: key);
+  const createEvent({Key? key, required this.isFriendGroup}) : super(key: key);
 
   @override
   State<createEvent> createState() => _createEventState();
@@ -45,6 +45,7 @@ class _createEventState extends State<createEvent> {
   String textoNoEditable = 'YYYY-MM-DD';
   String textoHoraInicio = 'HH:MM';
   String textoHoraFin = 'HH:MM';
+  List<String> listaAmigos = [];
 
   List<String> selectedImages = [];
 
@@ -103,7 +104,7 @@ class _createEventState extends State<createEvent> {
                     ),
                   );
                   Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => Home(indiceInicial: 0,isFriendGroup: false,grupoAmigos: '',)),
+                    MaterialPageRoute(builder: (context) => Home(indiceInicial: 0,isFriendGroup: false,)),
                   );
                 }
               },
@@ -401,11 +402,24 @@ class _createEventState extends State<createEvent> {
                         for(var item in selectedImages){
                           filtrosFinales.add(asignarFiltro(item));
                         }
-                        String usuario = '';
-                        if(widget.isFriendGroup && widget.grupoAmigos != ''){
-                          usuario = widget.grupoAmigos!;
+                        String userAux = '';
+                        if(widget.isFriendGroup && UserData.idGrupoAmigos != null){
+                          print(UserData.idGrupoAmigos);
+                          var response = await  supabase.from('gruposamigos')
+                              .select('*')
+                              .eq("id", UserData.idGrupoAmigos);
+                          userAux = response[0]["nombre"];
+                          List<String> amigosAux = [];
+                          for(var amigo in response[0]["participantes"]){
+                            if(amigo != userAux){
+                              amigosAux.add(amigo);
+                            }
+                          }
+                          print(amigosAux);
+                          listaAmigos = listaAmigos + amigosAux;
+                          UserData.idGrupoAmigos = null;
                         } else {
-                          usuario = UserData.usuarioLog!.username;
+                          userAux = UserData.usuarioLog!.username;
                         }
                         await supabase
                             .from('eventos')
@@ -414,14 +428,14 @@ class _createEventState extends State<createEvent> {
                           'nombre': nombreDelEvento,
                           'tipo': tipoEvento,
                           'descripcion': descripcionDelEvento,
-                          'usuario': usuario,
+                          'usuario': userAux,
                           'fechainicio': fechaFormateada,
                           'horainicio': horaFormateada,
                           'lugar': lugar,
                           'horafin': horaFinalFormateada,
                           'fechafin': fechaFormateadaFinal,
                           'filtros': filtrosFinales,
-                          'amigos': null
+                          'amigos': listaAmigos
                         });
                         _showPopup(context, 'Evento añadido', 'El evento se ha añadido con éxito');
                       }

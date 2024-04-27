@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:friendship/Class/evento.dart';
+import 'package:friendship/Class/grupo-amigos.dart';
 import 'package:friendship/Pages/planes.dart';
 import 'package:friendship/Pages/listfriends.dart';
 import 'package:friendship/Pages/perfil.dart';
@@ -26,8 +27,7 @@ import '../Class/appbar.dart';
 class Home extends StatefulWidget {
   late int indiceInicial;
   late bool isFriendGroup;
-  late String? grupoAmigos;
-   Home({super.key, required this.indiceInicial, required this.isFriendGroup, this.grupoAmigos});
+   Home({super.key, required this.indiceInicial, required this.isFriendGroup});
 
   @override
   HomeState createState() => HomeState();
@@ -54,7 +54,7 @@ class HomeState extends State<Home> {
       Calendario(),
       Planes(),
       FriendList(),
-      createEvent(isFriendGroup: widget.isFriendGroup,grupoAmigos: widget.grupoAmigos),
+      createEvent(isFriendGroup: widget.isFriendGroup),
       Search(),
       Perfil()
     ];
@@ -222,7 +222,6 @@ class HomeState extends State<Home> {
     initUniLinks();
     sleep(Duration(milliseconds: 1000));
     actualPage = widget.indiceInicial;
-    obtenerEventos();
   }
 
   void initUniLinks() async {
@@ -251,14 +250,6 @@ class HomeState extends State<Home> {
         }
       }
     }
-  }
-
-  Future<void> obtenerEventos() async {
-    //print(UserData.usuarioLog?.username);
-    List<Evento> eventosObtenidos = await Consultas().EventosPropios();
-    setState(() {
-      eventos = eventosObtenidos;
-    });
   }
 }
 
