@@ -125,6 +125,22 @@ class Consultas{
     return eventos;
 
   }
+
+  Future<List<String>> getGustosUsuario(String usuario) async {
+    var response = await  supabase.from('usuarios')
+        .select('*')
+        .eq("username", usuario);
+    List<String> gustos = [];
+
+    for(var item in response){
+      for(var gusto in item["gustos"]) {
+        gustos.add(gusto);
+      }
+    }
+
+    return gustos;
+  }
+
   Future<List<Evento>> EventosFiltro({required String filtro1, required String filtro2}) async
   {
     var response = await  supabase.from('eventos')

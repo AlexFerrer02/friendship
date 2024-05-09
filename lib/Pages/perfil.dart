@@ -8,6 +8,7 @@ import 'package:friendship/Pages/splash.dart';
 import 'package:friendship/Widgets/qr.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../Class/usernameAuxiliar.dart';
+import 'editar_gustos.dart';
 import 'login_page.dart';
 import 'package:friendship/components/my_textfield.dart';
 import 'package:friendship/main.dart';
@@ -287,6 +288,25 @@ class _PerfilState extends State<Perfil> {
                           color: Color.fromRGBO(83, 6, 119, 1),
                         ),
                       ),
+                    ),
+                    Positioned(
+                      top: 50.0,
+                      right: 8.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xFFECC8FD),
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(builder: (context) => Gustos_pag()),
+                            );
+                          },
+                          icon: Icon(Icons.add_reaction_outlined),
+                          color: Color.fromRGBO(83, 6, 119, 1),
+                        ),
+                      ),
                     )
                   ],
                 )
@@ -474,8 +494,8 @@ class _PerfilState extends State<Perfil> {
                 },
                 child: Image.network(
                   'https://peaoifidogwgoxzrpjft.supabase.co/storage/v1/object/public/avatares/wasa.png',
-                  width: 70.0,
-                  height: 70.0,
+                  width: 100.0,
+                  height: 100.0,
                 ),
               ),
           ],
