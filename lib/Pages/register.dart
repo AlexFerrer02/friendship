@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:friendship/Pages/home.dart';
 import 'package:friendship/components/my_textfield.dart';
+import '../Class/consultas.dart';
 import '../Class/usernameAuxiliar.dart';
 import '../components/cuadrado.dart';
 import '../components/phone_textfield.dart';
@@ -52,10 +53,31 @@ class _RegisterState extends State<Register> {
     super.initState();
   }
 
+  void _dialogoUsuarioExiste(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Aviso'),
+          content: Text('Ya existe un usuario con este nombre de usuario'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cierra el diálogo
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _signUp() async {
     try {
       await widget.supabase.auth.signUp(password: passwordController.text, email: usernameController.text);
       if (mounted) {
+
         await supabase.from('usuarios').upsert([
           {
             'telefono': int.parse(phoneController.text),
@@ -149,9 +171,15 @@ class _RegisterState extends State<Register> {
                   const SizedBox(height: 15,),
                   //sign up button
                   GestureDetector(
-                    onTap: (){
+                    onTap: () async {
                       if (_KeyForm.currentState!.validate()) {
-                        _signUp();
+                        bool existeUsername = await Consultas().checkUsername(aliasController.text);
+
+                        if(existeUsername){
+                          _dialogoUsuarioExiste(context);
+                        } else {
+                          _signUp();
+                        }
                       }
                     },
                     child: Container(

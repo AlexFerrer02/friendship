@@ -126,6 +126,19 @@ class Consultas{
 
   }
 
+  Future<bool> checkUsername (String username) async {
+    var response = await  supabase.from('usuarios')
+        .select('*')
+        .eq("username", username);
+
+    print(response);
+    if(response.toString() != '[]'){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<List<String>> getGustosUsuario(String usuario) async {
     var response = await  supabase.from('usuarios')
         .select('*')
