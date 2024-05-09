@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
-import 'package:friendship/Class/filtro.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../Class/consultas.dart';
@@ -173,6 +172,45 @@ class _CreateEventPageState extends State<CreateEventPage> {
     );
   }
 
+  void _dialogoParticipante(BuildContext context, bool participa) {
+    String texto = '';
+    if(participa){
+      texto = 'Ya participas en este evento.';
+    } else {
+      texto = 'Te has apuntado al evento con éxito.';
+    }
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Aviso'),
+          content: Text(texto),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cierra el diálogo
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<bool> _checkCondition() async {
+    if(widget.event.userName == UserData.usuarioLog!.username){
+      return false;
+    } else {
+      List<String> amigos = await Consultas().obtenerAmigosEvento(widget.event.id);
+      if(amigos.contains(UserData.usuarioLog!.username)){
+        return false;
+      } else{
+        return true;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -203,252 +241,295 @@ class _CreateEventPageState extends State<CreateEventPage> {
         ],
       ),
       backgroundColor: backgroundColor,
-      body: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
-        child: Column(
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height / 3.2,
-              width: MediaQuery.of(context).size.width,
-              child:
-              Center(child:
-                Image.network(
-                  imagePath,
-                  width: 300,
-                  height: 300,
-                ),
-              ),
-          ),
-            Stack(
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height,
-                  child: Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(25),
-                          topRight: Radius.circular(25),
-                        ),
-                      ),
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        children: [
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: FutureBuilder<bool>(
+        future: _checkCondition(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // Muestra un indicador de carga mientras se espera la condición
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            // Maneja el error si ocurre alguno durante la espera
+            return Center(
+              child: Text('Error'),
+            );
+          } else {
+            // Si la condición se cumple, el botón se activa; de lo contrario, se desactiva
+            bool isButtonEnabled = snapshot.data ?? false;
+
+            return SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height / 3.2,
+                    width: MediaQuery.of(context).size.width,
+                    child:
+                    Center(child:
+                    Image.network(
+                      imagePath,
+                      width: 300,
+                      height: 300,
+                    ),
+                    ),
+                  ),
+                  Stack(
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height,
+                        child: Expanded(
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(25),
+                                topRight: Radius.circular(25),
+                              ),
+                            ),
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
                               children: [
-                                Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      widget.event.name,
-                                      style: const TextStyle(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    if(widget.event.userName == UserData.usuarioLog!.username){
-                                      _saveChanges();
-                                    } else {
-                                      _dialogoEventoAjeno(context);
-                                    }
-                                  },
-                                  child: Icon(isEditingDescription
-                                      ? Icons.save_alt
-                                      : Icons.edit),
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            widget.event.name,
+                                            style: const TextStyle(
+                                              fontSize: 28,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          )),
+                                      Column(
+                                        children: [
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              if(widget.event.userName == UserData.usuarioLog!.username){
+                                                _saveChanges();
+                                              } else {
+                                                _dialogoEventoAjeno(context);
+                                              }
+                                            },
+                                            child: Icon(isEditingDescription
+                                                ? Icons.save_alt
+                                                : Icons.edit),
+                                          ),
+                                          SizedBox(height: 5,),
+                                          ElevatedButton(
+                                            onPressed: isButtonEnabled
+                                                ? () async {
+                                              List<String> amigos = await Consultas().obtenerAmigosEvento(widget.event.id);
+                                              if(amigos.contains(UserData.usuarioLog!.username)){
+                                                _dialogoParticipante(context,true);
+                                              } else {
+                                                amigos.add(UserData.usuarioLog!.username);
+                                                await supabase
+                                                    .from('eventos')
+                                                    .update({ 'amigos': amigos })
+                                                    .match({ 'id': widget.event.id });
+                                                _dialogoParticipante(context,false);
+                                              }
+                                            }
+                                                : null, // Si el botón está desactivado, onPressed es null
+                                            child: const Icon(Icons.group_add),
+                                          )
+                                        ],
+                                      )
+                                    ]),
+                                isEditingDescription
+                                    ? TextFormField(
+                                  controller: _descriptionController,
+                                  maxLines: 5,
+                                  decoration: const InputDecoration(
+                                    hintText: 'Ingrese la descripción',
+                                  ),
                                 )
-                              ]),
-                          isEditingDescription
-                              ? TextFormField(
-                            controller: _descriptionController,
-                            maxLines: 5,
-                            decoration: const InputDecoration(
-                              hintText: 'Ingrese la descripción',
-                            ),
-                          )
-                              : TextFormField(
-                            enabled: false,
-                            controller: _descriptionController,
-                            maxLines: 5,
-                            decoration: const InputDecoration(
-                              hintText: 'Ingrese la descripción',
-                            ),
-                          ),
-                          SizedBox(height: 20.0),
-                              Row(
-                                children: [
-                                  Column(
-                                    children: [
-                                      Container(
-                                        width: 60,
-                                        height: 60,
-                                        padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-                                        decoration: ShapeDecoration(
-                                          color: backgroundColor,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(31),
-                                          ),
-                                        ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.calendar_month, size: 40, color: circuloColor,),
-                                          ],
-                                        ),
-                                      ),
-                                      ],
-                                  ),
-                                  SizedBox(width: 20.0),
-                                  Row(
-                                    children: [
-                                      Text(widget.event.fechaInicio,
-                                          style: TextStyle(fontSize: 20.0)
-                                      ),
-                                      SizedBox(width: 10.0),
-                                      Text('-',
-                                          style: TextStyle(fontSize: 20.0)
-                                      ),
-                                      SizedBox(width: 10.0),
-                                      Text(widget.event.fechaFin,
-                                          style: TextStyle(fontSize: 20.0)
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                          SizedBox(height: 20,),
-                              Row(
-                                children: [
-                                  Column(
-                                    children: [
-                                      Container(
-                                        width: 60,
-                                        height: 60,
-                                        padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-                                        decoration: ShapeDecoration(
-                                          color: backgroundColor,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(31),
-                                          ),
-                                        ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.timer_sharp, size: 40, color: circuloColor,),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(width: 30.0),
-                                  Column(
-                                    children: [
-                                      Text(widget.event.horaInicio,
-                                          style: TextStyle(fontSize: 20.0)
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(width: 25.0),
-                                  Text('-',
-                                      style: TextStyle(fontSize: 20.0)
-                                  ),
-                                  SizedBox(width: 22.0),
-                                  Column(
-                                    children: [
-                                      Text(widget.event.horaFin,
-                                          style: TextStyle(fontSize: 20.0)
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                          SizedBox(height: 10,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 60,
-                                height: 60,
-                                padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-                                decoration: ShapeDecoration(
-                                  color: backgroundColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(31),
+                                    : TextFormField(
+                                  enabled: false,
+                                  controller: _descriptionController,
+                                  maxLines: 5,
+                                  decoration: const InputDecoration(
+                                    hintText: 'Ingrese la descripción',
                                   ),
                                 ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                SizedBox(height: 20.0),
+                                Row(
                                   children: [
-                                    Icon(Icons.location_on_outlined, size: 40, color: circuloColor,),
+                                    Column(
+                                      children: [
+                                        Container(
+                                          width: 60,
+                                          height: 60,
+                                          padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+                                          decoration: ShapeDecoration(
+                                            color: backgroundColor,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(31),
+                                            ),
+                                          ),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.calendar_month, size: 40, color: circuloColor,),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(width: 20.0),
+                                    Row(
+                                      children: [
+                                        Text(widget.event.fechaInicio,
+                                            style: TextStyle(fontSize: 20.0)
+                                        ),
+                                        SizedBox(width: 10.0),
+                                        Text('-',
+                                            style: TextStyle(fontSize: 20.0)
+                                        ),
+                                        SizedBox(width: 10.0),
+                                        Text(widget.event.fechaFin,
+                                            style: TextStyle(fontSize: 20.0)
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
-                              ),
-                              SizedBox(width: 26.0),
-                              Text(widget.event.lugar,
-                                  style: TextStyle(fontSize: 20.0)
-                              ),
-                              SizedBox(width: 37,),
-                              Column(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      if(widget.event.filtros.isNotEmpty){
-                                        _showDialog(context);
-                                      }
-                                    },
-                                    child: Container(
-                                      width: 150,
-                                      height: 80,
+                                SizedBox(height: 20,),
+                                Row(
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Container(
+                                          width: 60,
+                                          height: 60,
+                                          padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+                                          decoration: ShapeDecoration(
+                                            color: backgroundColor,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(31),
+                                            ),
+                                          ),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.timer_sharp, size: 40, color: circuloColor,),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(width: 30.0),
+                                    Column(
+                                      children: [
+                                        Text(widget.event.horaInicio,
+                                            style: TextStyle(fontSize: 20.0)
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(width: 25.0),
+                                    Text('-',
+                                        style: TextStyle(fontSize: 20.0)
+                                    ),
+                                    SizedBox(width: 22.0),
+                                    Column(
+                                      children: [
+                                        Text(widget.event.horaFin,
+                                            style: TextStyle(fontSize: 20.0)
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 10,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 60,
+                                      height: 60,
                                       padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
                                       decoration: ShapeDecoration(
                                         color: backgroundColor,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(15),
-                                          side: BorderSide(
-                                            color: circuloColor, // Color del borde
-                                            width: 2.0, // Ancho del borde
-                                          ),
+                                          borderRadius: BorderRadius.circular(31),
                                         ),
                                       ),
-                                      child: SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal, // Para hacer que la lista sea deslizable horizontalmente
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: widget.event.filtros.map((filtro) {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(right: 10), // Ajusta el espacio entre las imágenes
-                                              child: Image.network(
-                                                obtenerImagenFiltro(filtro),
-                                                width: 60,
-                                                height: 60,
-                                              ),
-                                            );
-                                          }).toList(),
-                                        ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.location_on_outlined, size: 40, color: circuloColor,),
+                                        ],
                                       ),
                                     ),
-                                  )
-                                ],
-                              ),
-                            ],
+                                    SizedBox(width: 26.0),
+                                    Text(widget.event.lugar,
+                                        style: TextStyle(fontSize: 20.0)
+                                    ),
+                                    SizedBox(width: 37,),
+                                    Column(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            if(widget.event.filtros.isNotEmpty){
+                                              _showDialog(context);
+                                            }
+                                          },
+                                          child: Container(
+                                            width: 150,
+                                            height: 80,
+                                            padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+                                            decoration: ShapeDecoration(
+                                              color: backgroundColor,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(15),
+                                                side: BorderSide(
+                                                  color: circuloColor, // Color del borde
+                                                  width: 2.0, // Ancho del borde
+                                                ),
+                                              ),
+                                            ),
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal, // Para hacer que la lista sea deslizable horizontalmente
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: widget.event.filtros.map((filtro) {
+                                                  return Padding(
+                                                    padding: const EdgeInsets.only(right: 10), // Ajusta el espacio entre las imágenes
+                                                    child: Image.network(
+                                                      obtenerImagenFiltro(filtro),
+                                                      width: 60,
+                                                      height: 60,
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-          ],
-        ),
+                ],
+              ),
+            );
+          }
+        },
       ),
     );
   }

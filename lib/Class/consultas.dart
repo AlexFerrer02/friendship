@@ -269,6 +269,15 @@ class Consultas{
         response[0]["lugar"], response[0]["usuario"]);
   }
 
+  Future<List<String>> obtenerAmigosEvento(int id) async {
+    var response = await supabase.from("eventos").select("*").eq("id", id);
+    List<String> amigos = [];
+    for (var item in response[0]["amigos"]) {
+      amigos.add(item);
+    }
+    return amigos;
+  }
+
   Future<Evento> obtenerEventoId(int id) async {
     var response = await supabase.from("eventos").select("*").eq("id", id);
     List<String> filtros = [];
