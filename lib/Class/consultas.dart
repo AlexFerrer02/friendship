@@ -386,7 +386,7 @@ class Consultas{
         .upsert([
       {
         "telefono": id2,
-        "username": nombre,
+        "username": nombre+id2.toString(),
       }
     ]);
     //supabase.from("usuarios").insert(values)
