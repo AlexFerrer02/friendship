@@ -100,34 +100,26 @@ class Consultas{
     var response = await  supabase.from('eventos')
         .select('*')
         .eq("tipo", "publico")
+        .neq("usuario", UserData.usuarioLog?.username)
         .gte("fechainicio", DateTime.now())
     ;
 
     for (var item in response) {
-      //List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
-      var filtrosAux = item["filtros"];
-      List<String> filtros = [];
-      for (var item in filtrosAux) {
-        filtros.add(item);
-      }
-      Type tipo = Type(1, item["tipo"]);
-      eventos.add(Evento(item["id"], item["nombre"], tipo , item["descripcion"], filtros, item["fechainicio"],item["fechafin"], item["horainicio"], item["horafin"],item["lugar"],item["usuario"] ));
-    }
+      List<String> participantes = [];
 
-    var response2 = await  supabase.from('eventos')
-        .select('*')
-        .eq("lugar", "Valencia")
-        .neq("usuario", UserData.usuarioLog?.username)
-    ;
-    for (var item in response2) {
-      //List<Filtro> filtros2 = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
-      var filtrosAux = item["filtros"];
-      List<String> filtros2 = [];
-      for (var item in filtrosAux) {
-        filtros2.add(item);
+      for(var participante in item["amigos"]){
+        participantes.add(participante);
       }
-      Type tipo2 = Type(1, item["tipo"]);
-      eventos.add(Evento(item["id"], item["nombre"], tipo2 , item["descripcion"], filtros2, item["fechainicio"],item["fechafin"], item["horainicio"], item["horafin"], item["lugar"],item["usuario"] ));
+
+      if(!participantes.contains(UserData.usuarioLog!.username)){
+        var filtrosAux = item["filtros"];
+        List<String> filtros = [];
+        for (var item in filtrosAux) {
+          filtros.add(item);
+        }
+        Type tipo = Type(1, item["tipo"]);
+        eventos.add(Evento(item["id"], item["nombre"], tipo , item["descripcion"], filtros, item["fechainicio"],item["fechafin"], item["horainicio"], item["horafin"],item["lugar"],item["usuario"] ));
+      }
     }
 
     return eventos;
