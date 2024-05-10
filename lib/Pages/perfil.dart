@@ -133,14 +133,6 @@ class _PerfilState extends State<Perfil> {
                   Navigator.pop(context);
                 },
               ),
-              ListTile(
-                title: Text('Helicóptero'),
-                onTap: () {
-                  cambiarAvatar(
-                      'https://peaoifidogwgoxzrpjft.supabase.co/storage/v1/object/public/avatares/helicoptero.png?t=2023-11-28T10%3A26%3A04.315Z');
-                  Navigator.pop(context);
-                },
-              ),
             ],
           ),
         );
