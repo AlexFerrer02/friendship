@@ -391,6 +391,47 @@ class Consultas{
     ]);
     //supabase.from("usuarios").insert(values)
   }
+
+  Future<String> buscarPorCodigoAmigo (int codigo) async {
+    String usuario = '';
+    var response = await supabase.from("usuarios").select("*").eq("codigo_amigo", codigo);
+    if(response.toString() != '[]'){
+      usuario = response[0]["username"];
+    }
+    return usuario;
+  }
+
+  Future<int> getCodigoPropio () async {
+    var response = await supabase.from("usuarios").select("*").eq("username", UserData.usuarioLog!.username);
+    return response[0]["codigo_amigo"];
+  }
+
+  Future<bool> checkAmigo (String user) async {
+    var response = await supabase.from("usuarios").select("*").eq("username", UserData.usuarioLog!.username);
+    List<String> amigos = [];
+    for(var item in response[0]["lista_amigos"]){
+      amigos.add(item);
+    }
+    if(amigos.contains(user)){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<void> addAmigo (String user) async {
+    var response = await supabase.from("usuarios").select("*").eq("username", UserData.usuarioLog!.username);
+    List<String> amigos = [];
+    for(var item in response[0]["lista_amigos"]){
+      amigos.add(item);
+    }
+    amigos.add(user);
+    await supabase
+        .from('usuarios')
+        .update({ 'lista_amigos': amigos })
+        .match({ 'username': UserData.usuarioLog!.username });
+  }
+
   Future<void> addAmigoAGrupoAmigos(int id, user.User nuevo) async {
     var group = await supabase.from("gruposamigos").select("*").eq("id", id);
     var participantes ;

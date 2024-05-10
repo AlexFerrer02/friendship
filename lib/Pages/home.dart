@@ -37,7 +37,8 @@ DateTime get _now => DateTime.now();
 
 class HomeState extends State<Home> {
   int actualPage = 0;
-  List<Evento> eventos = []; // Lista para almacenar los eventos de la base de datos
+  List<Evento> eventos = [
+  ]; // Lista para almacenar los eventos de la base de datos
 
 
   final supabase = SupabaseClient(
@@ -62,15 +63,16 @@ class HomeState extends State<Home> {
     return CalendarControllerProvider(
       controller: controller,
       child: MaterialApp(
-          builder: (context, widget) => ResponsiveWrapper.builder(
-            ClampingScrollWrapper.builder(context, widget!),
-            breakpoints: const [
-              ResponsiveBreakpoint.resize(350, name: MOBILE),
-              ResponsiveBreakpoint.autoScale(600, name: TABLET),
-              ResponsiveBreakpoint.resize(800, name: DESKTOP),
-              ResponsiveBreakpoint.autoScale(1700, name: 'XL'),
-            ],
-          ),
+          builder: (context, widget) =>
+              ResponsiveWrapper.builder(
+                ClampingScrollWrapper.builder(context, widget!),
+                breakpoints: const [
+                  ResponsiveBreakpoint.resize(350, name: MOBILE),
+                  ResponsiveBreakpoint.autoScale(600, name: TABLET),
+                  ResponsiveBreakpoint.resize(800, name: DESKTOP),
+                  ResponsiveBreakpoint.autoScale(1700, name: 'XL'),
+                ],
+              ),
           title: "friend.ship",
           theme: ThemeData(primarySwatch: Colors.indigo),
           scrollBehavior: ScrollBehavior().copyWith(
@@ -81,7 +83,9 @@ class HomeState extends State<Home> {
             },
           ),
           home: Scaffold(
-              appBar: provider.Provider.of<AppBarProvider>(context).appBar,
+              appBar: provider.Provider
+                  .of<AppBarProvider>(context)
+                  .appBar,
               body: pages[actualPage],
               bottomNavigationBar: BottomNavigationBar(
                   fixedColor: Colors.black,
@@ -89,32 +93,36 @@ class HomeState extends State<Home> {
                   unselectedItemColor: Colors.grey,
                   onTap: (index) {
                     setState(() {
-
                       switch (index) {
                         case 0:
-                          provider.Provider.of<AppBarProvider>(context, listen: false).updateAppBar(
+                          provider.Provider.of<AppBarProvider>(
+                              context, listen: false).updateAppBar(
                             AppBar(title: Text("Eventos"), centerTitle: true,
-                              flexibleSpace: Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Colors.grey[300]!, // Color del borde sombreado
-                                    width: 3.0, // Ancho del borde
-                                  ),
-                                ),
-                              ),
-                            ),
-                            ),
-                          );
-                          break;
-                        case 1:
-                          provider.Provider.of<AppBarProvider>(context, listen: false).updateAppBar(
-                            AppBar(title: Text("Sugerencias"), centerTitle: true,
                               flexibleSpace: Container(
                                 decoration: BoxDecoration(
                                   border: Border(
                                     bottom: BorderSide(
-                                      color: Colors.grey[300]!, // Color del borde sombreado
+                                      color: Colors.grey[300]!,
+                                      // Color del borde sombreado
+                                      width: 3.0, // Ancho del borde
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                          break;
+                        case 1:
+                          provider.Provider.of<AppBarProvider>(
+                              context, listen: false).updateAppBar(
+                            AppBar(
+                              title: Text("Sugerencias"), centerTitle: true,
+                              flexibleSpace: Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors.grey[300]!,
+                                      // Color del borde sombreado
                                       width: 3.0, // Ancho del borde
                                     ),
                                   ),
@@ -124,13 +132,16 @@ class HomeState extends State<Home> {
                           );
                           break;
                         case 2:
-                          provider.Provider.of<AppBarProvider>(context, listen: false).updateAppBar(
-                            AppBar(title: Text("Grupos de amigos"), centerTitle: true,
+                          provider.Provider.of<AppBarProvider>(
+                              context, listen: false).updateAppBar(
+                            AppBar(title: Text("Grupos de amigos"),
+                              centerTitle: true,
                               flexibleSpace: Container(
                                 decoration: BoxDecoration(
                                   border: Border(
                                     bottom: BorderSide(
-                                      color: Colors.grey[300]!, // Color del borde sombreado
+                                      color: Colors.grey[300]!,
+                                      // Color del borde sombreado
                                       width: 3.0, // Ancho del borde
                                     ),
                                   ),
@@ -140,13 +151,16 @@ class HomeState extends State<Home> {
                           );
                           break;
                         case 3:
-                          provider.Provider.of<AppBarProvider>(context, listen: false).updateAppBar(
-                            AppBar(title: Text("Crear Evento"), centerTitle: true,
+                          provider.Provider.of<AppBarProvider>(
+                              context, listen: false).updateAppBar(
+                            AppBar(
+                              title: Text("Crear Evento"), centerTitle: true,
                               flexibleSpace: Container(
                                 decoration: BoxDecoration(
                                   border: Border(
                                     bottom: BorderSide(
-                                      color: Colors.grey[300]!, // Color del borde sombreado
+                                      color: Colors.grey[300]!,
+                                      // Color del borde sombreado
                                       width: 3.0, // Ancho del borde
                                     ),
                                   ),
@@ -156,13 +170,16 @@ class HomeState extends State<Home> {
                           );
                           break;
                         case 4:
-                          provider.Provider.of<AppBarProvider>(context, listen: false).updateAppBar(
-                            AppBar(title: Text("Buscar Eventos"), centerTitle: true,
+                          provider.Provider.of<AppBarProvider>(
+                              context, listen: false).updateAppBar(
+                            AppBar(
+                              title: Text("Buscar Eventos"), centerTitle: true,
                               flexibleSpace: Container(
                                 decoration: BoxDecoration(
                                   border: Border(
                                     bottom: BorderSide(
-                                      color: Colors.grey[300]!, // Color del borde sombreado
+                                      color: Colors.grey[300]!,
+                                      // Color del borde sombreado
                                       width: 3.0, // Ancho del borde
                                     ),
                                   ),
@@ -172,16 +189,19 @@ class HomeState extends State<Home> {
                           );
                           break;
                         case 5:
-                          provider.Provider.of<AppBarProvider>(context, listen: false).clearAppBar();
+                          provider.Provider.of<AppBarProvider>(
+                              context, listen: false).clearAppBar();
                           break;
                         default:
-                          provider.Provider.of<AppBarProvider>(context, listen: false).updateAppBar(
+                          provider.Provider.of<AppBarProvider>(
+                              context, listen: false).updateAppBar(
                             AppBar(title: Text("Eventos"), centerTitle: true,
                               flexibleSpace: Container(
                                 decoration: BoxDecoration(
                                   border: Border(
                                     bottom: BorderSide(
-                                      color: Colors.grey[300]!, // Color del borde sombreado
+                                      color: Colors.grey[300]!,
+                                      // Color del borde sombreado
                                       width: 3.0, // Ancho del borde
                                     ),
                                   ),
@@ -219,11 +239,13 @@ class HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    initUniLinks();
+    //initUniLinks();
     sleep(Duration(milliseconds: 1000));
     actualPage = widget.indiceInicial;
   }
 
+}
+/*
   void initUniLinks() async {
     // Maneja los enlaces profundos cuando la aplicación se inicia
     final initialLink = await getInitialLink();
@@ -255,7 +277,7 @@ class HomeState extends State<Home> {
 
 
 
-/*List<CalendarEventData<Evento>> _events = [
+List<CalendarEventData<Evento>> _events = [
   CalendarEventData(
     date: _now,
     event: Evento(title: "Joe's Birthday"),

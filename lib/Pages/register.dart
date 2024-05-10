@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:friendship/Pages/login_page.dart';
 import 'package:friendship/main.dart';
 import 'package:flutter/material.dart';
@@ -73,10 +74,28 @@ class _RegisterState extends State<Register> {
     );
   }
 
+  Future<int> generarNumeroAleatorioUnico() async {
+    final Random random = Random();
+    int numeroAleatorio = 0;
+    do {
+      // Genera un número aleatorio entre 0 y 9999999
+      numeroAleatorio = random.nextInt(10000000);
+      // Verifica si el número ya existe en la base de datos
+      final response = await supabase.from('usuarios').select().eq('codigo_amigo', numeroAleatorio);
+      if (response.toString() != '[]') {
+        // Si el número ya existe, vuelve a intentarlo
+        numeroAleatorio = -1; // Puedes establecer cualquier valor que no sea un número válido
+      }
+    } while (numeroAleatorio == -1);
+    return numeroAleatorio;
+  }
+
   Future<void> _signUp() async {
     try {
       await widget.supabase.auth.signUp(password: passwordController.text, email: usernameController.text);
       if (mounted) {
+
+        int codigoAmigo = await generarNumeroAleatorioUnico();
 
         await supabase.from('usuarios').upsert([
           {
@@ -84,7 +103,8 @@ class _RegisterState extends State<Register> {
             'username': aliasController.text,
             'contraseña': passwordController.text,
             'email': usernameController.text,
-            'gustos': widget.gustos
+            'gustos': widget.gustos,
+            'codigo_amigo': codigoAmigo
           },
         ]);
         UserData.emailActual=usernameController.text;
@@ -191,7 +211,7 @@ class _RegisterState extends State<Register> {
                       ),
                       child: Center(
                         child: Text(
-                          "Sign Up",
+                          "Registrarse",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -199,34 +219,6 @@ class _RegisterState extends State<Register> {
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 25,),
-                  //O continuar con
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                            child: Divider(
-                              thickness: 0.5,
-                              color: Colors.grey[400],
-                            )
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
-                            'O registrate con',
-                            style: TextStyle(color: Colors.grey[700]),
-                          ),
-                        ),
-                        Expanded(
-                            child: Divider(
-                              thickness: 0.5,
-                              color: Colors.grey[400],
-                            )
-                        ),
-                      ],
                     ),
                   ),
                 ],

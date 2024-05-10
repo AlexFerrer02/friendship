@@ -7,6 +7,7 @@ import 'package:friendship/Class/GlobalData.dart';
 import 'package:friendship/Pages/splash.dart';
 import 'package:friendship/Widgets/qr.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../Class/consultas.dart';
 import '../Class/usernameAuxiliar.dart';
 import 'editar_gustos.dart';
 import 'login_page.dart';
@@ -43,10 +44,23 @@ class _PerfilState extends State<Perfil> {
   var trofeo3 = '';
   var telefono = '';
 
+  int codigoAmigo = 0;
+
+  int miCodigoAmigo = 0;
+
   @override
   void initState() {
     super.initState();
     mostrarTrofeos(eventosUsuario);
+  }
+
+  void _copyToClipboard(BuildContext context, String text) {
+    Clipboard.setData(ClipboardData(text: text));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Texto copiado al portapapeles'),
+      ),
+    );
   }
 
   void mostrarTrofeos(int eventosCreados) {
@@ -167,6 +181,57 @@ class _PerfilState extends State<Perfil> {
     );
   }
 
+  void _dialogoAmigo(BuildContext context, bool esCodigoPropio) {
+    String text = '';
+    if(esCodigoPropio){
+      text = 'No puedes añadirte a ti mismo como amigo.';
+    } else {
+      text = 'No existe usuario con ese código de amigo.';
+    }
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Aviso'),
+          content: Text(text),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cierra el diálogo
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _dialogoAmigoExiste(BuildContext context, bool existeAmigo, String usuario) {
+    String text = '';
+    if(existeAmigo){
+      text = 'Ya eres amigo de este usuario.';
+    } else {
+      text = 'Ahora eres amigo de $usuario.';
+    }
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Aviso'),
+          content: Text(text),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cierra el diálogo
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void mostrarOpciones() {
     showDialog(
@@ -224,6 +289,9 @@ class _PerfilState extends State<Perfil> {
   bool verTrofeos = true;
   bool mostrarQR = false;
   bool mostrarEnlace = false;
+  bool miCodigo = false;
+  bool isHovered = false;
+  bool isPressed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -350,6 +418,7 @@ class _PerfilState extends State<Perfil> {
                       verTrofeos = true;
                       mostrarQR = false;
                       mostrarEnlace = false;
+                      miCodigo = false;
                     });
                   },
                   child: Column(
@@ -373,6 +442,7 @@ class _PerfilState extends State<Perfil> {
                       verTrofeos = false;
                       mostrarQR = true;
                       mostrarEnlace = false;
+                      miCodigo = false;
                     });
                   },
                   child: Column(
@@ -397,17 +467,18 @@ class _PerfilState extends State<Perfil> {
                       verTrofeos = false;
                       mostrarQR = false;
                       mostrarEnlace = true;
+                      miCodigo = false;
                     });
                   },
                   child: Column(
                     children: [
                       Icon(
-                          Icons.link,
+                          Icons.contact_mail_rounded,
                           color: mostrarEnlace ? Color(0xFFECC8FD) : Colors.black
                       ), // Cambia por el icono deseado
                       SizedBox(height: 8),
                       Text(
-                          'Enlace',
+                          'Buscar amigo',
                           style: TextStyle(
                             color: mostrarEnlace ? Color(0xFFECC8FD) : Colors.black,
                           ),
@@ -415,7 +486,31 @@ class _PerfilState extends State<Perfil> {
                     ],
                   ),
                 ),
-
+                GestureDetector(
+                  onTap: () async {
+                    miCodigoAmigo = await Consultas().getCodigoPropio();
+                    setState(() {
+                      verTrofeos = false;
+                      mostrarQR = false;
+                      mostrarEnlace = false;
+                      miCodigo = true;
+                    });
+                  },
+                  child: Column(
+                    children: [
+                      Icon(
+                          Icons.contacts_rounded,
+                          color: miCodigo ? Color(0xFFECC8FD) : Colors.black
+                      ), // Cambia por el icono deseado
+                      SizedBox(height: 8),
+                      Text(
+                        'Mi código',
+                        style: TextStyle(
+                          color: miCodigo ? Color(0xFFECC8FD) : Colors.black,
+                        ),), // Texto para el botón
+                    ],
+                  ),
+                ),
               ],
             ),
             SizedBox(height: 20),
@@ -476,28 +571,112 @@ class _PerfilState extends State<Perfil> {
                 },
                 child: QRImage(50),
               ),
+          if (miCodigo)
+          // Muestra el enlace de WhatsApp o cualquier otro enlace aquí
+          // Ejemplo:
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(height: 30,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: Text(
+                        miCodigoAmigo.toString(),
+                        style: TextStyle(
+                          fontSize: 24.0,
+                            fontWeight: FontWeight.bold,
+                          color: Color.fromRGBO(83, 6, 119, 1)
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10,),
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFFECC8FD),
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          _copyToClipboard(context, miCodigoAmigo.toString());
+                        },
+                        icon: Icon(Icons.content_copy),
+                        color: Color.fromRGBO(83, 6, 119, 1),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
             if (mostrarEnlace)
             // Muestra el enlace de WhatsApp o cualquier otro enlace aquí
             // Ejemplo:
-              GestureDetector(
-                onTap: () async {
-                  final granted =
-                  await FlutterContactPicker.requestPermission();
-
-                  final PhoneContact contact =
-                  await FlutterContactPicker.pickPhoneContact();
-                  telefono = contact!.phoneNumber!.number.toString();
-
-                  telefono = quitarEspaciosEnBlanco(telefono);
-
-                  launchWhatsApp(phone: telefono);
-                },
-                child: Image.network(
-                  'https://peaoifidogwgoxzrpjft.supabase.co/storage/v1/object/public/avatares/wasa.png',
-                  width: 100.0,
-                  height: 100.0,
-                ),
-              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(height: 10,),
+                  Text('Buscar amigo por código',
+                      style: TextStyle(
+                        color: Color.fromRGBO(83, 6, 119, 1),
+                        fontSize: 20,
+                      )),
+                  SizedBox(height: 10,),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 70.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10.0), // O ajusta según sea necesario
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLength: 15,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      onChanged: (text){
+                        codigoAmigo = int.parse(text);
+                      },
+                      onEditingComplete: (){
+                        FocusScope.of(context).unfocus();
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  ElevatedButton(
+                    onPressed: () async {
+                      String usuario = await Consultas().buscarPorCodigoAmigo(codigoAmigo);
+                      if(usuario == ''){
+                        _dialogoAmigo(context, false);
+                      }else if (usuario == UserData.usuarioLog!.username) {
+                        _dialogoAmigo(context, true);
+                      }else {
+                        bool existeAmigo = await Consultas().checkAmigo(usuario);
+                        if(existeAmigo){
+                          _dialogoAmigoExiste(context, true, usuario);
+                        } else {
+                          await Consultas().addAmigo(usuario);
+                          _dialogoAmigoExiste(context, false, usuario);
+                        }
+                      }
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFECC8FD)), // Color de fondo del botón
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0), // Bordes redondeados del botón
+                        ),
+                      ),
+                      // Otros estilos que desees cambiar...
+                    ),
+                    child: Text(
+                      "Añadir",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ), // Texto del botón
+                  ),
+                ],
+              )
           ],
         ),
       ),
