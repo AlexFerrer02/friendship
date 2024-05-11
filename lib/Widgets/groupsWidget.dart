@@ -15,17 +15,22 @@ class GroupsWidget extends StatelessWidget {
       String initials = participante.username.substring(0, 1).toUpperCase();
       print(initials);
       avatars.add(
-        Center(
-            child: CircleAvatar(
-          maxRadius: 15,
-          backgroundColor: Color(0xFF032A64),
-          child: Text(
-            initials,
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        )),
+        Row(
+          children: [
+            SizedBox(width: 5,),
+            Center(
+                child: CircleAvatar(
+                  maxRadius: 15,
+                  backgroundColor: Color(0xFF032A64),
+                  child: Text(
+                    initials,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                )),
+          ],
+        )
       );
     }
 

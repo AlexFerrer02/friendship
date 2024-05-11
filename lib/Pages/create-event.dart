@@ -419,7 +419,7 @@ class _createEventState extends State<createEvent> {
                           var response = await  supabase.from('gruposamigos')
                               .select('*')
                               .eq("id", UserData.idGrupoAmigos);
-                          userAux = response[0]["nombre"];
+                          userAux = response[0]["nombre"] + UserData.idGrupoAmigos.toString();
                           List<String> amigosAux = [];
                           for(var amigo in response[0]["participantes"]){
                             if(amigo != userAux){

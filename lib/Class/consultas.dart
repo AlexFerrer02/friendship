@@ -311,6 +311,15 @@ class Consultas{
         response[0]["lugar"], response[0]["usuario"]);
   }
 
+  Future<List<String>> getParticipantesGrupo (int id) async{
+    var response = await supabase.from("gruposamigos").select("*").eq("id", id);
+    List<String> participantes = [];
+    for(var participante in response[0]["participantes"]){
+      participantes.add(participante);
+    }
+    return participantes;
+  }
+
   Future<List<GrupoAmigos>> ObtenerGrupos() async {
     print("inicio");
     var response = await supabase.from("gruposamigos").select("*").contains("participantes", [UserData.usuarioLog?.username]);
@@ -364,22 +373,21 @@ class Consultas{
   }
 
 
-  void addGrupoAmigos(String nombre, String descripcion,user.User creador) async {
-    int id = await generarNumeroAleatorioUnico("gruposamigos");
+  Future<void> addGrupoAmigos(String nombre, String descripcion,user.User creador) async {
     int id2 = await generarNumeroAleatorioUnico("usuarios");
     print("crear");
     await supabase
         .from("gruposamigos")
         .upsert([
       {
-        "id": id,
+        "id": id2,
         "nombre": nombre,
         "participantes": [],
         "creador": creador.username,
         "descripcion": descripcion,
       }
     ]);
-    addAmigoAGrupoAmigos(id,creador);
+    addAmigoAGrupoAmigos(id2,creador);
 
     await supabase
         .from("usuarios")
@@ -432,6 +440,50 @@ class Consultas{
         .match({ 'username': UserData.usuarioLog!.username });
   }
 
+  Future<void> removeAmigo (String user) async {
+    var response = await supabase.from("usuarios").select("*").eq("username", UserData.usuarioLog!.username);
+    List<String> amigos = [];
+    for(var item in response[0]["lista_amigos"]){
+      amigos.add(item);
+    }
+    amigos.remove(user);
+    await supabase
+        .from('usuarios')
+        .update({ 'lista_amigos': amigos })
+        .match({ 'username': UserData.usuarioLog!.username });
+  }
+
+  Future<void> deleteGrupoAmigos (GrupoAmigos grupo) async {
+
+    var response = await supabase
+        .from('gruposamigos')
+        .select("*")
+        .eq('nombre', grupo.name)
+        .eq('descripcion', grupo.descripcion)
+        .eq('creador', grupo.creador.username);
+
+    int id = response[0]["id"];
+    String usuario = grupo.name + id.toString();
+    print(usuario);
+
+    await supabase
+        .from('eventos')
+        .delete()
+        .match({ 'usuario': usuario });
+
+    await supabase
+        .from('usuarios')
+        .delete()
+        .match({ 'username': usuario });
+
+    await supabase
+        .from('gruposamigos')
+        .delete()
+        .match({ 'nombre': grupo.name })
+        .match({ 'descripcion': grupo.descripcion })
+        .match({ 'creador': grupo.creador.username });
+  }
+
   Future<void> addAmigoAGrupoAmigos(int id, user.User nuevo) async {
     var group = await supabase.from("gruposamigos").select("*").eq("id", id);
     var participantes ;
@@ -458,14 +510,14 @@ class Consultas{
     if (group.isNotEmpty) {
       var grupo = group[0];
       if (grupo != null) {
-        nombre= grupo['nombre'];
+        nombre= grupo['nombre']+id.toString();
         var response = await supabase
             .from('eventos')
             .select("*")
             .eq("usuario", nombre);
         for(var evento in response){
           List<String> amigosAux = [];
-          for(var amigo in evento){
+          for(var amigo in evento["amigos"]){
             amigosAux.add(amigo);
           }
           if(operacion == 'add'){
@@ -508,8 +560,10 @@ class Consultas{
     }
   }
 
-  Future<List<Evento>> EventosGrupo(String nombre) async {
-    var response = await supabase.from("eventos").select("*").eq("usuario", nombre);
+  Future<List<Evento>> EventosGrupo(String nombre, String descripcion, String creador) async {
+    var getNombre = await supabase.from("gruposamigos").select("*").eq("nombre", nombre).eq("descripcion", descripcion).eq("creador", creador);
+    String nombreGrupo = getNombre[0]["nombre"] + getNombre[0]["id"].toString();
+    var response = await supabase.from("eventos").select("*").eq("usuario", nombreGrupo);
     List<Evento> eventos = [];
     for (var item in response) {
       //List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];

@@ -132,7 +132,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
               onPressed: () {
                 Navigator.of(context).pop(); // Cerrar el diálogo
               },
-              child: Text('No'),
+              child: Text('Cancelar'),
             ),
             TextButton(
               onPressed: () async {
@@ -144,7 +144,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   MaterialPageRoute(builder: (context) => Home(indiceInicial: 0,isFriendGroup: false,)),
                 );
               },
-              child: Text('Sí'),
+              child: Text('Eliminar'),
             ),
           ],
         );

@@ -81,32 +81,6 @@ class _PerfilState extends State<Perfil> {
     }
   }
 
-  void launchWhatsApp({required String phone}) async {
-    String nombreUsuario = UserData.usuarioLog!.username;
-    String numeroSinPlus = phone.replaceAll('+', '');
-    //print(nombreUsuario);
-    //print(numeroSinPlus);
-
-    final Uri whatsappUrl = Uri(
-      scheme: 'https',
-      host: 'wa.me',
-      path: numeroSinPlus,
-      queryParameters: {
-        'text': 'https://aplicacionpin.000webhostapp.com/redireccion.html?username=$nombreUsuario',
-      },
-    );
-
-    if (await canLaunchUrl(whatsappUrl)) {
-      await launchUrl(whatsappUrl);
-    } else {
-      throw 'Could not launch';
-    }
-  }
-
-  String quitarEspaciosEnBlanco(String cadena) {
-    return cadena.replaceAll(' ', ''); // Reemplaza los espacios en blanco por una cadena vacía.
-  }
-
   void mostrarOpcionesDeAvatar() {
     showDialog(
       context: context,
@@ -279,7 +253,6 @@ class _PerfilState extends State<Perfil> {
   }
 
   bool verTrofeos = true;
-  bool mostrarQR = false;
   bool mostrarEnlace = false;
   bool miCodigo = false;
   bool isHovered = false;
@@ -408,7 +381,6 @@ class _PerfilState extends State<Perfil> {
                   onTap: () {
                     setState(() {
                       verTrofeos = true;
-                      mostrarQR = false;
                       mostrarEnlace = false;
                       miCodigo = false;
                     });
@@ -432,32 +404,6 @@ class _PerfilState extends State<Perfil> {
                   onTap: () {
                     setState(() {
                       verTrofeos = false;
-                      mostrarQR = true;
-                      mostrarEnlace = false;
-                      miCodigo = false;
-                    });
-                  },
-                  child: Column(
-                    children: [
-                      Icon(
-                          Icons.qr_code,
-                          color: mostrarQR ? Color(0xFFECC8FD) : Colors.black
-                      ), // Cambia por el icono deseado
-                      SizedBox(height: 8),
-                      Text(
-                          'QR',
-                        style: TextStyle(
-                          color: mostrarQR ? Color(0xFFECC8FD) : Colors.black,
-                        ),
-                      ), // Texto para el botón
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      verTrofeos = false;
-                      mostrarQR = false;
                       mostrarEnlace = true;
                       miCodigo = false;
                     });
@@ -483,7 +429,6 @@ class _PerfilState extends State<Perfil> {
                     miCodigoAmigo = await Consultas().getCodigoPropio();
                     setState(() {
                       verTrofeos = false;
-                      mostrarQR = false;
                       mostrarEnlace = false;
                       miCodigo = true;
                     });
@@ -554,15 +499,6 @@ class _PerfilState extends State<Perfil> {
                   ),
                 ],
               ),
-            if (mostrarQR)
-            // Muestra el código QR aquí
-            // Ejemplo:
-              GestureDetector(
-                onTap: () {
-                  _mostrarPopup(context);
-                },
-                child: QRImage(50),
-              ),
           if (miCodigo)
           // Muestra el enlace de WhatsApp o cualquier otro enlace aquí
           // Ejemplo:
@@ -631,7 +567,6 @@ class _PerfilState extends State<Perfil> {
                       },
                     ),
                   ),
-                  SizedBox(height: 10,),
                   ElevatedButton(
                     onPressed: () async {
                       String usuario = await Consultas().buscarPorCodigoAmigo(codigoAmigo);

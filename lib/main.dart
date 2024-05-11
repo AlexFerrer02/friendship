@@ -37,9 +37,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Filtro> filtros = [Filtro(1, "fiesta"), Filtro(2, "alcohol")];
-    //Evento evento = Evento(1,"evento", Type(1,"fiesta"),"descripcion descripcion descripcion descripcion","25€", filtros, "DateTime.now()", "DateTime.now()" );
-    //List<Evento> eventos = [evento,evento,evento,evento,evento,evento,evento,evento,evento];
     return MaterialApp(
       title: 'Flutter Demo',
       navigatorKey: navigatorKey, // Usar el navigatorKey proporcionado
@@ -48,11 +45,6 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      onGenerateRoute: (settings) {
-        if (settings.name == '/pantalla_confirmacion') {
-          return MaterialPageRoute(builder: (context) => Confirmacion());
-        }
-      },
       home: LoginPage(supabase: supabase),
     );
   }
