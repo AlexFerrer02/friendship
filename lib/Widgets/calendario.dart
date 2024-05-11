@@ -197,6 +197,16 @@ class _CalendarioState extends State<Calendario> {
                 calendarStyle: CalendarStyle(
                   // Use `CalendarStyle` to customize the UI
                   outsideDaysVisible: false,
+                  markerDecoration: BoxDecoration(color: Color.fromRGBO(98, 69, 108, 1), shape: BoxShape.circle),
+                  todayDecoration: BoxDecoration(
+                      color: Color.fromRGBO(136, 93, 152, 1),
+                      shape: BoxShape.circle
+                  ),
+                  selectedDecoration: BoxDecoration(
+                    color: Color.fromRGBO(215, 146, 240, 1),
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Color.fromRGBO(178, 122, 199, 1))
+                  ),
                   weekNumberTextStyle:TextStyle(color: Colors.red),
                   weekendTextStyle:TextStyle(color: Colors.red),
                 ),
@@ -223,14 +233,14 @@ class _CalendarioState extends State<Calendario> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.transparent,
-                    border: Border.all(),
+                    border: Border.all(color: Color.fromRGBO(109, 77, 121, 1)),
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   padding: EdgeInsets.all(8.0),
                   child: Text(
                     'Hoy',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Color.fromRGBO(109, 77, 121, 1),
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
@@ -262,7 +272,7 @@ class _CalendarioState extends State<Calendario> {
                               vertical: 4.0,
                             ),
                             decoration: BoxDecoration(
-                              border: Border.all(),
+                              border: Border.all(color: Color.fromRGBO(109, 77, 121, 1)),
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: Row(
@@ -281,7 +291,7 @@ class _CalendarioState extends State<Calendario> {
                                     child: Text(
                                       value[index].title,
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: Color.fromRGBO(109, 77, 121, 1),
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -293,7 +303,7 @@ class _CalendarioState extends State<Calendario> {
                                   flex: 1,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Colors.grey[300],
+                                      color: Color.fromRGBO(215, 146, 240, 1),
                                       borderRadius: BorderRadius.only(
                                         topRight: Radius.circular(11.0),
                                         bottomRight: Radius.circular(11.0),
@@ -303,7 +313,7 @@ class _CalendarioState extends State<Calendario> {
                                     child: Text(
                                       value[index].hora,
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: Colors.white,
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.bold,
                                       ),

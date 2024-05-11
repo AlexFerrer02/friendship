@@ -76,7 +76,7 @@ class Consultas{
     var eventosG = await  supabase.from('eventos')
         .select('*')
         .neq("usuario", username)
-        .eq("tipo", "publico");
+        .eq("tipo", "publico").gte("fechainicio", DateTime.now());
 
     for(var eventoAux in eventosG){
       List<String> gustosAux = [];
@@ -206,7 +206,8 @@ class Consultas{
   {
     var response = await  supabase.from('eventos')
         .select('*')
-        .eq("usuario", UserData.usuarioLog?.username);
+        .eq("usuario", UserData.usuarioLog?.username)
+        .gte("fechainicio", DateTime.now());
     List<Evento> eventos = [];
     for (var item in response) {
       //List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
@@ -220,7 +221,7 @@ class Consultas{
       //print(eventos[0].name + eventos[0].fechaHoraFin+"llamada");
     }
     response = await  supabase.from('eventos')
-        .select('*').contains("amigos", [UserData.usuarioLog?.username]);
+        .select('*').contains("amigos", [UserData.usuarioLog?.username]).gte("fechainicio", DateTime.now());;
     for (var item in response) {
       //List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
       var filtrosAux = item["filtros"];
