@@ -72,11 +72,11 @@ class Gustos_pagState extends State<Gustos_pag> {
         toggleImageSelection(imagePath);
       },
       child: Container(
-        margin: EdgeInsets.all(8),
-        padding: EdgeInsets.all(8),
+        margin: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue : Colors.transparent,
-          borderRadius: BorderRadius.circular(8),
+          color: isSelected ? const Color.fromRGBO(215, 146, 240, 1) : Colors.transparent,
+          borderRadius: BorderRadius.circular(15),
         ),
         child: Image.network(
           imagePath,
@@ -95,17 +95,17 @@ class Gustos_pagState extends State<Gustos_pag> {
       future: _fetchDataFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else {
           return Scaffold(
             backgroundColor: Colors.grey[310],
             appBar: AppBar(
-              title: Text("Gustos"),
+              title: const Text("Gustos"),
               centerTitle: true,
               leading: IconButton(
-                icon: Icon(Icons.arrow_back),
+                icon: const Icon(Icons.arrow_back),
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => Home(indiceInicial: 5,isFriendGroup: false,)),
@@ -115,12 +115,19 @@ class Gustos_pagState extends State<Gustos_pag> {
             ),
             body: Center(
               child: Padding(
-                padding: EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(20.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Elije tus gustos"),
-                    SizedBox(height: 100),
+                    const Text("Elije tus gustos",
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Color.fromRGBO(98, 69, 108, 1),
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Google Sans',
+                      ),
+                    ),
+                    const SizedBox(height: 100),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -128,28 +135,28 @@ class Gustos_pagState extends State<Gustos_pag> {
                           children: [
                             buildSelectableImage(
                                 deportes, selectedImages.contains(deportes)),
-                            Text("Deportes"),
-                            SizedBox(height: 20),
+                            const Text("Deportes"),
+                            const SizedBox(height: 20),
                             buildSelectableImage(
                                 estudio, selectedImages.contains(estudio)),
-                            Text("Estudio"),
+                            const Text("Estudio"),
                           ],
                         ),
-                        SizedBox(width: 20),
+                        const SizedBox(width: 20),
                         Column(
                           children: [
                             buildSelectableImage(
                                 musica, selectedImages.contains(musica)),
-                            Text("Música"),
-                            SizedBox(height: 20),
+                            const Text("Música"),
+                            const SizedBox(height: 20),
                             buildSelectableImage(
                                 ocio, selectedImages.contains(ocio)),
-                            Text("Ocio"),
+                            const Text("Ocio"),
                           ],
                         )
                       ],
                     ),
-                    SizedBox(height: 100),
+                    const SizedBox(height: 100),
                     ElevatedButton(
                       onPressed: () async {
                         List<String> filtrosFinales = [];
@@ -164,7 +171,7 @@ class Gustos_pagState extends State<Gustos_pag> {
                           MaterialPageRoute(builder: (context) => Home(indiceInicial: 5,isFriendGroup: false,)),
                         );
                       },
-                      child: Text('Ok'),
+                      child: const Text('Ok'),
                     )
                   ],
                 ),

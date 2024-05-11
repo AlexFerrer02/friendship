@@ -55,7 +55,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
       builder: (BuildContext context) {
         return FittedBox(
           child: AlertDialog(
-            title: Text('Filtros'),
+            title: const Text('Filtros'),
             content: IntrinsicHeight(
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -66,13 +66,13 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Image.network(
                           obtenerImagenFiltro(filtro),
                           width: 60,
                           height: 60,
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Text(capitalize(filtro)),
                       ],
                     );
@@ -85,7 +85,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Ok'),
+                child: const Text('Ok'),
               ),
             ],
           ),
@@ -106,12 +106,12 @@ class _CreateEventPageState extends State<CreateEventPage> {
     Random random = Random();
     int numRandom = random.nextInt(3) + 1;
     if(numRandom <= 2){
-      changeBackgroundColor(Color(0xFF89DAC1));
-      changeCirculoColor(Color(0xFF20BD8E));
+      changeBackgroundColor(const Color(0xFF89DAC1));
+      changeCirculoColor(const Color(0xFF20BD8E));
       imagePath = "https://peaoifidogwgoxzrpjft.supabase.co/storage/v1/object/public/avatares/urano.png";
     } else {
-      changeBackgroundColor(Color(0xFFFFB01A));
-      changeCirculoColor(Color(0xFF694704));
+      changeBackgroundColor(const Color(0xFFFFB01A));
+      changeCirculoColor(const Color(0xFF694704));
       imagePath = "https://peaoifidogwgoxzrpjft.supabase.co/storage/v1/object/public/avatares/saturno.png";
     }
     _descriptionController = TextEditingController(
@@ -125,14 +125,14 @@ class _CreateEventPageState extends State<CreateEventPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Eliminar'),
-          content: Text('¿Estás seguro de que quieres eliminar el evento?'),
+          title: const Text('Eliminar'),
+          content: const Text('¿Estás seguro de que quieres eliminar el evento?'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Cerrar el diálogo
               },
-              child: Text('Cancelar'),
+              child: const Text('Cancelar'),
             ),
             TextButton(
               onPressed: () async {
@@ -144,7 +144,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   MaterialPageRoute(builder: (context) => Home(indiceInicial: 0,isFriendGroup: false,)),
                 );
               },
-              child: Text('Eliminar'),
+              child: const Text('Eliminar'),
             ),
           ],
         );
@@ -157,14 +157,14 @@ class _CreateEventPageState extends State<CreateEventPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Aviso'),
-          content: Text('No eres el creador de este evento, no puedes modificarlo'),
+          title: const Text('Aviso'),
+          content: const Text('No eres el creador de este evento, no puedes modificarlo'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Cierra el diálogo
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -183,14 +183,14 @@ class _CreateEventPageState extends State<CreateEventPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Aviso'),
+          title: const Text('Aviso'),
           content: Text(texto),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Cierra el diálogo
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -216,7 +216,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             if(widget.esCalendario == true){
               Navigator.of(context).pushReplacement(
@@ -229,7 +229,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.delete, color: Color(0xFFC62828),),
+            icon: const Icon(Icons.delete, color: Color(0xFFC62828),),
             onPressed: () {
               if(widget.event.userName == UserData.usuarioLog!.username){
                 mostrarDialogo(context);
@@ -246,12 +246,12 @@ class _CreateEventPageState extends State<CreateEventPage> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Muestra un indicador de carga mientras se espera la condición
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
             // Maneja el error si ocurre alguno durante la espera
-            return Center(
+            return const Center(
               child: Text('Error'),
             );
           } else {
@@ -259,10 +259,10 @@ class _CreateEventPageState extends State<CreateEventPage> {
             bool isButtonEnabled = snapshot.data ?? false;
 
             return SingleChildScrollView(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               child: Column(
                 children: [
-                  Container(
+                  SizedBox(
                     height: MediaQuery.of(context).size.height / 4.4,
                     width: MediaQuery.of(context).size.width,
                     child:
@@ -276,7 +276,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   ),
                   Stack(
                     children: [
-                      Container(
+                      SizedBox(
                         height: MediaQuery.of(context).size.height,
                         child: Container(
                           decoration: const BoxDecoration(
@@ -315,7 +315,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                               ? Icons.save_alt
                                               : Icons.edit),
                                         ),
-                                        SizedBox(height: 5,),
+                                        const SizedBox(height: 5,),
                                         ElevatedButton(
                                           onPressed: isButtonEnabled
                                               ? () async {
@@ -353,7 +353,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                   hintText: 'Ingrese la descripción',
                                 ),
                               ),
-                              SizedBox(height: 20.0),
+                              const SizedBox(height: 20.0),
                               Row(
                                 children: [
                                   Column(
@@ -379,25 +379,25 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(width: 20.0),
+                                  const SizedBox(width: 20.0),
                                   Row(
                                     children: [
                                       Text(widget.event.fechaInicio,
                                           style: TextStyle(fontSize: 20.0)
                                       ),
-                                      SizedBox(width: 10.0),
-                                      Text('-',
+                                      const SizedBox(width: 10.0),
+                                      const Text('-',
                                           style: TextStyle(fontSize: 20.0)
                                       ),
-                                      SizedBox(width: 10.0),
+                                      const SizedBox(width: 10.0),
                                       Text(widget.event.fechaFin,
-                                          style: TextStyle(fontSize: 20.0)
+                                          style: const TextStyle(fontSize: 20.0)
                                       ),
                                     ],
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 20,),
+                              const SizedBox(height: 20,),
                               Row(
                                 children: [
                                   Column(
@@ -423,29 +423,29 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(width: 30.0),
+                                  const SizedBox(width: 30.0),
                                   Column(
                                     children: [
                                       Text(widget.event.horaInicio,
-                                          style: TextStyle(fontSize: 20.0)
+                                          style: const TextStyle(fontSize: 20.0)
                                       ),
                                     ],
                                   ),
-                                  SizedBox(width: 25.0),
-                                  Text('-',
+                                  const SizedBox(width: 25.0),
+                                  const Text('-',
                                       style: TextStyle(fontSize: 20.0)
                                   ),
-                                  SizedBox(width: 22.0),
+                                  const SizedBox(width: 22.0),
                                   Column(
                                     children: [
                                       Text(widget.event.horaFin,
-                                          style: TextStyle(fontSize: 20.0)
+                                          style: const TextStyle(fontSize: 20.0)
                                       ),
                                     ],
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 10,),
+                              const SizedBox(height: 10,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
@@ -468,11 +468,11 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                       ],
                                     ),
                                   ),
-                                  SizedBox(width: 26.0),
+                                  const SizedBox(width: 26.0),
                                   Text(widget.event.lugar,
-                                      style: TextStyle(fontSize: 20.0)
+                                      style: const TextStyle(fontSize: 20.0)
                                   ),
-                                  SizedBox(width: 37,),
+                                  const SizedBox(width: 37,),
                                   Column(
                                     children: [
                                       GestureDetector(

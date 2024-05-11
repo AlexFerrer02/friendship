@@ -54,25 +54,6 @@ class HomeState extends State<Home> {
     return CalendarControllerProvider(
       controller: controller,
       child: MaterialApp(
-          builder: (context, widget) =>
-              ResponsiveWrapper.builder(
-                ClampingScrollWrapper.builder(context, widget!),
-                breakpoints: const [
-                  ResponsiveBreakpoint.resize(350, name: MOBILE),
-                  ResponsiveBreakpoint.autoScale(600, name: TABLET),
-                  ResponsiveBreakpoint.resize(800, name: DESKTOP),
-                  ResponsiveBreakpoint.autoScale(1700, name: 'XL'),
-                ],
-              ),
-          title: "friend.ship",
-          theme: ThemeData(primarySwatch: Colors.indigo),
-          scrollBehavior: ScrollBehavior().copyWith(
-            dragDevices: {
-              PointerDeviceKind.trackpad,
-              PointerDeviceKind.mouse,
-              PointerDeviceKind.touch,
-            },
-          ),
           home: Scaffold(
               appBar: provider.Provider
                   .of<AppBarProvider>(context)
@@ -88,7 +69,7 @@ class HomeState extends State<Home> {
                         case 0:
                           provider.Provider.of<AppBarProvider>(
                               context, listen: false).updateAppBar(
-                            AppBar(title: Text("Eventos"), centerTitle: true,
+                            AppBar(title: const Text("Eventos"), centerTitle: true,
                               flexibleSpace: Container(
                                 decoration: BoxDecoration(
                                   border: Border(
@@ -107,7 +88,7 @@ class HomeState extends State<Home> {
                           provider.Provider.of<AppBarProvider>(
                               context, listen: false).updateAppBar(
                             AppBar(
-                              title: Text("Sugerencias"), centerTitle: true,
+                              title: const Text("Sugerencias"), centerTitle: true,
                               flexibleSpace: Container(
                                 decoration: BoxDecoration(
                                   border: Border(
@@ -125,7 +106,7 @@ class HomeState extends State<Home> {
                         case 2:
                           provider.Provider.of<AppBarProvider>(
                               context, listen: false).updateAppBar(
-                            AppBar(title: Text("Grupos de amigos"),
+                            AppBar(title: const Text("Grupos de amigos"),
                               centerTitle: true,
                               flexibleSpace: Container(
                                 decoration: BoxDecoration(
@@ -145,7 +126,7 @@ class HomeState extends State<Home> {
                           provider.Provider.of<AppBarProvider>(
                               context, listen: false).updateAppBar(
                             AppBar(
-                              title: Text("Crear Evento"), centerTitle: true,
+                              title: const Text("Crear Evento"), centerTitle: true,
                               flexibleSpace: Container(
                                 decoration: BoxDecoration(
                                   border: Border(
@@ -164,7 +145,7 @@ class HomeState extends State<Home> {
                           provider.Provider.of<AppBarProvider>(
                               context, listen: false).updateAppBar(
                             AppBar(
-                              title: Text("Buscar Eventos"), centerTitle: true,
+                              title: const Text("Buscar Eventos"), centerTitle: true,
                               flexibleSpace: Container(
                                 decoration: BoxDecoration(
                                   border: Border(
@@ -186,7 +167,7 @@ class HomeState extends State<Home> {
                         default:
                           provider.Provider.of<AppBarProvider>(
                               context, listen: false).updateAppBar(
-                            AppBar(title: Text("Eventos"), centerTitle: true,
+                            AppBar(title: const Text("Eventos"), centerTitle: true,
                               flexibleSpace: Container(
                                 decoration: BoxDecoration(
                                   border: Border(
@@ -231,7 +212,7 @@ class HomeState extends State<Home> {
   void initState() {
     super.initState();
     //initUniLinks();
-    sleep(Duration(milliseconds: 1000));
+    sleep(const Duration(milliseconds: 1000));
     actualPage = widget.indiceInicial;
   }
 

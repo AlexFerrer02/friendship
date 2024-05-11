@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:friendship/Class/consultas.dart';
 import 'package:friendship/Class/evento.dart';
-import 'package:friendship/Class/filtro.dart';
-import 'package:friendship/Widgets/eventoWidget.dart';
-import 'package:friendship/Widgets/listEventoBusqueda.dart';
-import 'package:friendship/Class/type.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 
 import '../Widgets/listEventos.dart';
@@ -34,10 +30,11 @@ class RecomendacionPage extends StatelessWidget {
                   const SizedBox(
                     height: 50,
                     child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.only(left: 20),
                         child: Text("De tus amigos",
                           style: TextStyle(
                             fontSize: 25,
+                            color: Color.fromRGBO(98, 69, 108, 1),
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Google Sans',
                           ),
@@ -49,7 +46,7 @@ class RecomendacionPage extends StatelessWidget {
                     future: Consultas().EventosAmigos(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       } else {
@@ -64,10 +61,11 @@ class RecomendacionPage extends StatelessWidget {
                   const SizedBox(
                     height: 50,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
+                      padding: EdgeInsets.only(left: 20),
                       child: Text("Recomendados",
                         style: TextStyle(
                           fontSize: 25,
+                          color: Color.fromRGBO(98, 69, 108, 1),
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Google Sans',
                         ),
@@ -79,7 +77,7 @@ class RecomendacionPage extends StatelessWidget {
                     future: Consultas().EventosRecomendados(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       } else {

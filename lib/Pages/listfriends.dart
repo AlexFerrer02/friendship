@@ -35,8 +35,8 @@ class _FriendListState extends State<FriendList> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Aviso"),
-            content: Text(
+            title: const Text("Aviso"),
+            content: const Text(
                 "¿Estás seguro de que quieres eliminar a este usuario de tus amigos?"),
             actions: [
               // Acción No
@@ -45,7 +45,7 @@ class _FriendListState extends State<FriendList> {
                   // Cerrar el AlertDialog
                   Navigator.of(context).pop();
                 },
-                child: Text("Cancelar"),
+                child: const Text("Cancelar"),
               ),
               // Acción Sí
               TextButton(
@@ -56,7 +56,7 @@ class _FriendListState extends State<FriendList> {
                         Home(indiceInicial: 2, isFriendGroup: false,)),
                   );
                 },
-                child: Text("Eliminar"),
+                child: const Text("Eliminar"),
               ),
             ],
           );
@@ -76,13 +76,13 @@ class _FriendListState extends State<FriendList> {
       future: _fetchDataFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
           return Column(
             children: [
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -97,7 +97,7 @@ class _FriendListState extends State<FriendList> {
                       children: [
                         Icon(
                           Icons.groups,
-                          color: grupos ? Color(0xFFECC8FD) : Colors.black,
+                          color: grupos ? const Color.fromRGBO(215, 146, 240, 1) : const Color.fromRGBO(98, 69, 108, 1),
                         ),
                       ],
                     ),
@@ -113,14 +113,14 @@ class _FriendListState extends State<FriendList> {
                       children: [
                         Icon(
                           Icons.group,
-                          color: amigos ? Color(0xFFECC8FD) : Colors.black,
+                          color: amigos ? const Color.fromRGBO(215, 146, 240, 1) : const Color.fromRGBO(98, 69, 108, 1),
                         ),
                       ],
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Expanded(
                 child: grupos
                     ? SingleChildScrollView(
@@ -128,28 +128,28 @@ class _FriendListState extends State<FriendList> {
                   child: Column(
                     children: [
                       ListGroupsWidget(groups: eventos),
-                      SizedBox(height: 20,),
+                      const SizedBox(height: 20,),
                       ElevatedButton(
                         onPressed: () {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: Text('Crear Grupo'),
+                                title: const Text('Crear Grupo'),
                                 content: SingleChildScrollView(
                                   child: Column(
                                     children: [
                                       TextFormField(
                                         maxLength: 20,
                                         controller: _titleController,
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                           labelText: 'Título del Grupo',
                                         ),
                                       ),
                                       TextFormField(
                                         maxLines: 5,
                                         controller: _descriptionController,
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                           labelText: 'Descripción del Grupo',
                                         ),
                                       ),
@@ -173,22 +173,22 @@ class _FriendListState extends State<FriendList> {
                                         ),
                                       );
                                     },
-                                    child: Text('Crear Grupo'),
+                                    child: const Text('Crear Grupo'),
                                   ),
                                   ElevatedButton(
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
-                                    child: Text('Cerrar'),
+                                    child: const Text('Cerrar'),
                                   ),
                                 ],
                               );
                             },
                           );
                         },
-                        child: Text("Crear Grupo"),
+                        child: const Text("Crear Grupo"),
                       ),
-                      SizedBox(height: 10,),
+                      const SizedBox(height: 10,),
                     ],
                   ),
                 )
@@ -200,7 +200,7 @@ class _FriendListState extends State<FriendList> {
                     children: [
                       for (Users.User user in users)
                         Container(
-                          margin: EdgeInsets.only(left: 20, right: 10),
+                          margin: const EdgeInsets.only(left: 20, right: 10),
                           decoration: BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
@@ -214,24 +214,24 @@ class _FriendListState extends State<FriendList> {
                             children: [
                               CircleAvatar(
                                 maxRadius: 15,
-                                backgroundColor: Color(0xFF032A64),
+                                backgroundColor: const Color(0xFF032A64),
                                 child: Text(
                                   user.username.substring(0, 1).toUpperCase(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.white,
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 12),
+                              const SizedBox(width: 12),
                               Expanded(
                                 child: Text(
                                   user.username,
                                   textAlign: TextAlign.center,
                                 ),
                               ),
-                              SizedBox(width: 12),
+                              const SizedBox(width: 12),
                               IconButton(
-                                icon: Icon(Icons.delete, color: Color(0xFFC62828)),
+                                icon: const Icon(Icons.delete, color: Color(0xFFC62828)),
                                 onPressed: () {
                                   showAlertDialog(context, user.username);
                                 },

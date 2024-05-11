@@ -13,7 +13,7 @@ class _SearchState extends State<Search> {
   TextEditingController _searchController = TextEditingController();
   String busqueda ="";
 
-  Widget resultado = Center(child: RecomendacionPage(),);
+  Widget resultado = const Center(child: RecomendacionPage(),);
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,7 +33,7 @@ class _SearchState extends State<Search> {
                     child: TextField(
                       controller: _searchController,
                       onSubmitted: onSearchSubmitted,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: InputBorder.none, // Sin borde para el TextField
                         labelText: 'Buscar plan',
                         hintText: 'Nombre del plan',
@@ -41,7 +41,7 @@ class _SearchState extends State<Search> {
                     ),
                   ),
                 ),
-                Padding(
+                const Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Icon(
                     Icons.search,
@@ -70,7 +70,7 @@ class _SearchState extends State<Search> {
     else{
       setState(() {
         busqueda ="";
-        resultado = Center(child: RecomendacionPage(),);
+        resultado = const Center(child: RecomendacionPage(),);
       });
     }
   }

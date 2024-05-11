@@ -13,7 +13,7 @@ class ListGroupsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       itemCount: groups.length,
       itemBuilder: (context, index) {

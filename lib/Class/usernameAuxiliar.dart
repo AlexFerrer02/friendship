@@ -59,7 +59,7 @@ class UserData {
         gustos.add(gusto);
       }
     }
-    usuarioLog = new usuario.User(usernameAux, email!, telefonoAux, eventosAux, gustos);
+    usuarioLog = usuario.User(usernameAux, email!, telefonoAux, eventosAux, gustos);
     //print(usuarioLog!.username + "evento");
     }
   }

@@ -6,7 +6,7 @@ class AppBarProvider extends ChangeNotifier {
   AppBarProvider() {
     // Asigna un valor predeterminado la primera vez que se inicia
     _appBar = AppBar(title:
-      Text("Eventos"),
+    const Text("Eventos"),
         centerTitle: true,
         flexibleSpace: Container(
         decoration: BoxDecoration(

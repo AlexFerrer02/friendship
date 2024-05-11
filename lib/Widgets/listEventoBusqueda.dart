@@ -11,7 +11,7 @@ class ListEventosBusqueda extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(eventos.isEmpty){return Center(child:Text("Ninguna coincidencia"));}
+    if(eventos.isEmpty){return const Center(child:Text("Ninguna coincidencia"));}
     else{return SizedBox(
       width: 500,
       child: ListView.builder(

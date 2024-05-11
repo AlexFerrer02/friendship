@@ -49,15 +49,15 @@ class CrearEventoGrupoState extends State<CrearEventoGrupo> {
             },
           ),
           home: Scaffold(
-              appBar: AppBar(title: Text("Crear Evento"), centerTitle: true,
+              appBar: AppBar(title: const Text("Crear Evento"), centerTitle: true,
                 leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back),
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => Home(indiceInicial: 2,isFriendGroup: false,)),
                     );
                     provider.Provider.of<AppBarProvider>(context, listen: false).updateAppBar(
-                      AppBar(title: Text("Grupos de amigos"), centerTitle: true,
+                      AppBar(title: const Text("Grupos de amigos"), centerTitle: true,
                         flexibleSpace: Container(
                           decoration: BoxDecoration(
                             border: Border(
@@ -83,7 +83,7 @@ class CrearEventoGrupoState extends State<CrearEventoGrupo> {
                   ),
                 ),
               ),
-              body: createEvent(isFriendGroup: true),
+              body: const createEvent(isFriendGroup: true),
         ),
       ),
     );

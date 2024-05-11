@@ -90,7 +90,7 @@ class _createEventState extends State<createEvent> {
                 Navigator.of(context).pop();
                 if(titulo == 'Evento añadido'){
                   provider.Provider.of<AppBarProvider>(context, listen: false).updateAppBar(
-                    AppBar(title: Text("Eventos"), centerTitle: true,
+                    AppBar(title: const Text("Eventos"), centerTitle: true,
                       flexibleSpace: Container(
                         decoration: BoxDecoration(
                           border: Border(
@@ -108,7 +108,7 @@ class _createEventState extends State<createEvent> {
                   );
                 }
               },
-              child: Text('Cerrar'),
+              child: const Text('Cerrar'),
             ),
           ],
         );
@@ -155,16 +155,16 @@ class _createEventState extends State<createEvent> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               Column(
                 children: [
-                  Text("Nombre del evento",
-                      style: TextStyle(fontSize: 20.0)
+                  const Text("Nombre del evento",
+                      style: TextStyle(fontSize: 20.0, color: Color.fromRGBO(98, 69, 108, 1))
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: TextFormField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         contentPadding: EdgeInsets.symmetric(horizontal: 10.0), // O ajusta según sea necesario
                       ),
                       maxLength: 20,
@@ -176,13 +176,13 @@ class _createEventState extends State<createEvent> {
                       },
                     ),
                   ),
-                  Text("Descripción del evento",
-                      style: TextStyle(fontSize: 20.0)
+                  const Text("Descripción del evento",
+                      style: TextStyle(fontSize: 20.0, color: Color.fromRGBO(98, 69, 108, 1))
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: TextFormField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         contentPadding: EdgeInsets.symmetric(horizontal: 10.0), // O ajusta según sea necesario
                       ),
                       onChanged: (text){
@@ -195,15 +195,15 @@ class _createEventState extends State<createEvent> {
                   ),
                 ],
               ),
-              SizedBox(height: 20.0),
-              Text("Fecha y hora del evento",
-                  style: TextStyle(fontSize: 20.0)
+              const SizedBox(height: 20.0),
+              const Text("Fecha y hora del evento",
+                  style: TextStyle(fontSize: 20.0, color: Color.fromRGBO(98, 69, 108, 1))
               ),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                   children:[
-                    SizedBox(width: 10,),
+                    const SizedBox(width: 10,),
                     GestureDetector(
                       onTap: () async {
                         final DateTime? escogida = await showDatePicker(
@@ -225,12 +225,12 @@ class _createEventState extends State<createEvent> {
                             height: 50,
                             padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
                             decoration: ShapeDecoration(
-                              color: Color(0xFFECC8FD),
+                              color: const Color(0xFFECC8FD),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(31),
                               ),
                             ),
-                            child: Column(
+                            child: const Column(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -239,21 +239,21 @@ class _createEventState extends State<createEvent> {
                               ],
                             ),
                           ),
-                          SizedBox(width: 10.0),
+                          const SizedBox(width: 10.0),
                           Text(
                             textoNoEditable,
-                            style: TextStyle(fontSize: 20.0),
+                            style: const TextStyle(fontSize: 20.0, color: Color.fromRGBO(98, 69, 108, 1)),
                           ),
                         ],
                       ),
                     ),
                   ]
               ),
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
               Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children:[
-                    SizedBox(width: 10,),
+                    const SizedBox(width: 10,),
                     GestureDetector(
                       onTap: () async {
                         horaInicial = await showTimePicker(
@@ -270,12 +270,12 @@ class _createEventState extends State<createEvent> {
                             height: 50,
                             padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
                             decoration: ShapeDecoration(
-                              color: Color(0xFFECC8FD),
+                              color: const Color(0xFFECC8FD),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(31),
                               ),
                             ),
-                            child: Column(
+                            child: const Column(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -284,15 +284,15 @@ class _createEventState extends State<createEvent> {
                               ],
                             ),
                           ),
-                          SizedBox(width: 10.0),
+                          const SizedBox(width: 10.0),
                           Text(
-                            'Inicio: ' + textoHoraInicio,
-                            style: TextStyle(fontSize: 20.0),
+                            'Inicio: $textoHoraInicio',
+                            style: const TextStyle(fontSize: 20.0, color: Color.fromRGBO(98, 69, 108, 1)),
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(width: 20.0),
+                    const SizedBox(width: 20.0),
                     GestureDetector(
                       onTap: () async {
                         horaFinal = await showTimePicker(
@@ -309,12 +309,12 @@ class _createEventState extends State<createEvent> {
                             height: 50,
                             padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
                             decoration: ShapeDecoration(
-                              color: Color(0xFFECC8FD),
+                              color: const Color(0xFFECC8FD),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(31),
                               ),
                             ),
-                            child: Column(
+                            child: const Column(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -323,28 +323,28 @@ class _createEventState extends State<createEvent> {
                               ],
                             ),
                           ),
-                          SizedBox(width: 10.0),
+                          const SizedBox(width: 10.0),
                           Text(
-                            'Fin: ' + textoHoraFin,
-                            style: TextStyle(fontSize: 20.0),
+                            'Fin: $textoHoraFin',
+                            style: const TextStyle(fontSize: 20.0, color: Color.fromRGBO(98, 69, 108, 1)),
                           ),
                         ],
                       ),
                     ),
                   ]
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: DropdownButtonFormField<String>(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Seleccionar Lugar del Evento',
                     contentPadding: EdgeInsets.symmetric(horizontal: 10.0), // O ajusta según sea necesario
                   ),
                     items: listaLugar.map((e){
                       return DropdownMenuItem(
-                          child: Text(e),
-                          value: e
+                          value: e,
+                          child: Text(e)
                       );
                     }).toList(),
                     onChanged: (text){
@@ -353,18 +353,18 @@ class _createEventState extends State<createEvent> {
                     }
                 ),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Seleccionar Tipo de Evento',
                       contentPadding: EdgeInsets.symmetric(horizontal: 10.0), // O ajusta según sea necesario
                     ),
                     items: listaTipoEvento.map((e){
                       return DropdownMenuItem(
-                          child: Text(e),
-                          value: e
+                          value: e,
+                          child: Text(e)
                       );
                     }).toList(),
                     onChanged: (text){
@@ -373,9 +373,9 @@ class _createEventState extends State<createEvent> {
                     }
                 ),
               ),
-              SizedBox(height: 10.0),
-              Text("Seleccionar filtros",
-                  style: TextStyle(fontSize: 20.0)
+              const SizedBox(height: 10.0),
+              const Text("Seleccionar filtros",
+                  style: TextStyle(fontSize: 20.0, color: Color.fromRGBO(98, 69, 108, 1))
               ),
               Center(
                 child: Row(
@@ -483,11 +483,11 @@ class _createEventState extends State<createEvent> {
         toggleImageSelection(imagePath);
       },
       child: Container(
-        margin: EdgeInsets.all(8),
-        padding: EdgeInsets.all(8),
+        margin: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue : Colors.transparent,
-          borderRadius: BorderRadius.circular(8),
+          color: isSelected ? const Color.fromRGBO(215, 146, 240, 1) : Colors.transparent,
+          borderRadius: BorderRadius.circular(15),
         ),
         child: Image.network(
           imagePath,

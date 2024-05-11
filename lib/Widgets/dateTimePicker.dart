@@ -51,7 +51,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
         ),
         Text(
           'Fecha y Hora seleccionadas: $_selectedDateTime',
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
         ),
       ],
     );

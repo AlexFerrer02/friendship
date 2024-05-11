@@ -27,7 +27,7 @@ class _CalendarioState extends State<Calendario> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
-  LinkedHashMap<DateTime, List<Event>> _eventosPorFecha = LinkedHashMap(
+  final LinkedHashMap<DateTime, List<Event>> _eventosPorFecha = LinkedHashMap(
     equals: isSameDay,
     hashCode: getHashCode,
   );
@@ -163,7 +163,7 @@ class _CalendarioState extends State<Calendario> {
       future: _fetchDataFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else {
@@ -180,7 +180,7 @@ class _CalendarioState extends State<Calendario> {
                       return Center(
                         child: Text(
                           text,
-                          style: TextStyle(color: Colors.red),
+                          style: const TextStyle(color: Colors.red),
                         ),
                       );
                     }
@@ -197,18 +197,18 @@ class _CalendarioState extends State<Calendario> {
                 calendarStyle: CalendarStyle(
                   // Use `CalendarStyle` to customize the UI
                   outsideDaysVisible: false,
-                  markerDecoration: BoxDecoration(color: Color.fromRGBO(98, 69, 108, 1), shape: BoxShape.circle),
-                  todayDecoration: BoxDecoration(
+                  markerDecoration: const BoxDecoration(color: Color.fromRGBO(98, 69, 108, 1), shape: BoxShape.circle),
+                  todayDecoration: const BoxDecoration(
                       color: Color.fromRGBO(136, 93, 152, 1),
                       shape: BoxShape.circle
                   ),
                   selectedDecoration: BoxDecoration(
-                    color: Color.fromRGBO(215, 146, 240, 1),
+                    color: const Color.fromRGBO(215, 146, 240, 1),
                     shape: BoxShape.circle,
-                    border: Border.all(color: Color.fromRGBO(178, 122, 199, 1))
+                    border: Border.all(color: const Color.fromRGBO(178, 122, 199, 1))
                   ),
-                  weekNumberTextStyle:TextStyle(color: Colors.red),
-                  weekendTextStyle:TextStyle(color: Colors.red),
+                  weekNumberTextStyle:const TextStyle(color: Colors.red),
+                  weekendTextStyle:const TextStyle(color: Colors.red),
                 ),
                 onDaySelected: _onDaySelected,
                 onRangeSelected: _onRangeSelected,
@@ -223,28 +223,35 @@ class _CalendarioState extends State<Calendario> {
                   _focusedDay = focusedDay;
                 },
               ),
-              GestureDetector(
-                onTap: () async {
-                  await Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => Home(indiceInicial: 0,isFriendGroup: false,)),
-                  );
-                  Navigator.of(context).pop();
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    border: Border.all(color: Color.fromRGBO(109, 77, 121, 1)),
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Hoy',
-                    style: TextStyle(
-                      color: Color.fromRGBO(109, 77, 121, 1),
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
+              Padding(
+                padding: const EdgeInsets.only(right: 12.0),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () async {
+                      await Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => Home(indiceInicial: 0,isFriendGroup: false,)),
+                      );
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 5,
+                      decoration: BoxDecoration(
+                        color: Color.fromRGBO(215, 146, 240, 1),
+                        border: Border.all(color: const Color.fromRGBO(109, 77, 121, 1)),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text(
+                        'Hoy',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
@@ -272,7 +279,7 @@ class _CalendarioState extends State<Calendario> {
                               vertical: 4.0,
                             ),
                             decoration: BoxDecoration(
-                              border: Border.all(color: Color.fromRGBO(109, 77, 121, 1)),
+                              border: Border.all(color: const Color.fromRGBO(109, 77, 121, 1)),
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: Row(
@@ -280,17 +287,17 @@ class _CalendarioState extends State<Calendario> {
                                 Expanded(
                                   flex: 3,
                                   child: Container(
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Colors.transparent,
                                       borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10.0),
                                         bottomLeft: Radius.circular(10.0),
                                       ),
                                     ),
-                                    padding: EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Text(
                                       value[index].title,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Color.fromRGBO(109, 77, 121, 1),
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.bold,
@@ -302,17 +309,17 @@ class _CalendarioState extends State<Calendario> {
                                 Expanded(
                                   flex: 1,
                                   child: Container(
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Color.fromRGBO(215, 146, 240, 1),
                                       borderRadius: BorderRadius.only(
                                         topRight: Radius.circular(11.0),
                                         bottomRight: Radius.circular(11.0),
                                       ),
                                     ),
-                                    padding: EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Text(
                                       value[index].hora,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.bold,

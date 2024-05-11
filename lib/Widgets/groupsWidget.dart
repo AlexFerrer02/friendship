@@ -17,14 +17,14 @@ class GroupsWidget extends StatelessWidget {
       avatars.add(
         Row(
           children: [
-            SizedBox(width: 5,),
+            const SizedBox(width: 5,),
             Center(
                 child: CircleAvatar(
                   maxRadius: 15,
-                  backgroundColor: Color(0xFF032A64),
+                  backgroundColor: const Color(0xFF032A64),
                   child: Text(
                     initials,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                     ),
                   ),
@@ -44,7 +44,7 @@ class GroupsWidget extends StatelessWidget {
         width: 350,
         height: 403,
         decoration: BoxDecoration(
-          color: Color(0xFF5094F9),
+          color: const Color(0xFF5094F9),
           borderRadius: BorderRadius.circular(25),
         ),
         child: GestureDetector(
@@ -76,9 +76,6 @@ class GroupsWidget extends StatelessWidget {
               Positioned(
                 bottom: 0,
                 child: Container(
-                  child: Row(
-                    children: _buildAvatars(),
-                  ),
                   width: 350,
                   height: 53,
                   alignment: Alignment.bottomCenter,
@@ -88,6 +85,9 @@ class GroupsWidget extends StatelessWidget {
                       bottomLeft: Radius.circular(25),
                       bottomRight: Radius.circular(25),
                     ),
+                  ),
+                  child: Row(
+                    children: _buildAvatars(),
                   ),
                 ),
               ),

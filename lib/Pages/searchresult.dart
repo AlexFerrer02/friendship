@@ -17,7 +17,8 @@ class SearchResultsPage extends StatelessWidget {
       future: Consultas().BuscarEventos(nombreEvento: searchTerm),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          TextEditingController _searchController = TextEditingController();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {

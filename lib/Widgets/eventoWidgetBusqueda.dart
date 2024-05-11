@@ -16,10 +16,10 @@ class EventoBusquedaWidget extends StatelessWidget {
     const double width = 200;
     final Random random = Random();
     final List<Color> colores = [
-      Color(0xFFD287F6),
-      Color(0xFF84CEEB),
-      Color(0xFFFFB347),
-      Color(0xFF20BD8E),
+      const Color(0xFFD287F6),
+      //Color(0xFF84CEEB),
+      //Color(0xFFFFB347),
+      //Color(0xFF20BD8E),
     ];
 
     Color getColor() {
@@ -28,7 +28,7 @@ class EventoBusquedaWidget extends StatelessWidget {
     Color colorSeleccionado = getColor();
     return GestureDetector(
         onLongPress: () {},
-        child: Container(
+        child: SizedBox(
           width: width,
           height: (width),
           child: Card(
@@ -49,30 +49,27 @@ class EventoBusquedaWidget extends StatelessWidget {
                     softWrap: true,
                   ),
                 ),
-                Container(
-                  //color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Row(children: <Widget>[
-                        FiltroWidget(filtro: Filtro(1,evento.filtros.isNotEmpty ? evento.filtros[0] : "")),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        FiltroWidget(filtro: Filtro(2,evento.filtros.length > 1 ? evento.filtros[1] : ""))
-                      ]),
-                      Container(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: IconButton(
-                            style: const ButtonStyle(
-                              backgroundColor:
-                              MaterialStatePropertyAll(Colors.black12),
-                            ),
-                            onPressed: () => {},
-                            icon: const Center(child: Icon(Icons.share_rounded)),
-                          )),
-                    ],
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Row(children: <Widget>[
+                      FiltroWidget(filtro: Filtro(1,evento.filtros.isNotEmpty ? evento.filtros[0] : "")),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      FiltroWidget(filtro: Filtro(2,evento.filtros.length > 1 ? evento.filtros[1] : ""))
+                    ]),
+                    Container(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: IconButton(
+                          style: const ButtonStyle(
+                            backgroundColor:
+                            MaterialStatePropertyAll(Colors.black12),
+                          ),
+                          onPressed: () => {},
+                          icon: const Center(child: Icon(Icons.share_rounded)),
+                        )),
+                  ],
                 )
               ],
             ),

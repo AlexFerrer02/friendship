@@ -23,6 +23,7 @@ class PlanesState extends State<Planes> {
           height: 50,
           child: Text("Según tus gustos",  style: TextStyle(
             fontSize: 25,
+            color: Color.fromRGBO(98, 69, 108, 1),
             fontWeight: FontWeight.bold,
           ),
           ),
@@ -31,7 +32,7 @@ class PlanesState extends State<Planes> {
           future: Consultas().EventosGustos(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Column(
+              return const Column(
 
                   children:[SizedBox(height: 58,),CircularProgressIndicator(),SizedBox(height: 55,)]);
             } else if (snapshot.hasError) {
@@ -49,6 +50,7 @@ class PlanesState extends State<Planes> {
           height: 50,
           child: Text("Pendientes",  style: TextStyle(
             fontSize: 25,
+            color: Color.fromRGBO(98, 69, 108, 1),
             fontWeight: FontWeight.bold,
             ),
           ),
@@ -57,7 +59,7 @@ class PlanesState extends State<Planes> {
           future: Consultas().EventosPropios(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child:CircularProgressIndicator());
+              return const Center(child:CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {

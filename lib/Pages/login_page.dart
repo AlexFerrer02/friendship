@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
     if(cerrarSesion){
       cerrarSesion=false;
       supabase.auth.signOut();
-      sleep(Duration(seconds: 1));
+      sleep(const Duration(seconds: 1));
     }
     widget.supabase.auth.onAuthStateChange.listen((data) async {
       if (_isRedirecting) return;
@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  TextStyle commonTextStyle = TextStyle(
+  TextStyle commonTextStyle = const TextStyle(
     color: Color(0xFF555555),
     fontSize: 12,
     fontFamily: 'Google Sans',
@@ -113,13 +113,13 @@ class _LoginPageState extends State<LoginPage> {
                 height: 230,
                 width: 230,
                 ),
-                  SizedBox(
+                  const SizedBox(
                     width: 255,
                     child: Text(
                       '¡Bienvenido a Friend.ship!',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Color.fromRGBO(98, 69, 108, 1),
                         fontSize: 36,
                         fontFamily: 'Google Sans',
                         fontWeight: FontWeight.w700,
@@ -130,29 +130,29 @@ class _LoginPageState extends State<LoginPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 35.0), // Ajusta el valor según sea necesario
+                      const Padding(
+                        padding: EdgeInsets.only(left: 35.0), // Ajusta el valor según sea necesario
                         child: Text(
                           'Correo electrónico',
                           textAlign: TextAlign.left,
-                          style: commonTextStyle,
+                          style: TextStyle(color: Color.fromRGBO(98, 69, 108, 1)),
                         ),
                       ),
-                      const SizedBox(height: 10,),
+                      const SizedBox(height: 2,),
                       MyTextField(
                         controller: usernameController,
                         hintText: 'username@correo.es',
                         obscureText: false,
                       ),
                       const SizedBox(height: 20,),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 35.0), // Ajusta el valor según sea necesario
+                      const Padding(
+                        padding: EdgeInsets.only(left: 35.0), // Ajusta el valor según sea necesario
                         child: Text(
                           'Contraseña',
-                          style: commonTextStyle,
+                          style: TextStyle(color: Color.fromRGBO(98, 69, 108, 1)),
                         ),
                       ),
-                      const SizedBox(height: 10,),
+                      const SizedBox(height: 2,),
                       MyTextField(
                         controller: passwordController,
                         hintText: '********',
@@ -173,12 +173,12 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 34, vertical: 17),
                       clipBehavior: Clip.antiAlias,
                       decoration: ShapeDecoration(
-                        color: Color(0xFFD287F6),
+                        color: const Color(0xFFD287F6),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(71),
                         ),
                       ),
-                      child: Center(
+                      child: const Center(
                         child:
                           Text(
                             'Iniciar Sesión',
@@ -226,7 +226,7 @@ class _LoginPageState extends State<LoginPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Nuevo Usuario?'),
+                      const Text('Nuevo Usuario?'),
                       const SizedBox(width: 4),
                       GestureDetector(
                         onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) =>  Registro_ampl(supabase: widget.supabase)));},

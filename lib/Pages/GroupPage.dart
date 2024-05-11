@@ -58,7 +58,7 @@ class GroupPageState extends State<GroupPage> {
             backgroundColor: Color(0xFF032A64),
             child: Text(
               initials,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
               ),
             ),
@@ -75,14 +75,14 @@ class GroupPageState extends State<GroupPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Eliminar'),
-          content: Text('¿Estás seguro de que quieres eliminar el grupo?'),
+          title: const Text('Eliminar'),
+          content: const Text('¿Estás seguro de que quieres eliminar el grupo?'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Cerrar el diálogo
               },
-              child: Text('Cancelar'),
+              child: const Text('Cancelar'),
             ),
             TextButton(
               onPressed: () async {
@@ -91,7 +91,7 @@ class GroupPageState extends State<GroupPage> {
                   MaterialPageRoute(builder: (context) => Home(indiceInicial: 2,isFriendGroup: false,)),
                 );
               },
-              child: Text('Eliminar'),
+              child: const Text('Eliminar'),
             ),
           ],
         );
@@ -104,14 +104,14 @@ class GroupPageState extends State<GroupPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Aviso'),
-          content: Text('No eres el creador de este grupo, no puedes eliminarlo.'),
+          title: const Text('Aviso'),
+          content: const Text('No eres el creador de este grupo, no puedes eliminarlo.'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Cierra el diálogo
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -142,31 +142,31 @@ class GroupPageState extends State<GroupPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Lista de Amigos'),
+          title: const Text('Lista de Amigos'),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 for (Users.User user in users)
                   Container(
-                    margin: EdgeInsets.only(bottom: 15.0),
+                    margin: const EdgeInsets.only(bottom: 15.0),
                     child: Row(
                       children: [
                         CircleAvatar(
                           maxRadius: 15,
-                          backgroundColor: Color(0xFF032A64),
+                          backgroundColor: const Color(0xFF032A64),
                           child: Text(
                             user.username.substring(0, 1),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                             ),
                           ),
                         ),
-                        SizedBox(width: 12),
+                        const SizedBox(width: 12),
                         Text(user.username),
-                        SizedBox(width: 80,),
+                        const SizedBox(width: 80,),
                         IconButton(
-                          icon: Icon(Icons.add, color: Colors.blue,),
+                          icon: const Icon(Icons.add, color: Colors.blue,),
                           onPressed: () async {
                             int id = await widget.group.ObtenerId();
                             await Consultas().addAmigoAGrupoAmigos(id, user);
@@ -176,7 +176,7 @@ class GroupPageState extends State<GroupPage> {
                           },
                         ),
                         IconButton(
-                          icon: Icon(Icons.delete, color: Color(0xFFC62828),),
+                          icon: const Icon(Icons.delete, color: Color(0xFFC62828),),
                           onPressed: () async {
                             int id = await widget.group.ObtenerId();
                             await Consultas().rmAmigoDeGrupoAmigos(id, user);
@@ -196,7 +196,7 @@ class GroupPageState extends State<GroupPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cerrar'),
+              child: const Text('Cerrar'),
             ),
           ],
         );
@@ -210,14 +210,14 @@ class GroupPageState extends State<GroupPage> {
         future: _fetchDataFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
             return Scaffold(
               appBar: AppBar(
                 leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back),
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) =>
@@ -227,7 +227,7 @@ class GroupPageState extends State<GroupPage> {
                 ),
                 actions: [
                   IconButton(
-                    icon: Icon(Icons.delete, color: Color(0xFFC62828),),
+                    icon: const Icon(Icons.delete, color: Color(0xFFC62828),),
                     onPressed: () {
                       print(widget.group.id);
                       if (widget.group.creador.username ==
@@ -242,10 +242,10 @@ class GroupPageState extends State<GroupPage> {
               ),
               backgroundColor: Color(0xFFE7DBF7),
               body: SingleChildScrollView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 child: Column(
                   children: [
-                    Container(
+                    SizedBox(
                       height: MediaQuery
                           .of(context)
                           .size
@@ -260,7 +260,7 @@ class GroupPageState extends State<GroupPage> {
                     ),
                     Stack(
                       children: [
-                        Container(
+                        SizedBox(
                           height: MediaQuery
                               .of(context)
                               .size
@@ -329,7 +329,7 @@ class GroupPageState extends State<GroupPage> {
                                           )),
                                       Container(
                                         alignment: Alignment.centerRight,
-                                        margin: EdgeInsets.only(top: 7),
+                                        margin: const EdgeInsets.only(top: 7),
                                         child: ElevatedButton(
                                           onPressed: () async {
                                             List<Users.User> users =
@@ -356,7 +356,7 @@ class GroupPageState extends State<GroupPage> {
                                           )),
                                       Container(
                                         alignment: Alignment.centerRight,
-                                        margin: EdgeInsets.only(top: 7),
+                                        margin: const EdgeInsets.only(top: 7),
                                         child: ElevatedButton(
                                           onPressed: () async {
                                             provider.Provider.of<
@@ -364,10 +364,10 @@ class GroupPageState extends State<GroupPage> {
                                                 context, listen: false)
                                                 .updateAppBar(
                                               AppBar(
-                                                title: Text("Crear Evento"),
+                                                title: const Text("Crear Evento"),
                                                 centerTitle: true,
                                                 leading: IconButton(
-                                                  icon: Icon(
+                                                  icon: const Icon(
                                                       Icons.arrow_back),
                                                   onPressed: () {
                                                     UserData.idGrupoAmigos =
@@ -429,7 +429,7 @@ class GroupPageState extends State<GroupPage> {
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
-                                      return CircularProgressIndicator();
+                                      return const CircularProgressIndicator();
                                     } else if (snapshot.hasError) {
                                       return Text('Error: ${snapshot.error}');
                                     } else {

@@ -51,7 +51,7 @@ class _PerfilState extends State<Perfil> {
   void _copyToClipboard(BuildContext context, String text) {
     Clipboard.setData(ClipboardData(text: text));
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text('Texto copiado al portapapeles'),
       ),
     );
@@ -80,12 +80,12 @@ class _PerfilState extends State<Perfil> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Cambiar Avatar'),
+          title: const Text('Cambiar Avatar'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: Text('Astronauta'),
+                title: const Text('Astronauta'),
                 onTap: () {
                   cambiarAvatar(
                     'https://peaoifidogwgoxzrpjft.supabase.co/storage/v1/object/public/avatares/monigote.png?t=2023-12-10T18%3A51%3A09.428Z',
@@ -94,7 +94,7 @@ class _PerfilState extends State<Perfil> {
                 },
               ),
               ListTile(
-                title: Text('Astronauta con gorro'),
+                title: const Text('Astronauta con gorro'),
                 onTap: () {
                   cambiarAvatar(
                       "https://peaoifidogwgoxzrpjft.supabase.co/storage/v1/object/public/avatares/ASTRONAUTAGORRO%201.png");
@@ -125,14 +125,14 @@ class _PerfilState extends State<Perfil> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Aviso'),
+          title: const Text('Aviso'),
           content: Text(text),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Cierra el diálogo
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -151,14 +151,14 @@ class _PerfilState extends State<Perfil> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Aviso'),
+          title: const Text('Aviso'),
           content: Text(text),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Cierra el diálogo
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -171,34 +171,15 @@ class _PerfilState extends State<Perfil> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Configuraciones'),
+          title: const Text('Configuraciones'),
           content: SingleChildScrollView(
             child: ListBody(
               children: [
-                // Contenido de la ventana emergente (ajustes, idioma, notificaciones, etc.)
-
                 ListTile(
-                  title: Text('Notificaciones'),
-                  subtitle: Text('Activar/desactivar notificaciones'),
-                  trailing: Checkbox(
-                    value: notificationEnabled,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        notificationEnabled = !notificationEnabled;
-                        Navigator.pop(context);
-                        // Aquí puedes incluir la lógica para activar o desactivar las notificaciones
-                        // Por ejemplo, invocar métodos del plugin de notificaciones
-                        // Para simplicidad, aquí solo se actualiza el estado de la casilla
-                      });
-                    },
-
-                  ),
-                ),
-                ListTile(
-                  title: Text('Cerrar sesión'),
+                  title: const Text('Cerrar sesión'),
                   onTap: () async {
                     try {
-                      LoginPage loginPageInstance = new LoginPage(supabase: supabase);
+                      LoginPage loginPageInstance = LoginPage(supabase: supabase);
                       loginPageInstance.setCerrarSesion();
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (context) => loginPageInstance),
@@ -229,7 +210,7 @@ class _PerfilState extends State<Perfil> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Perfil"),
+        title: const Text("Perfil"),
         centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -243,7 +224,7 @@ class _PerfilState extends State<Perfil> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: const Icon(Icons.settings),
             onPressed: () {
               mostrarOpciones(); // Mostrar el diálogo de configuración
             },
@@ -251,13 +232,13 @@ class _PerfilState extends State<Perfil> {
         ],
       ),
       body: Container(
-        color: Color(0xFFECC8FD),
+        color: const Color(0xFFECC8FD),
         child: Column(
           children: [
             Expanded(
               // Mitad superior con el avatar centrado
               child: Container(
-                color: Color(0xFFECC8FD),
+                color: const Color(0xFFECC8FD),
                 child: Stack(
                   children: [
                     Center(
@@ -276,7 +257,7 @@ class _PerfilState extends State<Perfil> {
                       top: 8.0,
                       right: 8.0,
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: Color(0xFFECC8FD),
                         ),
@@ -284,8 +265,8 @@ class _PerfilState extends State<Perfil> {
                           onPressed: () {
                             mostrarOpcionesDeAvatar();
                           },
-                          icon: Icon(Icons.edit),
-                          color: Color.fromRGBO(83, 6, 119, 1),
+                          icon: const Icon(Icons.edit),
+                          color: const Color.fromRGBO(83, 6, 119, 1),
                         ),
                       ),
                     ),
@@ -293,7 +274,7 @@ class _PerfilState extends State<Perfil> {
                       top: 50.0,
                       right: 8.0,
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: Color(0xFFECC8FD),
                         ),
@@ -303,8 +284,8 @@ class _PerfilState extends State<Perfil> {
                               MaterialPageRoute(builder: (context) => Gustos_pag()),
                             );
                           },
-                          icon: Icon(Icons.add_reaction_outlined),
-                          color: Color.fromRGBO(83, 6, 119, 1),
+                          icon: const Icon(Icons.add_reaction_outlined),
+                          color: const Color.fromRGBO(83, 6, 119, 1),
                         ),
                       ),
                     )
@@ -323,15 +304,15 @@ class _PerfilState extends State<Perfil> {
               ),
                    child: Column(
                       children: [
-                        SizedBox(height: 25),
+                        const SizedBox(height: 25),
                         Align(
                           alignment: Alignment.topLeft,
                           child: Padding(
                             padding: const EdgeInsets.all(14),
                             child: Text(
                               UserData.usuarioLog!.username,
-                              style: TextStyle(
-                                color: Colors.black,
+                              style: const TextStyle(
+                                color: Color.fromRGBO(98, 69, 108, 1),
                                 fontSize: 32,
                                 fontFamily: 'Google Sans',
                                 fontWeight: FontWeight.w700,
@@ -340,7 +321,7 @@ class _PerfilState extends State<Perfil> {
                           ),
                         ),
                         ),
-            SizedBox(height: 20),
+                        const SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -356,13 +337,13 @@ class _PerfilState extends State<Perfil> {
                     children: [
                       Icon(
                           Icons.emoji_events,
-                          color: verTrofeos ? Color(0xFFECC8FD) : Colors.black
+                          color: verTrofeos ? const Color.fromRGBO(215, 146, 240, 1) : const Color.fromRGBO(98, 69, 108, 1)
                       ), // Cambia por el icono deseado
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
                           'Trofeos',
                         style: TextStyle(
-                          color: verTrofeos ? Color(0xFFECC8FD) : Colors.black,
+                          color: verTrofeos ? const Color.fromRGBO(215, 146, 240, 1) : const Color.fromRGBO(98, 69, 108, 1),
                         ),), // Texto para el botón
                     ],
                   ),
@@ -379,13 +360,13 @@ class _PerfilState extends State<Perfil> {
                     children: [
                       Icon(
                           Icons.contact_mail_rounded,
-                          color: mostrarEnlace ? Color(0xFFECC8FD) : Colors.black
+                          color: mostrarEnlace ? const Color.fromRGBO(215, 146, 240, 1) : const Color.fromRGBO(98, 69, 108, 1)
                       ), // Cambia por el icono deseado
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
                           'Buscar amigo',
                           style: TextStyle(
-                            color: mostrarEnlace ? Color(0xFFECC8FD) : Colors.black,
+                            color: mostrarEnlace ? const Color.fromRGBO(215, 146, 240, 1) : const Color.fromRGBO(98, 69, 108, 1),
                           ),
                       ), // Texto para el botón
                     ],
@@ -404,20 +385,20 @@ class _PerfilState extends State<Perfil> {
                     children: [
                       Icon(
                           Icons.contacts_rounded,
-                          color: miCodigo ? Color(0xFFECC8FD) : Colors.black
+                          color: miCodigo ? const Color.fromRGBO(215, 146, 240, 1) : const Color.fromRGBO(98, 69, 108, 1)
                       ), // Cambia por el icono deseado
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
                         'Mi código',
                         style: TextStyle(
-                          color: miCodigo ? Color(0xFFECC8FD) : Colors.black,
+                          color: miCodigo ? const Color.fromRGBO(215, 146, 240, 1) : const Color.fromRGBO(98, 69, 108, 1),
                         ),), // Texto para el botón
                     ],
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 20),
+                        const SizedBox(height: 20),
             if (verTrofeos)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -431,8 +412,8 @@ class _PerfilState extends State<Perfil> {
                           height: 100,
                           width: 100,
                         ),
-                        SizedBox(height: 20),
-                        Text('1 evento'),
+                        const SizedBox(height: 20),
+                        const Text('1 evento', style: TextStyle(color: Color.fromRGBO(98, 69, 108, 1)),),
                       ],
                     ),
                   ),
@@ -445,8 +426,8 @@ class _PerfilState extends State<Perfil> {
                           height: 100,
                           width: 100,
                         ),
-                        SizedBox(height: 20),
-                        Text('25 eventos'),
+                        const SizedBox(height: 20),
+                        const Text('25 eventos', style: TextStyle(color: Color.fromRGBO(98, 69, 108, 1)),),
                       ],
                     ),
                   ),
@@ -459,8 +440,8 @@ class _PerfilState extends State<Perfil> {
                           height: 100,
                           width: 100,
                         ),
-                        SizedBox(height: 20),
-                        Text('50 eventos'),
+                        const SizedBox(height: 20),
+                        const Text('50 eventos', style: TextStyle(color: Color.fromRGBO(98, 69, 108, 1)),),
                       ],
                     ),
                   ),
@@ -472,23 +453,21 @@ class _PerfilState extends State<Perfil> {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SizedBox(height: 30,),
+                const SizedBox(height: 30,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      child: Text(
-                        miCodigoAmigo.toString(),
-                        style: TextStyle(
+                    Text(
+                      miCodigoAmigo.toString(),
+                      style: const TextStyle(
                           fontSize: 24.0,
-                            fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.bold,
                           color: Color.fromRGBO(83, 6, 119, 1)
-                        ),
                       ),
                     ),
-                    SizedBox(width: 10,),
+                    const SizedBox(width: 10,),
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: Color(0xFFECC8FD),
                       ),
@@ -496,8 +475,8 @@ class _PerfilState extends State<Perfil> {
                         onPressed: () {
                           _copyToClipboard(context, miCodigoAmigo.toString());
                         },
-                        icon: Icon(Icons.content_copy),
-                        color: Color.fromRGBO(83, 6, 119, 1),
+                        icon: const Icon(Icons.content_copy),
+                        color: const Color.fromRGBO(83, 6, 119, 1),
                       ),
                     )
                   ],
@@ -510,17 +489,17 @@ class _PerfilState extends State<Perfil> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(height: 10,),
-                  Text('Buscar amigo por código',
+                  const SizedBox(height: 10,),
+                  const Text('Buscar amigo por código',
                       style: TextStyle(
                         color: Color.fromRGBO(83, 6, 119, 1),
                         fontSize: 20,
                       )),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 70.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 70.0),
                     child: TextFormField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         contentPadding: EdgeInsets.symmetric(horizontal: 10.0), // O ajusta según sea necesario
                       ),
                       textAlign: TextAlign.center,
@@ -552,7 +531,7 @@ class _PerfilState extends State<Perfil> {
                       }
                     },
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFECC8FD)), // Color de fondo del botón
+                      backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFECC8FD)), // Color de fondo del botón
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0), // Bordes redondeados del botón
@@ -560,7 +539,7 @@ class _PerfilState extends State<Perfil> {
                       ),
                       // Otros estilos que desees cambiar...
                     ),
-                    child: Text(
+                    child: const Text(
                       "Añadir",
                       style: TextStyle(
                         color: Colors.white,

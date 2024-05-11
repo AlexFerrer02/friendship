@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LanguageProvider with ChangeNotifier {
-  Locale _selectedLocale = Locale('en'); // Inglés como idioma predeterminado
+  Locale _selectedLocale = const Locale('en'); // Inglés como idioma predeterminado
 
   Locale get selectedLocale => _selectedLocale;
 

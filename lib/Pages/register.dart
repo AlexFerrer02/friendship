@@ -130,10 +130,10 @@ class _RegisterState extends State<Register> {
     return Scaffold(
       backgroundColor: Colors.grey[310],
       appBar: AppBar(
-        title: Text("Registro"),
+        title: const Text("Registro"),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => LoginPage(supabase: supabase)),
@@ -151,17 +151,12 @@ class _RegisterState extends State<Register> {
                 children: [
                   //logo
                   const SizedBox(height: 10,),
-                  const Icon(Icons.account_circle_outlined, size: 100 ),
-                  const SizedBox(height: 10,),
-                  //Registro de usuario
-                  Text(
-                    'REGISTRATE',
-                    style: TextStyle(
-                      color: Colors.grey[800],
-                      fontSize: 16,
-                    ),
+                  Image.network(
+                    "https://peaoifidogwgoxzrpjft.supabase.co/storage/v1/object/public/avatares/ASTRONAUTAGORRO%201.png",
+                    height: 230,
+                    width: 230,
                   ),
-                  const SizedBox(height: 10,),
+                  const SizedBox(height: 20,),
                   //Nombre/Alias textfield
                   MyTextField(
                     controller: aliasController,
@@ -189,7 +184,6 @@ class _RegisterState extends State<Register> {
                     obscureText: true,
                   ),
                   const SizedBox(height: 15,),
-                  //sign up button
                   GestureDetector(
                     onTap: () async {
                       if (_KeyForm.currentState!.validate()) {
@@ -203,19 +197,27 @@ class _RegisterState extends State<Register> {
                       }
                     },
                     child: Container(
-                      padding: const EdgeInsets.all(25),
-                      margin: const EdgeInsets.symmetric(horizontal: 40.0),
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(8),
+                      width: 170,
+                      height: 50,
+                      padding: const EdgeInsets.symmetric(horizontal: 34, vertical: 17),
+                      clipBehavior: Clip.antiAlias,
+                      decoration: ShapeDecoration(
+                        color: const Color(0xFFD287F6),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(71),
+                        ),
                       ),
-                      child: Center(
-                        child: Text(
-                          "Registrarse",
+                      child: const Center(
+                        child:
+                        Text(
+                          'Registrarse',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            color: Color(0xFF530577),
+                            fontSize: 14,
+                            fontFamily: 'Google Sans',
+                            fontWeight: FontWeight.w500,
+                            height: 0.08,
                           ),
                         ),
                       ),

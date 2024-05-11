@@ -32,10 +32,10 @@ class EventoWidget extends StatelessWidget {
     const double width = 245;
     final Random random = Random();
     final List<Color> colores = [
-      Color(0xFFD287F6),
-      Color(0xFF84CEEB),
-      Color(0xFFFFB347),
-      Color(0xFF20BD8E),
+      const Color(0xFFD287F6),
+      //Color(0xFF84CEEB),
+      //Color(0xFFFFB347),
+      //Color(0xFF20BD8E),
     ];
 
     Color getColor() {
@@ -68,7 +68,7 @@ class EventoWidget extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     color: colorSeleccionado,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(15.0),
                       topRight: Radius.circular(15.0),
                     ),
@@ -81,23 +81,25 @@ class EventoWidget extends StatelessWidget {
                         ListTile(
                           title: Text(
                             evento.name,
-                            style: const TextStyle(fontSize: 25),
+                            style: const TextStyle(fontSize: 25, color: Color.fromRGBO(98, 69, 108, 1)),
+                            maxLines: 1,
                           ),
                           subtitle: Text(
                             evento.descripcion,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                             softWrap: true,
+                              style: const TextStyle(color: Color.fromRGBO(109, 77, 121, 1))
                           ),
                         ),
-                        SizedBox(height: 22),
+                        const SizedBox(height: 22),
                       ],
                     ),
                   ),
                 ),
               ),
               ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(15.0),
                   bottomRight: Radius.circular(15.0),
                 ),
@@ -125,7 +127,7 @@ class EventoWidget extends StatelessWidget {
                           ),
                           onPressed: () => {},
                           icon: const Center(
-                              child: Icon(Icons.share_rounded)),
+                              child: Icon(Icons.share_rounded, color: Color.fromRGBO(98, 69, 108, 1),)),
                         ),
                       ),
                     ],

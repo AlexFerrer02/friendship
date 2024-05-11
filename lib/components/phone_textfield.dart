@@ -27,7 +27,7 @@ class PhoneTextField extends StatelessWidget {
         maxLength: maxLength,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly], // Esto permite solo números
         decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
+          enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
           ),
           focusedBorder: OutlineInputBorder(

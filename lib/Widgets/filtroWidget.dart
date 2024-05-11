@@ -10,12 +10,12 @@ class FiltroWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10), color: Colors.black12),
-      width: 45,
+      width: 50,
       height: 20,
       child: Center(
           child: Text(
         filtro.nombre,
-        style: const TextStyle(fontSize: 10),
+        style: const TextStyle(fontSize: 10, color: Color.fromRGBO(98, 69, 108, 1)),
       )),
     );
   }
