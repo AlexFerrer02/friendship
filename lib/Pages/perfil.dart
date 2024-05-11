@@ -3,18 +3,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:friendship/Class/GlobalData.dart';
-import 'package:friendship/Pages/splash.dart';
-import 'package:friendship/Widgets/qr.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../Class/consultas.dart';
 import '../Class/usernameAuxiliar.dart';
 import 'editar_gustos.dart';
 import 'login_page.dart';
 import 'package:friendship/components/my_textfield.dart';
-import 'package:friendship/main.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 
 class Perfil extends StatefulWidget {
   const Perfil({super.key});
@@ -118,33 +112,6 @@ class _PerfilState extends State<Perfil> {
     setState(() {
       avatar = nuevaUrlAvatar;
     });
-  }
-
-  void _mostrarPopup(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: Container(
-            width: 300.0, // Establecer un ancho específico para el AlertDialog
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                QRImage(200),
-                SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: () {
-                    // Acción a realizar cuando se hace clic en el botón
-                    Navigator.of(context).pop(); // Cierra el popup
-                  },
-                  child: Text('Cerrar'),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
   }
 
   void _dialogoAmigo(BuildContext context, bool esCodigoPropio) {

@@ -265,186 +265,184 @@ class GroupPageState extends State<GroupPage> {
                               .of(context)
                               .size
                               .height,
-                          child: Expanded(
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(25),
-                                  topRight: Radius.circular(25),
-                                ),
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(25),
+                                topRight: Radius.circular(25),
                               ),
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .spaceBetween,
-                                      children: [
-                                        Container(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              widget.group.name,
-                                              style: const TextStyle(
-                                                fontSize: 28,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            )),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            _saveChanges();
-                                          },
-                                          child: Icon(isEditingDescription
-                                              ? Icons.save_alt
-                                              : Icons.edit),
-                                        )
-                                      ]),
-                                  isEditingDescription
-                                      ? TextFormField(
-                                    controller: _descriptionController,
-                                    maxLines: 3,
-                                    decoration: const InputDecoration(
-                                      hintText: 'Ingrese la descripción',
-                                    ),
-                                  )
-                                      : TextFormField(
-                                    enabled: false,
-                                    controller: _descriptionController,
-                                    maxLines: 3,
-                                    decoration: const InputDecoration(
-                                      hintText: 'Ingrese la descripción',
-                                    ),
+                            ),
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            widget.group.name,
+                                            style: const TextStyle(
+                                              fontSize: 28,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          )),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          _saveChanges();
+                                        },
+                                        child: Icon(isEditingDescription
+                                            ? Icons.save_alt
+                                            : Icons.edit),
+                                      )
+                                    ]),
+                                isEditingDescription
+                                    ? TextFormField(
+                                  controller: _descriptionController,
+                                  maxLines: 3,
+                                  decoration: const InputDecoration(
+                                    hintText: 'Ingrese la descripción',
                                   ),
-                                  Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .spaceBetween,
-                                      children: [
-                                        Container(
-                                            alignment: Alignment.centerLeft,
-                                            child: const Text(
-                                              "Participantes",
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            )),
-                                        Container(
-                                          alignment: Alignment.centerRight,
-                                          margin: EdgeInsets.only(top: 7),
-                                          child: ElevatedButton(
-                                            onPressed: () async {
-                                              List<Users.User> users =
-                                              await Consultas().ObtenerAmigos();
-                                              _showListPopup(context, users);
-                                            },
-                                            child: const Icon(Icons.group_add),
-                                          ),
-                                        )
-                                      ]),
-                                  Row(children: _buildAvatars()),
-                                  Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .spaceBetween,
-                                      children: [
-                                        Container(
-                                            alignment: Alignment.centerLeft,
-                                            child: const Text(
-                                              "Planes",
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            )),
-                                        Container(
-                                          alignment: Alignment.centerRight,
-                                          margin: EdgeInsets.only(top: 7),
-                                          child: ElevatedButton(
-                                            onPressed: () async {
-                                              provider.Provider.of<
-                                                  AppBarProvider>(
-                                                  context, listen: false)
-                                                  .updateAppBar(
-                                                AppBar(
-                                                  title: Text("Crear Evento"),
-                                                  centerTitle: true,
-                                                  leading: IconButton(
-                                                    icon: Icon(
-                                                        Icons.arrow_back),
-                                                    onPressed: () {
-                                                      UserData.idGrupoAmigos =
-                                                      null;
-                                                      Navigator.of(context)
-                                                          .pushReplacement(
-                                                        MaterialPageRoute(
-                                                            builder: (
-                                                                context) =>
-                                                                Home(
-                                                                  indiceInicial: 2,
-                                                                  isFriendGroup: false,)),
-                                                      );
-                                                    },
-                                                  ),
-                                                  flexibleSpace: Container(
-                                                    decoration: BoxDecoration(
-                                                      border: Border(
-                                                        bottom: BorderSide(
-                                                          color: Colors
-                                                              .grey[300]!,
-                                                          // Color del borde sombreado
-                                                          width: 3.0, // Ancho del borde
-                                                        ),
+                                )
+                                    : TextFormField(
+                                  enabled: false,
+                                  controller: _descriptionController,
+                                  maxLines: 3,
+                                  decoration: const InputDecoration(
+                                    hintText: 'Ingrese la descripción',
+                                  ),
+                                ),
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: const Text(
+                                            "Participantes",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          )),
+                                      Container(
+                                        alignment: Alignment.centerRight,
+                                        margin: EdgeInsets.only(top: 7),
+                                        child: ElevatedButton(
+                                          onPressed: () async {
+                                            List<Users.User> users =
+                                            await Consultas().ObtenerAmigos();
+                                            _showListPopup(context, users);
+                                          },
+                                          child: const Icon(Icons.group_add),
+                                        ),
+                                      )
+                                    ]),
+                                Row(children: _buildAvatars()),
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: const Text(
+                                            "Planes",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          )),
+                                      Container(
+                                        alignment: Alignment.centerRight,
+                                        margin: EdgeInsets.only(top: 7),
+                                        child: ElevatedButton(
+                                          onPressed: () async {
+                                            provider.Provider.of<
+                                                AppBarProvider>(
+                                                context, listen: false)
+                                                .updateAppBar(
+                                              AppBar(
+                                                title: Text("Crear Evento"),
+                                                centerTitle: true,
+                                                leading: IconButton(
+                                                  icon: Icon(
+                                                      Icons.arrow_back),
+                                                  onPressed: () {
+                                                    UserData.idGrupoAmigos =
+                                                    null;
+                                                    Navigator.of(context)
+                                                        .pushReplacement(
+                                                      MaterialPageRoute(
+                                                          builder: (
+                                                              context) =>
+                                                              Home(
+                                                                indiceInicial: 2,
+                                                                isFriendGroup: false,)),
+                                                    );
+                                                  },
+                                                ),
+                                                flexibleSpace: Container(
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                      bottom: BorderSide(
+                                                        color: Colors
+                                                            .grey[300]!,
+                                                        // Color del borde sombreado
+                                                        width: 3.0, // Ancho del borde
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              );
-                                              /*Navigator.of(context).pushReplacement(
+                                              ),
+                                            );
+                                            /*Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(builder: (context) => Home(indiceInicial: 3,isFriendGroup: true,grupoAmigos: widget.group,)),
                                       );*/
-                                              var response = await supabase
-                                                  .from('gruposamigos')
-                                                  .select('id')
-                                                  .eq(
-                                                  "nombre", widget.group.name)
-                                                  .eq("descripcion",
-                                                  widget.group.descripcion);
-                                              UserData.idGrupoAmigos =
-                                              response[0]['id'];
-                                              Navigator.of(context)
-                                                  .pushReplacement(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        CrearEventoGrupo(
-                                                          isFriendGroup: true,)),
-                                              );
-                                            },
-                                            child: const Icon(Icons.add),
-                                          ),
-                                        )
-                                      ]),
-                                  FutureBuilder<List<Evento>>(
-                                    future: Consultas().EventosGrupo(
-                                        widget.group.name,
-                                        widget.group.descripcion,
-                                        widget.group.creador.username),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return CircularProgressIndicator();
-                                      } else if (snapshot.hasError) {
-                                        return Text('Error: ${snapshot.error}');
-                                      } else {
-                                        List<Evento> eventos = snapshot.data ??
-                                            [];
-                                        return Center(
-                                          child: EventosWidget(
-                                              eventos: eventos),
-                                        );
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ),
+                                            var response = await supabase
+                                                .from('gruposamigos')
+                                                .select('id')
+                                                .eq(
+                                                "nombre", widget.group.name)
+                                                .eq("descripcion",
+                                                widget.group.descripcion);
+                                            UserData.idGrupoAmigos =
+                                            response[0]['id'];
+                                            Navigator.of(context)
+                                                .pushReplacement(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CrearEventoGrupo(
+                                                        isFriendGroup: true,)),
+                                            );
+                                          },
+                                          child: const Icon(Icons.add),
+                                        ),
+                                      )
+                                    ]),
+                                FutureBuilder<List<Evento>>(
+                                  future: Consultas().EventosGrupo(
+                                      widget.group.name,
+                                      widget.group.descripcion,
+                                      widget.group.creador.username),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return CircularProgressIndicator();
+                                    } else if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}');
+                                    } else {
+                                      List<Evento> eventos = snapshot.data ??
+                                          [];
+                                      return Center(
+                                        child: EventosWidget(
+                                            eventos: eventos),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ],
                             ),
                           ),
                         ),

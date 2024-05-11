@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:friendship/Class/compartir_enlace.dart';
 import 'package:friendship/Pages/register.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:uni_links/uni_links.dart';
-import 'package:friendship/Class/usernameAuxiliar.dart';
-import 'package:friendship/Pages/login_page.dart';
 
 
 class Registro_ampl extends StatefulWidget {

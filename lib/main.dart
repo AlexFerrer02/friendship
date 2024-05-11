@@ -1,13 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:friendship/Pages/splash.dart';
-import 'package:friendship/Class/compartir_enlace.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:friendship/Pages/login_page.dart';
-import 'package:friendship/Class/pantalla_confirmacion.dart';
-import 'package:uni_links/uni_links.dart';
 
 import 'Class/evento.dart';
 import 'Class/filtro.dart';
