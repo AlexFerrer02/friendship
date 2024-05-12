@@ -1,13 +1,10 @@
 import 'dart:math';
 
-import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:friendship/Class/grupo-amigos.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:friendship/Widgets/dateTimePicker.dart';
 import 'package:friendship/Class/usernameAuxiliar.dart';
 import 'package:friendship/Pages/home.dart';
 import 'package:provider/provider.dart' as provider;

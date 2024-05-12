@@ -5,7 +5,6 @@ import 'package:friendship/Class/consultas.dart';
 import 'package:friendship/Class/grupo-amigos.dart';
 import 'package:friendship/Class/usernameAuxiliar.dart';
 import 'package:friendship/Pages/crearEventoGrupo.dart';
-import 'package:friendship/Pages/create-event.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../Class/appbar.dart';
 import '../Class/evento.dart';

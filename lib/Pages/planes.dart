@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../Class/consultas.dart';
 import '../Class/evento.dart';
-import '../Widgets/listEventoBusqueda.dart';
 import '../Widgets/listEventos.dart';
 import '../Widgets/listEventosPendientes.dart';
 

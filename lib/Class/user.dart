@@ -1,4 +1,3 @@
-import 'package:friendship/Class/consultas.dart';
 
 class User{
 

@@ -1,9 +1,4 @@
-import 'dart:collection';
-
-import 'package:friendship/Class/usernameAuxiliar.dart';
-import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 /// Example event class.
 class Event {

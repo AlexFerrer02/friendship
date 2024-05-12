@@ -1,5 +1,4 @@
 import 'type.dart';
-import 'package:friendship/Class/filtro.dart';
 
 class Evento {
   late final int id;

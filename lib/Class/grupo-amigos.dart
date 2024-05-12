@@ -1,4 +1,3 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:friendship/Class/user.dart' as user;
 import 'package:friendship/Class/consultas.dart';
 class GrupoAmigos {

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:friendship/Class/evento.dart';
@@ -9,7 +8,6 @@ import 'package:friendship/Pages/perfil.dart';
 import 'package:friendship/Pages//create-event.dart';
 import 'package:friendship/Pages/searching.dart';
 import 'package:friendship/Widgets/calendario.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:provider/provider.dart' as provider;
 

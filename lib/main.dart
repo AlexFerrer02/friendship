@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:friendship/Pages/login_page.dart';
 
-import 'Class/evento.dart';
-import 'Class/filtro.dart';
 import 'Class/appbar.dart';
 import 'package:provider/provider.dart';
 

@@ -6,10 +6,7 @@ import 'package:friendship/Pages/pantalla_registro_ampliacion.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:friendship/main.dart';
 import 'package:friendship/Pages/home.dart';
-import 'package:friendship/Pages/register.dart';
 import 'package:friendship/components/my_textfield.dart';
-import 'perfil.dart';
-import '../components/cuadrado.dart';
 import 'package:friendship/Class/usernameAuxiliar.dart';
 
 class LoginPage extends StatefulWidget {

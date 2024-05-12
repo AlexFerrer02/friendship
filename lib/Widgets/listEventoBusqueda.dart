@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:friendship/Class/evento.dart';
-import 'package:friendship/Widgets/eventoWidget.dart';
 
 import 'eventoWidgetBusqueda.dart';
 

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:friendship/Class/evento.dart';
 import 'package:friendship/Class/grupo-amigos.dart';
-import 'package:friendship/Widgets/eventoWidget.dart';
 import 'package:friendship/Widgets/groupsWidget.dart';
 
 class ListGroupsWidget extends StatelessWidget {

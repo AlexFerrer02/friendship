@@ -8,7 +8,6 @@ import 'package:friendship/Pages/home.dart';
 import 'package:friendship/components/my_textfield.dart';
 import '../Class/consultas.dart';
 import '../Class/usernameAuxiliar.dart';
-import '../components/cuadrado.dart';
 import '../components/phone_textfield.dart';
 
 class Register extends StatefulWidget {

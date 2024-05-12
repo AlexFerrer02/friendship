@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:friendship/Class/consultas.dart';
 import 'package:friendship/Class/evento.dart';
-import 'package:friendship/Class/filtro.dart';
 import 'package:friendship/Widgets/listEventoBusqueda.dart';
-import 'package:friendship/Class/type.dart';
 class SearchResultsPage extends StatelessWidget {
   final String searchTerm;
 
