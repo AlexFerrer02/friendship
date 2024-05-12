@@ -138,10 +138,10 @@ class GroupPageState extends State<GroupPage> {
 
   void _showListPopup(BuildContext context, List<Users.User> users) {
     showDialog(
+      barrierDismissible: true,
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Lista de Amigos'),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -163,7 +163,7 @@ class GroupPageState extends State<GroupPage> {
                         ),
                         const SizedBox(width: 12),
                         Text(user.username),
-                        const SizedBox(width: 80,),
+                        const SizedBox(width: 65,),
                         IconButton(
                           icon: const Icon(Icons.add, color: Colors.blue,),
                           onPressed: () async {
@@ -189,15 +189,7 @@ class GroupPageState extends State<GroupPage> {
                   ),
               ],
             ),
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cerrar'),
-            ),
-          ],
+          )
         );
       },
     );
@@ -248,7 +240,7 @@ class GroupPageState extends State<GroupPage> {
                       height: MediaQuery
                           .of(context)
                           .size
-                          .height / 2.9,
+                          .height / 3.2,
                       width: MediaQuery
                           .of(context)
                           .size
