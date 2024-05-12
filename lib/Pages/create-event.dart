@@ -431,6 +431,7 @@ class _createEventState extends State<createEvent> {
                           UserData.idGrupoAmigos = null;
                         } else {
                           userAux = UserData.usuarioLog!.username;
+                          await UserData().actualizarContadorEventos();
                         }
                         await supabase
                             .from('eventos')

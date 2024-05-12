@@ -242,7 +242,7 @@ class _CalendarioState extends State<Calendario> {
                           onEnter: (_) {
                             // Cambia el color de fondo cuando el puntero del ratón entra
                             setState(() {
-                              containerColor = Color.fromRGBO(244, 240, 244, 1); // Define containerColor como una variable de estado en tu StatefulWidget
+                              containerColor = const Color.fromRGBO(244, 240, 244, 1); // Define containerColor como una variable de estado en tu StatefulWidget
                             });
                           },
                           onExit: (_) {
