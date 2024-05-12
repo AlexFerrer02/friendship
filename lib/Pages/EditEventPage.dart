@@ -1,5 +1,8 @@
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../Class/consultas.dart';
@@ -50,43 +53,35 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
   void _showDialog(BuildContext context) {
     showDialog(
+      barrierDismissible: true,
       context: context,
       builder: (BuildContext context) {
         return FittedBox(
           child: AlertDialog(
-            title: const Text('Filtros'),
-            content: IntrinsicHeight(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: widget.event.filtros.map((filtro) {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 20),
-                        Image.network(
-                          obtenerImagenFiltro(filtro),
-                          width: 60,
-                          height: 60,
-                        ),
-                        const SizedBox(height: 10),
-                        Text(capitalize(filtro)),
-                      ],
-                    );
-                  }).toList(),
-                ),
-              ),
+            title: const Align(
+              alignment: Alignment.center,
+              child: Text('Filtros'),
             ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Ok'),
-              ),
-            ],
+            content: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: widget.event.filtros.map((filtro) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.network(
+                      obtenerImagenFiltro(filtro),
+                      width: 60,
+                      height: 60,
+                    ),
+                    const SizedBox(height: 10),
+                    Text(capitalize(filtro)),
+                    const SizedBox(height: 5),
+                  ],
+                );
+              }).toList(),
+            )
           ),
         );
       },
@@ -98,6 +93,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
       circuloColor = color;  // Puedes cambiar esto a cualquier color que desees
     });
   }
+
+  double divider = 0.0;
 
   @override
   void initState() {
@@ -117,6 +114,16 @@ class _CreateEventPageState extends State<CreateEventPage> {
         text: widget.event.descripcion.replaceAll('"', ""));
 
     print(widget.event.filtros);
+
+    if(widget.event.filtros.isEmpty || widget.event.filtros.length == 1){
+      divider = 4.8;
+    } else if (widget.event.filtros.length == 2){
+      divider = 2.55;
+    } else if (widget.event.filtros.length == 3){
+      divider = 1.75;
+    } else if (widget.event.filtros.length == 4){
+      divider = 1.35;
+    }
   }
 
   Future<void> mostrarDialogo(BuildContext context) async {
@@ -166,6 +173,51 @@ class _CreateEventPageState extends State<CreateEventPage> {
               child: const Text('OK'),
             ),
           ],
+        );
+      },
+    );
+  }
+
+  void _copyToClipboard(BuildContext context, String text) {
+    Clipboard.setData(ClipboardData(text: text));
+  }
+
+  void _dialogoLugar(BuildContext context) {
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width/1.8,
+                child: Text(
+                    widget.event.lugar,
+                  style: const TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.black
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15,),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.transparent,
+                    border: Border.all(color: Colors.black)
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    _copyToClipboard(context, widget.event.lugar);
+                  },
+                  icon: const Icon(Icons.content_copy),
+                  color: Colors.black,
+                ),
+              )
+            ],
+          )
         );
       },
     );
@@ -339,7 +391,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                               isEditingDescription
                                   ? TextFormField(
                                 controller: _descriptionController,
-                                maxLines: 5,
+                                maxLines: 3,
                                 decoration: const InputDecoration(
                                   hintText: 'Ingrese la descripción',
                                 ),
@@ -347,7 +399,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                   : TextFormField(
                                 enabled: false,
                                 controller: _descriptionController,
-                                maxLines: 5,
+                                maxLines: 3,
                                 decoration: const InputDecoration(
                                   hintText: 'Ingrese la descripción',
                                 ),
@@ -467,53 +519,62 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(width: 26.0),
-                                  Text(widget.event.lugar,
-                                      style: const TextStyle(fontSize: 20.0)
-                                  ),
-                                  const SizedBox(width: 37,),
-                                  Column(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          if(widget.event.filtros.isNotEmpty){
-                                            _showDialog(context);
-                                          }
-                                        },
-                                        child: Container(
-                                          width: 150,
-                                          height: 80,
-                                          padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-                                          decoration: ShapeDecoration(
-                                            color: backgroundColor,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(15),
-                                              side: BorderSide(
-                                                color: circuloColor, // Color del borde
-                                                width: 2.0, // Ancho del borde
-                                              ),
-                                            ),
-                                          ),
-                                          child: SingleChildScrollView(
-                                            scrollDirection: Axis.horizontal, // Para hacer que la lista sea deslizable horizontalmente
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: widget.event.filtros.map((filtro) {
-                                                return Padding(
-                                                  padding: const EdgeInsets.only(right: 10), // Ajusta el espacio entre las imágenes
-                                                  child: Image.network(
-                                                    obtenerImagenFiltro(filtro),
-                                                    width: 60,
-                                                    height: 60,
-                                                  ),
-                                                );
-                                              }).toList(),
-                                            ),
+                                  const SizedBox(width: 20.0),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      _dialogoLugar(context);
+                                    },
+                                    child: SizedBox(
+                                      width: MediaQuery.of(context).size.width/1.5,
+                                      child: Text(widget.event.lugar,
+                                        style: const TextStyle(fontSize: 20.0),
+                                        maxLines: 1,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(height: 5,),
+                              Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      if(widget.event.filtros.isNotEmpty){
+                                        _showDialog(context);
+                                      }
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width/divider,
+                                      height: 80,
+                                      padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+                                      decoration: ShapeDecoration(
+                                        color: backgroundColor,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(15),
+                                          side: BorderSide(
+                                            color: circuloColor, // Color del borde
+                                            width: 2.0, // Ancho del borde
                                           ),
                                         ),
-                                      )
-                                    ],
-                                  ),
+                                      ),
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal, // Para hacer que la lista sea deslizable horizontalmente
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: widget.event.filtros.map((filtro) {
+                                            return Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 5), // Ajusta el espacio entre las imágenes
+                                              child: Image.network(
+                                                obtenerImagenFiltro(filtro),
+                                                width: 60,
+                                                height: 60,
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                    ),
+                                  )
                                 ],
                               ),
                             ],

@@ -332,22 +332,21 @@ class _createEventState extends State<createEvent> {
               ),
               const SizedBox(height: 20.0),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: DropdownButtonFormField<String>(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                height: MediaQuery.of(context).size.height / 17,
+                width: MediaQuery.of(context).size.width,
+                child: TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'Seleccionar Lugar del Evento',
+                    hintText: 'Selecciona el lugar del evento',
+                    hintStyle: TextStyle(fontSize: 17),
                     contentPadding: EdgeInsets.symmetric(horizontal: 10.0), // O ajusta según sea necesario
                   ),
-                    items: listaLugar.map((e){
-                      return DropdownMenuItem(
-                          value: e,
-                          child: Text(e)
-                      );
-                    }).toList(),
-                    onChanged: (text){
-                      lugar = text;
-                      FocusScope.of(context).unfocus();
-                    }
+                  onChanged: (text){
+                    lugar = text;
+                  },
+                  onEditingComplete: (){
+                    FocusScope.of(context).unfocus();
+                  },
                 ),
               ),
               const SizedBox(height: 20.0),
@@ -355,7 +354,8 @@ class _createEventState extends State<createEvent> {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: DropdownButtonFormField<String>(
                     decoration: const InputDecoration(
-                      labelText: 'Seleccionar Tipo de Evento',
+                      labelText: 'Selecciona el tipo de evento',
+                      labelStyle: TextStyle(fontWeight: FontWeight.w500,color: Color.fromRGBO(100, 100, 100, 1),fontSize: 17),
                       contentPadding: EdgeInsets.symmetric(horizontal: 10.0), // O ajusta según sea necesario
                     ),
                     items: listaTipoEvento.map((e){
