@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:friendship/Class/grupo-amigos.dart';
 import 'package:friendship/Class/consultas.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../Class/user.dart' as Users;
 import '../Class/usernameAuxiliar.dart';
 import '../Widgets/listGroupsWidget.dart';
@@ -16,6 +20,7 @@ class FriendList extends StatefulWidget {
 class _FriendListState extends State<FriendList> {
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
+  final supabase = Supabase.instance.client;
 
   @override
   void initState() {
@@ -28,6 +33,33 @@ class _FriendListState extends State<FriendList> {
   Future<void> fetchData() async {
     eventos = await Consultas().ObtenerGrupos();
     users = await Consultas().ObtenerAmigos();
+  }
+
+  Future<Container> getAvatar(Users.User user) async {
+    final tempDir = await getTemporaryDirectory();
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final tempFileName = 'temp_image_$timestamp.png';
+
+    final tempFile = File('${tempDir.path}/$tempFileName');
+    final storageResponse = await supabase
+        .storage
+        .from('perfiles')
+        .download(user.username);
+    await tempFile.writeAsBytes(storageResponse);
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white, // Color de fondo gris claro
+        image: tempFile != null
+            ? DecorationImage(
+          image: FileImage(tempFile!),
+          fit: BoxFit.cover,
+        )
+            : null, // No hay imagen si image es null
+      ),
+    );
   }
 
   void showAlertDialog(BuildContext context, String usuario) {
@@ -61,6 +93,41 @@ class _FriendListState extends State<FriendList> {
             ],
           );
       }
+    );
+  }
+
+  Future<void> showAvatar(BuildContext context, Users.User user) async {
+    final tempDir = await getTemporaryDirectory();
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final tempFileName = 'temp_image_$timestamp.png';
+
+    final tempFile = File('${tempDir.path}/$tempFileName');
+    final storageResponse = await supabase
+        .storage
+        .from('perfiles')
+        .download(user.username);
+    await tempFile.writeAsBytes(storageResponse);
+    showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.transparent,
+            content: Container(
+              height: MediaQuery.of(context).size.height/3.2,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white, // Color de fondo gris claro
+                image: tempFile != null
+                    ? DecorationImage(
+                  image: FileImage(tempFile!),
+                  fit: BoxFit.cover,
+                )
+                    : null, // No hay imagen si image es null
+              ),
+            ),
+          );
+        }
     );
   }
 
@@ -198,47 +265,61 @@ class _FriendListState extends State<FriendList> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      for (Users.User user in users)
-                        Container(
-                          margin: const EdgeInsets.only(left: 20, right: 10),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Colors.grey[300]!,
-                                width: 1.0,
+                      if(users.isNotEmpty)
+                        for (Users.User user in users)
+                          Container(
+                            margin: const EdgeInsets.only(left: 20, right: 10),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Colors.grey[300]!,
+                                  width: 1.0,
+                                ),
                               ),
                             ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CircleAvatar(
-                                maxRadius: 15,
-                                backgroundColor: const Color(0xFF032A64),
-                                child: Text(
-                                  user.username.substring(0, 1).toUpperCase(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    await showAvatar(context, user);
+                                  } ,
+                                  child: FutureBuilder<Container>(
+                                    future: getAvatar(user), // Llama a la función asincrónica que devuelve una lista de widgets
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                        // Mientras se está cargando la data, muestra un indicador de carga.
+                                        return Center(child: CircularProgressIndicator());
+                                      } else if (snapshot.hasError) {
+                                        // Si hay un error al cargar los datos, muestra un mensaje de error.
+                                        return Center(child: Text('Error: ${snapshot.error}'));
+                                      } else {
+                                        // Si la data ha sido cargada exitosamente, muestra la lista de widgets.
+                                        return snapshot.data!;
+                                      }
+                                    },
                                   ),
                                 ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Text(
-                                  user.username,
-                                  textAlign: TextAlign.center,
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Text(
+                                    user.username,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 20
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 12),
-                              IconButton(
-                                icon: const Icon(Icons.delete, color: Color(0xFFC62828)),
-                                onPressed: () {
-                                  showAlertDialog(context, user.username);
-                                },
-                              )
-                            ],
+                                const SizedBox(width: 12),
+                                IconButton(
+                                  icon: const Icon(Icons.delete, color: Color(0xFFC62828)),
+                                  onPressed: () {
+                                    showAlertDialog(context, user.username);
+                                  },
+                                )
+                              ],
+                            ),
                           ),
-                        ),
                     ],
                   ),
                 )

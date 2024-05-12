@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:friendship/Class/consultas.dart';
 import 'package:friendship/Class/grupo-amigos.dart';
 import 'package:friendship/Class/usernameAuxiliar.dart';
 import 'package:friendship/Pages/crearEventoGrupo.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../Class/appbar.dart';
 import '../Class/evento.dart';
@@ -45,24 +47,42 @@ class GroupPageState extends State<GroupPage> {
     participantes = await Consultas().getParticipantesGrupo(id);
   }
 
-  List<Widget> _buildAvatars() {
+  Future<List<Widget>> _buildAvatars() async {
     List<Widget> avatars = [];
 
-    for (String participante in participantes) {
-      String initials = participante.substring(0, 1).toUpperCase();
+    for (Users.User participante in widget.group.amigos) {
+      final tempDir = await getTemporaryDirectory();
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final tempFileName = 'temp_image_$timestamp.png';
+
+      final tempFile = File('${tempDir.path}/$tempFileName');
+      final storageResponse = await supabase
+          .storage
+          .from('perfiles')
+          .download(participante.username);
+      await tempFile.writeAsBytes(storageResponse);
       avatars.add(
-        Center(
-          child: CircleAvatar(
-            maxRadius: 15,
-            backgroundColor: Color(0xFF032A64),
-            child: Text(
-              initials,
-              style: const TextStyle(
-                color: Colors.white,
+          Row(
+            children: [
+              const SizedBox(width: 5,),
+              Center(
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white, // Color de fondo gris claro
+                    image: tempFile != null
+                        ? DecorationImage(
+                      image: FileImage(tempFile!),
+                      fit: BoxFit.cover,
+                    )
+                        : null, // No hay imagen si image es null
+                  ),
+                ),
               ),
-            ),
-          ),
-        ),
+            ],
+          )
       );
     }
 
@@ -136,6 +156,33 @@ class GroupPageState extends State<GroupPage> {
     });
   }
 
+  Future<Container> getAvatar(Users.User user) async {
+    final tempDir = await getTemporaryDirectory();
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final tempFileName = 'temp_image_$timestamp.png';
+
+    final tempFile = File('${tempDir.path}/$tempFileName');
+    final storageResponse = await supabase
+        .storage
+        .from('perfiles')
+        .download(user.username);
+    await tempFile.writeAsBytes(storageResponse);
+    return Container(
+      width: 30,
+      height: 30,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white, // Color de fondo gris claro
+        image: tempFile != null
+            ? DecorationImage(
+          image: FileImage(tempFile!),
+          fit: BoxFit.cover,
+        )
+            : null, // No hay imagen si image es null
+      ),
+    );
+  }
+
   void _showListPopup(BuildContext context, List<Users.User> users) {
     showDialog(
       barrierDismissible: true,
@@ -151,15 +198,20 @@ class GroupPageState extends State<GroupPage> {
                     margin: const EdgeInsets.only(bottom: 15.0),
                     child: Row(
                       children: [
-                        CircleAvatar(
-                          maxRadius: 15,
-                          backgroundColor: const Color(0xFF032A64),
-                          child: Text(
-                            user.username.substring(0, 1),
-                            style: const TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
+                        FutureBuilder<Container>(
+                          future: getAvatar(user), // Llama a la función asincrónica que devuelve una lista de widgets
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              // Mientras se está cargando la data, muestra un indicador de carga.
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              // Si hay un error al cargar los datos, muestra un mensaje de error.
+                              return Center(child: Text('Error: ${snapshot.error}'));
+                            } else {
+                              // Si la data ha sido cargada exitosamente, muestra la lista de widgets.
+                              return snapshot.data!;
+                            }
+                          },
                         ),
                         const SizedBox(width: 12),
                         Text(user.username),
@@ -169,9 +221,7 @@ class GroupPageState extends State<GroupPage> {
                           onPressed: () async {
                             int id = await widget.group.ObtenerId();
                             await Consultas().addAmigoAGrupoAmigos(id, user);
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) => GroupPage(group: widget.group)),
-                            );
+                            Navigator.of(context).pop();
                           },
                         ),
                         IconButton(
@@ -179,9 +229,7 @@ class GroupPageState extends State<GroupPage> {
                           onPressed: () async {
                             int id = await widget.group.ObtenerId();
                             await Consultas().rmAmigoDeGrupoAmigos(id, user);
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) => GroupPage(group: widget.group)),
-                            );
+                            Navigator.of(context).pop();
                           },
                         ),
                       ],
@@ -331,7 +379,23 @@ class GroupPageState extends State<GroupPage> {
                                         ),
                                       )
                                     ]),
-                                Row(children: _buildAvatars()),
+                                FutureBuilder<List<Widget>>(
+                                  future: _buildAvatars(), // Llama a la función asincrónica que devuelve una lista de widgets
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                      // Mientras se está cargando la data, muestra un indicador de carga.
+                                      return Center(child: CircularProgressIndicator());
+                                    } else if (snapshot.hasError) {
+                                      // Si hay un error al cargar los datos, muestra un mensaje de error.
+                                      return Center(child: Text('Error: ${snapshot.error}'));
+                                    } else {
+                                      // Si la data ha sido cargada exitosamente, muestra la lista de widgets.
+                                      return Row(
+                                        children: snapshot.data!,
+                                      );
+                                    }
+                                  },
+                                ),
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment
                                         .spaceBetween,

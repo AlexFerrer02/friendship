@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 import 'package:friendship/Pages/login_page.dart';
 import 'package:friendship/main.dart';
@@ -9,6 +10,8 @@ import 'package:friendship/components/my_textfield.dart';
 import '../Class/consultas.dart';
 import '../Class/usernameAuxiliar.dart';
 import '../components/phone_textfield.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 class Register extends StatefulWidget {
   Register ({super.key, required this.supabase, required this.gustos});
@@ -103,12 +106,25 @@ class _RegisterState extends State<Register> {
             'contraseña': passwordController.text,
             'email': usernameController.text,
             'gustos': widget.gustos,
-            'codigo_amigo': codigoAmigo
+            'codigo_amigo': codigoAmigo,
+            'lista_amigos': []
           },
         ]);
         UserData.emailActual=usernameController.text;
         UserData userData = UserData();
         await userData.construirUsuarioPorEmail(UserData.emailActual);
+
+        File? _imageFile;
+        final response = await http.get(Uri.parse(
+            'https://peaoifidogwgoxzrpjft.supabase.co/storage/v1/object/public/avatares/emptyprofile.png?t=2024-05-12T18%3A31%3A41.385Z'));
+        final documentDirectory = await getTemporaryDirectory();
+        final file = File('${documentDirectory.path}/avatar.png');
+        await file.writeAsBytes(response.bodyBytes);
+        _imageFile = file;
+        final storageResponse = await supabase
+            .storage
+            .from('perfiles')
+            .upload(UserData.usuarioLog!.username, _imageFile!);
         usernameController.clear();
         passwordController.clear();
 

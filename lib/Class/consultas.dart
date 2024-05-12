@@ -625,25 +625,29 @@ class Consultas{
     List<user.User> amigos =[];
     print([UserData.usuarioLog?.username]);
     var response = await supabase.from("usuarios").select("*").eq("username", UserData.usuarioLog?.username);
-    for (var amigo in response[0]["lista_amigos"]) {
-      var userresponse = await supabase.from("usuarios").select("*").eq("username", amigo.toString());
-      if (userresponse.isNotEmpty) {
-        print("entro");
-        List<String> gustosAux = [];
-        for(var gusto in userresponse[0]["gustos"]){
-          gustosAux.add(gusto);
-        }
+    if (response.isNotEmpty) {
+      for (var amigo in response[0]["lista_amigos"]) {
+        var userresponse = await supabase.from("usuarios").select("*").eq("username", amigo.toString());
+        if (userresponse.isNotEmpty) {
+          print("entro");
+          List<String> gustosAux = [];
+          for(var gusto in userresponse[0]["gustos"]){
+            gustosAux.add(gusto);
+          }
 
-        amigos.add(user.User(
-          userresponse[0]["username"],
-          userresponse[0]["email"],
-          userresponse[0]["telefono"],
-          userresponse[0]["num_eventos"],
-          gustosAux
-        ));
+          amigos.add(user.User(
+              userresponse[0]["username"],
+              userresponse[0]["email"],
+              userresponse[0]["telefono"],
+              userresponse[0]["num_eventos"],
+              gustosAux
+          ));
+        }
       }
+      return amigos;
+    } else {
+      return amigos;
     }
-    return amigos;
 
   }
 }
