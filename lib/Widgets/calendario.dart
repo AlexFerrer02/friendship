@@ -157,6 +157,8 @@ class _CalendarioState extends State<Calendario> {
     }
   }
 
+  Color containerColor = Colors.transparent;
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<void>(
@@ -169,91 +171,109 @@ class _CalendarioState extends State<Calendario> {
         } else {
           return Column(
             children: [
-              TableCalendar<Event>(
-                firstDay: kFirstDay,
-                lastDay: kLastDay,
-                calendarBuilders: CalendarBuilders(
-                  dowBuilder: (context, day) {
-                    if (day.weekday == DateTime.sunday || day.weekday == DateTime.saturday) {
-                      final text = DateFormat.E().format(day);
+              Stack(
+                children: [
+                  TableCalendar<Event>(
+                    firstDay: kFirstDay,
+                    lastDay: kLastDay,
+                    calendarBuilders: CalendarBuilders(
+                      dowBuilder: (context, day) {
+                        if (day.weekday == DateTime.sunday || day.weekday == DateTime.saturday) {
+                          final text = DateFormat.E().format(day);
 
-                      return Center(
-                        child: Text(
-                          text,
-                          style: const TextStyle(color: Colors.red),
-                        ),
-                      );
-                    }
-                  },
-                ),
-                focusedDay: _focusedDay,
-                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                rangeStartDay: _rangeStart,
-                rangeEndDay: _rangeEnd,
-                calendarFormat: _calendarFormat,
-                rangeSelectionMode: _rangeSelectionMode,
-                eventLoader: _getEventsForDay,
-                startingDayOfWeek: StartingDayOfWeek.monday,
-                calendarStyle: CalendarStyle(
-                  // Use `CalendarStyle` to customize the UI
-                  outsideDaysVisible: false,
-                  markerDecoration: const BoxDecoration(color: Color.fromRGBO(98, 69, 108, 1), shape: BoxShape.circle),
-                  todayDecoration: const BoxDecoration(
-                      color: Color.fromRGBO(136, 93, 152, 1),
-                      shape: BoxShape.circle
-                  ),
-                  selectedDecoration: BoxDecoration(
-                    color: const Color.fromRGBO(215, 146, 240, 1),
-                    shape: BoxShape.circle,
-                    border: Border.all(color: const Color.fromRGBO(178, 122, 199, 1))
-                  ),
-                  weekNumberTextStyle:const TextStyle(color: Colors.red),
-                  weekendTextStyle:const TextStyle(color: Colors.red),
-                ),
-                onDaySelected: _onDaySelected,
-                onRangeSelected: _onRangeSelected,
-                onFormatChanged: (format) {
-                  if (_calendarFormat != format) {
-                    setState(() {
-                      _calendarFormat = format;
-                    });
-                  }
-                },
-                onPageChanged: (focusedDay) {
-                  _focusedDay = focusedDay;
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 12.0),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    onTap: () async {
-                      await Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => Home(indiceInicial: 0,isFriendGroup: false,)),
-                      );
-                      Navigator.of(context).pop();
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width / 5,
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(215, 146, 240, 1),
-                        border: Border.all(color: const Color.fromRGBO(109, 77, 121, 1)),
-                        borderRadius: BorderRadius.circular(12.0),
+                          return Center(
+                            child: Text(
+                              text,
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                    focusedDay: _focusedDay,
+                    selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                    rangeStartDay: _rangeStart,
+                    rangeEndDay: _rangeEnd,
+                    calendarFormat: _calendarFormat,
+                    rangeSelectionMode: _rangeSelectionMode,
+                    eventLoader: _getEventsForDay,
+                    startingDayOfWeek: StartingDayOfWeek.monday,
+                    calendarStyle: CalendarStyle(
+                      // Use `CalendarStyle` to customize the UI
+                      outsideDaysVisible: false,
+                      markerDecoration: const BoxDecoration(color: Color.fromRGBO(98, 69, 108, 1), shape: BoxShape.circle),
+                      todayDecoration: const BoxDecoration(
+                          color: Color.fromRGBO(136, 93, 152, 1),
+                          shape: BoxShape.circle
                       ),
-                      padding: const EdgeInsets.all(8.0),
-                      child: const Text(
-                        'Hoy',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
+                      selectedDecoration: BoxDecoration(
+                          color: const Color.fromRGBO(215, 146, 240, 1),
+                          shape: BoxShape.circle,
+                          border: Border.all(color: const Color.fromRGBO(178, 122, 199, 1))
+                      ),
+                      weekNumberTextStyle:const TextStyle(color: Colors.red),
+                      weekendTextStyle:const TextStyle(color: Colors.red),
+                    ),
+                    onDaySelected: _onDaySelected,
+                    onRangeSelected: _onRangeSelected,
+                    onFormatChanged: (format) {
+                      if (_calendarFormat != format) {
+                        setState(() {
+                          _calendarFormat = format;
+                        });
+                      }
+                    },
+                    onPageChanged: (focusedDay) {
+                      _focusedDay = focusedDay;
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 18.0, left: 55),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: GestureDetector(
+                        onTap: () async {
+                          await Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) => Home(indiceInicial: 0, isFriendGroup: false,)),
+                          );
+                          Navigator.of(context).pop();
+                        },
+                        child: MouseRegion(
+                          onEnter: (_) {
+                            // Cambia el color de fondo cuando el puntero del ratón entra
+                            setState(() {
+                              containerColor = Color.fromRGBO(244, 240, 244, 1); // Define containerColor como una variable de estado en tu StatefulWidget
+                            });
+                          },
+                          onExit: (_) {
+                            // Restaura el color de fondo cuando el puntero del ratón sale
+                            setState(() {
+                              containerColor = Colors.transparent; // Define containerColor como una variable de estado en tu StatefulWidget
+                            });
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 8,
+                            height: 29,
+                            decoration: BoxDecoration(
+                              color: containerColor, // Usa la variable de color definida
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            padding: const EdgeInsets.all(3.0),
+                            child: const Text(
+                              'Hoy',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14.0,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                         ),
-                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
               const SizedBox(height: 8.0),
               Expanded(

@@ -439,6 +439,17 @@ class Consultas{
         .from('usuarios')
         .update({ 'lista_amigos': amigos })
         .match({ 'username': UserData.usuarioLog!.username });
+
+    var response2 = await supabase.from("usuarios").select("*").eq("username", user);
+    List<String> amigos2 = [];
+    for(var item in response2[0]["lista_amigos"]){
+      amigos2.add(item);
+    }
+    amigos2.add(UserData.usuarioLog!.username);
+    await supabase
+        .from('usuarios')
+        .update({ 'lista_amigos': amigos2 })
+        .match({ 'username': user });
   }
 
   Future<void> removeAmigo (String user) async {
@@ -452,6 +463,17 @@ class Consultas{
         .from('usuarios')
         .update({ 'lista_amigos': amigos })
         .match({ 'username': UserData.usuarioLog!.username });
+
+    var response2 = await supabase.from("usuarios").select("*").eq("username", user);
+    List<String> amigos2 = [];
+    for(var item in response2[0]["lista_amigos"]){
+      amigos2.add(item);
+    }
+    amigos2.remove(UserData.usuarioLog!.username);
+    await supabase
+        .from('usuarios')
+        .update({ 'lista_amigos': amigos2 })
+        .match({ 'username': user });
   }
 
   Future<void> deleteGrupoAmigos (GrupoAmigos grupo) async {
