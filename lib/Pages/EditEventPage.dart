@@ -449,21 +449,9 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(width: 20.0),
-                                  Row(
-                                    children: [
-                                      Text(widget.event.fechaInicio,
-                                          style: TextStyle(fontSize: 20.0)
-                                      ),
-                                      const SizedBox(width: 10.0),
-                                      const Text('-',
-                                          style: TextStyle(fontSize: 20.0)
-                                      ),
-                                      const SizedBox(width: 10.0),
-                                      Text(widget.event.fechaFin,
-                                          style: const TextStyle(fontSize: 20.0)
-                                      ),
-                                    ],
+                                  const SizedBox(width: 30.0),
+                                  Text(widget.event.fechaInicio,
+                                      style: const TextStyle(fontSize: 20.0)
                                   ),
                                 ],
                               ),
@@ -538,13 +526,13 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(width: 20.0),
+                                  const SizedBox(width: 30.0),
                                   GestureDetector(
                                     onTap: () async {
                                       _dialogoLugar(context);
                                     },
                                     child: SizedBox(
-                                      width: MediaQuery.of(context).size.width/1.5,
+                                      width: MediaQuery.of(context).size.width/1.6,
                                       child: Text(widget.event.lugar,
                                         style: const TextStyle(fontSize: 20.0),
                                         maxLines: 1,
