@@ -19,6 +19,7 @@ class GroupsWidget extends StatelessWidget {
 
   Future<List<Widget>> _buildAvatars() async {
     List<Widget> avatars = [];
+    int contador = 1;
 
     for (Users.User participante in grupo.amigos) {
       final tempDir = await getTemporaryDirectory();
@@ -53,6 +54,23 @@ class GroupsWidget extends StatelessWidget {
             ),
           ],
         )
+      );
+
+      if(contador==3){break;}
+      contador++;
+    }
+
+    if(grupo.amigos.length>3){
+      avatars.add(
+        const Text(
+          '...',
+          style: TextStyle(
+              color: Colors.grey,
+              fontSize: 20,
+              fontFamily: 'Google Sans',
+              fontWeight: FontWeight.w500
+          ),
+        ),
       );
     }
 

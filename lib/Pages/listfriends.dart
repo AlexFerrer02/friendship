@@ -35,6 +35,79 @@ class _FriendListState extends State<FriendList> {
     users = await Consultas().ObtenerAmigos();
   }
 
+  Future<List<Widget>> _buildAvatars() async {
+    List<Widget> avatars = [];
+
+    for (Users.User amigo in users) {
+      final tempDir = await getTemporaryDirectory();
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final tempFileName = 'temp_image_$timestamp.png';
+
+      final tempFile = File('${tempDir.path}/$tempFileName');
+      final storageResponse = await supabase
+          .storage
+          .from('perfiles')
+          .download(amigo.username);
+      await tempFile.writeAsBytes(storageResponse);
+      avatars.add(
+          Container(
+            margin: const EdgeInsets.only(left: 20, right: 10),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.grey[300]!,
+                  width: 1.0,
+                ),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    await showAvatar(context, amigo);
+                  } ,
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white, // Color de fondo gris claro
+                      image: tempFile != null
+                          ? DecorationImage(
+                        image: FileImage(tempFile!),
+                        fit: BoxFit.cover,
+                      )
+                          : null, // No hay imagen si image es null
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    amigo.username,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: 20
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                IconButton(
+                  icon: const Icon(Icons.delete, color: Color(0xFFC62828)),
+                  onPressed: () {
+                    showAlertDialog(context, amigo.username);
+                  },
+                )
+              ],
+            ),
+          )
+      );
+    }
+
+    return avatars;
+  }
+
   Future<Container> getAvatar(Users.User user) async {
     final tempDir = await getTemporaryDirectory();
     final timestamp = DateTime.now().millisecondsSinceEpoch;
@@ -266,60 +339,23 @@ class _FriendListState extends State<FriendList> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if(users.isNotEmpty)
-                        for (Users.User user in users)
-                          Container(
-                            margin: const EdgeInsets.only(left: 20, right: 10),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Colors.grey[300]!,
-                                  width: 1.0,
-                                ),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                GestureDetector(
-                                  onTap: () async {
-                                    await showAvatar(context, user);
-                                  } ,
-                                  child: FutureBuilder<Container>(
-                                    future: getAvatar(user), // Llama a la función asincrónica que devuelve una lista de widgets
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState == ConnectionState.waiting) {
-                                        // Mientras se está cargando la data, muestra un indicador de carga.
-                                        return Center(child: CircularProgressIndicator());
-                                      } else if (snapshot.hasError) {
-                                        // Si hay un error al cargar los datos, muestra un mensaje de error.
-                                        return Center(child: Text('Error: ${snapshot.error}'));
-                                      } else {
-                                        // Si la data ha sido cargada exitosamente, muestra la lista de widgets.
-                                        return snapshot.data!;
-                                      }
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Text(
-                                    user.username,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 20
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                IconButton(
-                                  icon: const Icon(Icons.delete, color: Color(0xFFC62828)),
-                                  onPressed: () {
-                                    showAlertDialog(context, user.username);
-                                  },
-                                )
-                              ],
-                            ),
-                          ),
+                        FutureBuilder<List<Widget>>(
+                          future: _buildAvatars(), // Llama a la función asincrónica que devuelve una lista de widgets
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              // Mientras se está cargando la data, muestra un indicador de carga.
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              // Si hay un error al cargar los datos, muestra un mensaje de error.
+                              return Center(child: Text('Error: ${snapshot.error}'));
+                            } else {
+                              // Si la data ha sido cargada exitosamente, muestra la lista de widgets.
+                              return Column(
+                                children: snapshot.data!,
+                              );
+                            }
+                          },
+                        ),
                     ],
                   ),
                 )

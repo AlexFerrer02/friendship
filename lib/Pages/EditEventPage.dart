@@ -95,6 +95,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
   }
 
   double divider = 0.0;
+  double globalHeight = 0.0;
 
   @override
   void initState() {
@@ -115,14 +116,21 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
     print(widget.event.filtros);
 
-    if(widget.event.filtros.isEmpty || widget.event.filtros.length == 1){
+    if(widget.event.filtros.isEmpty){
+      divider = 0.0;
+      globalHeight = 0.0;
+    } else if (widget.event.filtros.length == 1){
       divider = 4.8;
+      globalHeight = 80.0;
     } else if (widget.event.filtros.length == 2){
       divider = 2.55;
+      globalHeight = 80.0;
     } else if (widget.event.filtros.length == 3){
       divider = 1.75;
+      globalHeight = 80.0;
     } else if (widget.event.filtros.length == 4){
       divider = 1.35;
+      globalHeight = 80.0;
     }
   }
 
@@ -545,7 +553,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                     },
                                     child: Container(
                                       width: MediaQuery.of(context).size.width/divider,
-                                      height: 80,
+                                      height: globalHeight,
                                       padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
                                       decoration: ShapeDecoration(
                                         color: backgroundColor,
