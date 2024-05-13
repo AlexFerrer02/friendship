@@ -370,6 +370,26 @@ class GroupPageState extends State<GroupPage> {
     );
   }
 
+  void _dialogoEliminarAjeno(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Aviso'),
+          content: const Text('Solo el creador del grupo puede eliminar participantes.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cierra el diálogo
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void rebuildWidget() {
     setState(() {
       // Aquí puedes realizar cualquier cambio de estado necesario
@@ -387,86 +407,7 @@ class GroupPageState extends State<GroupPage> {
       isEditingDescription = !isEditingDescription;
     });
   }
-/*
-  Future<Container> getAvatar(Users.User user) async {
-    final tempDir = await getTemporaryDirectory();
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
-    final tempFileName = 'temp_image_$timestamp.png';
 
-    final tempFile = File('${tempDir.path}/$tempFileName');
-    final storageResponse = await supabase
-        .storage
-        .from('perfiles')
-        .download(user.username);
-    await tempFile.writeAsBytes(storageResponse);
-    return Container(
-      width: 30,
-      height: 30,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.white, // Color de fondo gris claro
-        image: tempFile != null
-            ? DecorationImage(
-          image: FileImage(tempFile!),
-          fit: BoxFit.cover,
-        )
-            : null, // No hay imagen si image es null
-      ),
-    );
-  }
-
-  void _showListPopup(BuildContext context, List<Users.User> users) {
-    showDialog(
-      barrierDismissible: true,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                for (Users.User user in users)
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 15.0),
-                    child: Row(
-                      children: [
-                        FutureBuilder<Container>(
-                          future: getAvatar(user), // Llama a la función asincrónica que devuelve una lista de widgets
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              // Mientras se está cargando la data, muestra un indicador de carga.
-                              return Center(child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              // Si hay un error al cargar los datos, muestra un mensaje de error.
-                              return Center(child: Text('Error: ${snapshot.error}'));
-                            } else {
-                              // Si la data ha sido cargada exitosamente, muestra la lista de widgets.
-                              return snapshot.data!;
-                            }
-                          },
-                        ),
-                        const SizedBox(width: 12),
-                        Text(user.username),
-                        const SizedBox(width: 65,),
-                        IconButton(
-                          icon: const Icon(Icons.add, color: Colors.blue,),
-                          onPressed: () async {
-                            int id = await widget.group.ObtenerId();
-                            await Consultas().addAmigoAGrupoAmigos(id, user);
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-          )
-        );
-      },
-    );
-  }
-*/
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<void>(
@@ -606,7 +547,11 @@ class GroupPageState extends State<GroupPage> {
                                             const SizedBox(width: 5,),
                                             ElevatedButton(
                                               onPressed: () async {
-                                                await mostrarParticipantes(context);
+                                                if(UserData.usuarioLog!.username == widget.group.creador.username){
+                                                  await mostrarParticipantes(context);
+                                                } else {
+                                                  _dialogoEliminarAjeno(context);
+                                                }
                                               },
                                               child: const Icon(Icons.group_remove),
                                             ),
