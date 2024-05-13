@@ -181,16 +181,13 @@ class _FriendListState extends State<FriendList> {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0), // Ajusta el radio según lo necesites
-          ),
           elevation: 0.0, // Sin sombra
           backgroundColor: Colors.transparent,
           child: Container(
-            height: MediaQuery.of(context).size.height / 2.6,
-            width: MediaQuery.of(context).size.width / 1.5,
+            height: 280,
+            width: 100,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(240.0),
+              borderRadius: BorderRadius.circular(220.0),
               color: Colors.white,
               image: DecorationImage(
                 image: FileImage(tempFile),
