@@ -122,15 +122,15 @@ class _RegisterState extends State<Register> {
         final file = File('${documentDirectory.path}/avatar.png');
         await file.writeAsBytes(response.bodyBytes);
         _imageFile = file;
-        final storageResponse = await supabase
+        await supabase
             .storage
             .from('perfiles')
-            .upload(UserData.usuarioLog!.username, _imageFile!);
+            .upload(UserData.usuarioLog!.username, _imageFile);
         usernameController.clear();
         passwordController.clear();
 
         _isredirecting = true;
-        Navigator.of(context).pushReplacement(
+        Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => Home(indiceInicial: 0,isFriendGroup: false,)),
         );
       }

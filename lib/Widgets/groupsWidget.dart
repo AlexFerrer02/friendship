@@ -43,12 +43,10 @@ class GroupsWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white, // Color de fondo gris claro
-                    image: tempFile != null
-                        ? DecorationImage(
-                      image: FileImage(tempFile!),
+                    image: DecorationImage(
+                      image: FileImage(tempFile),
                       fit: BoxFit.cover,
-                    )
-                        : null, // No hay imagen si image es null
+                    )// No hay imagen si image es null
                   ),
                 ),
             ),

@@ -81,7 +81,7 @@ class EventoWidget extends StatelessWidget {
                         ListTile(
                           title: Text(
                             evento.name,
-                            style: const TextStyle(fontSize: 25, color: Color.fromRGBO(98, 69, 108, 1)),
+                            style: const TextStyle(fontSize: 25, color: Color.fromRGBO(78, 49, 88, 1)),
                             maxLines: 1,
                           ),
                           subtitle: Text(
@@ -89,7 +89,7 @@ class EventoWidget extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                             softWrap: true,
-                              style: const TextStyle(color: Color.fromRGBO(109, 77, 121, 1))
+                              style: const TextStyle(color: Color.fromRGBO(98, 69, 108, 1))
                           ),
                         ),
                         const SizedBox(height: 22),

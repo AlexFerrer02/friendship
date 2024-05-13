@@ -40,10 +40,12 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    if(cerrarSesion){
-      cerrarSesion=false;
-      supabase.auth.signOut();
-      sleep(const Duration(seconds: 1));
+    if(cerrarSesion != null){
+      if(cerrarSesion){
+        cerrarSesion=false;
+        supabase.auth.signOut();
+        sleep(const Duration(seconds: 1));
+      }
     }
     widget.supabase.auth.onAuthStateChange.listen((data) async {
       if (_isRedirecting) return;
@@ -55,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
         UserData userData = UserData();
         await userData.construirUsuarioPorEmail(UserData.emailActual);
 
-        Navigator.of(context).pushReplacement(
+        Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => Home(indiceInicial: 0,isFriendGroup: false,)),
         );
       }

@@ -162,7 +162,8 @@ class _createEventState extends State<createEvent> {
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: TextFormField(
                       decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10.0), // O ajusta según sea necesario
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+                        counterText: '',
                       ),
                       maxLength: 20,
                       onChanged: (text){
@@ -173,6 +174,7 @@ class _createEventState extends State<createEvent> {
                       },
                     ),
                   ),
+                  const SizedBox(height: 20.0),
                   const Text("Descripción del evento",
                       style: TextStyle(fontSize: 20.0, color: Color.fromRGBO(98, 69, 108, 1))
                   ),
@@ -336,10 +338,12 @@ class _createEventState extends State<createEvent> {
                 height: MediaQuery.of(context).size.height / 17,
                 width: MediaQuery.of(context).size.width,
                 child: TextFormField(
+                  maxLength: 60,
                   decoration: const InputDecoration(
                     hintText: 'Selecciona el lugar del evento',
                     hintStyle: TextStyle(fontSize: 17),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10.0), // O ajusta según sea necesario
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+                    counterText: '',
                   ),
                   onChanged: (text){
                     lugar = text;

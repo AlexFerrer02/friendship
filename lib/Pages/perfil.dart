@@ -9,7 +9,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../Class/consultas.dart';
 import '../Class/usernameAuxiliar.dart';
 import 'editar_gustos.dart';
-import 'home.dart';
 import 'login_page.dart';
 import 'package:friendship/components/my_textfield.dart';
 
@@ -239,7 +238,6 @@ class _PerfilState extends State<Perfil> {
         image = imageTemp;
       });
       await uploadImage();
-      PaintingBinding.instance!.imageCache!.clear();
     } on PlatformException catch(e) {
       print('Failed to pick image: $e');
     }
@@ -558,7 +556,8 @@ class _PerfilState extends State<Perfil> {
                                         padding: const EdgeInsets.symmetric(horizontal: 70.0),
                                         child: TextFormField(
                                           decoration: const InputDecoration(
-                                            contentPadding: EdgeInsets.symmetric(horizontal: 10.0), // O ajusta según sea necesario
+                                            contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+                                            counterText: '',
                                           ),
                                           textAlign: TextAlign.center,
                                           maxLength: 15,
@@ -571,6 +570,7 @@ class _PerfilState extends State<Perfil> {
                                           },
                                         ),
                                       ),
+                                      const SizedBox(height: 20.0),
                                       ElevatedButton(
                                         onPressed: () async {
                                           String usuario = await Consultas().buscarPorCodigoAmigo(codigoAmigo);

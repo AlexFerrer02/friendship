@@ -73,12 +73,10 @@ class _FriendListState extends State<FriendList> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white, // Color de fondo gris claro
-                      image: tempFile != null
-                          ? DecorationImage(
-                        image: FileImage(tempFile!),
+                      image: DecorationImage(
+                        image: FileImage(tempFile),
                         fit: BoxFit.cover,
                       )
-                          : null, // No hay imagen si image es null
                     ),
                   ),
                 ),
@@ -125,12 +123,10 @@ class _FriendListState extends State<FriendList> {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.white, // Color de fondo gris claro
-        image: tempFile != null
-            ? DecorationImage(
-          image: FileImage(tempFile!),
+        image: DecorationImage(
+          image: FileImage(tempFile),
           fit: BoxFit.cover,
-        )
-            : null, // No hay imagen si image es null
+        ) // No hay imagen si image es null
       ),
     );
   }
@@ -181,26 +177,29 @@ class _FriendListState extends State<FriendList> {
         .download(user.username);
     await tempFile.writeAsBytes(storageResponse);
     showDialog(
-        barrierDismissible: true,
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Colors.transparent,
-            content: Container(
-              height: MediaQuery.of(context).size.height/3.2,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white, // Color de fondo gris claro
-                image: tempFile != null
-                    ? DecorationImage(
-                  image: FileImage(tempFile!),
-                  fit: BoxFit.cover,
-                )
-                    : null, // No hay imagen si image es null
-              ),
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0), // Ajusta el radio según lo necesites
+          ),
+          elevation: 0.0, // Sin sombra
+          backgroundColor: Colors.transparent,
+          child: Container(
+            height: MediaQuery.of(context).size.height / 2.6,
+            width: MediaQuery.of(context).size.width / 1.5,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(240.0),
+              color: Colors.white,
+              image: DecorationImage(
+                image: FileImage(tempFile),
+                fit: BoxFit.cover,
+              ), // No hay imagen si image es null
             ),
-          );
-        }
+          ),
+        );
+      },
     );
   }
 
