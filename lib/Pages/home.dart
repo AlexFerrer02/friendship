@@ -188,18 +188,18 @@ class HomeState extends State<Home> {
                   currentIndex: actualPage,
                   items: const [
                     BottomNavigationBarItem(
-                        icon: Icon(Icons.home), label: "Home"),
+                        icon: Icon(Icons.calendar_month), label: "Calendario"),
                     BottomNavigationBarItem(
                         icon: Icon(Icons.airplane_ticket), label: "Planes"),
                     BottomNavigationBarItem(
                         icon: Icon(Icons.workspaces_sharp),
-                        label: "Friend List"),
+                        label: "Amigos"),
                     BottomNavigationBarItem(
-                        icon: Icon(Icons.add), label: "AddEvent"),
+                        icon: Icon(Icons.add), label: "Crear Evento"),
                     BottomNavigationBarItem(
-                        icon: Icon(Icons.search), label: "search"),
+                        icon: Icon(Icons.search), label: "Recomendaciones"),
                     BottomNavigationBarItem(
-                        icon: Icon(Icons.account_circle), label: "Account"),
+                        icon: Icon(Icons.account_circle), label: "Perfil"),
                   ]))),
     );
   }

@@ -30,23 +30,22 @@ class RecomendacionPage extends StatelessWidget {
                   const SizedBox(
                     height: 50,
                     child: Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Text("De tus amigos",
-                          style: TextStyle(
-                            fontSize: 25,
-                            color: Color.fromRGBO(98, 69, 108, 1),
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Google Sans',
-                          ),
-                        ),
+                      padding: EdgeInsets.only(left: 20),
+                      child: Text("Según tus gustos",  style: TextStyle(
+                        fontSize: 25,
+                        color: Color.fromRGBO(98, 69, 108, 1),
+                        fontWeight: FontWeight.bold,
+                      ),
+                      ),
                     ),
                   ),
                   FutureBuilder<List<Evento>>(
-
-                    future: Consultas().EventosAmigos(),
+                    future: Consultas().EventosGustos(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
+                        return const Column(
+
+                            children:[SizedBox(height: 58,),CircularProgressIndicator(),SizedBox(height: 55,)]);
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       } else {
@@ -91,7 +90,7 @@ class RecomendacionPage extends StatelessWidget {
                 ]
             ),
         ),
-      ),
+      )
     );
   }
 }

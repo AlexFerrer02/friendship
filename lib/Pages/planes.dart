@@ -20,20 +20,21 @@ class PlanesState extends State<Planes> {
       children: [
         const SizedBox(
           height: 50,
-          child: Text("Según tus gustos",  style: TextStyle(
-            fontSize: 25,
-            color: Color.fromRGBO(98, 69, 108, 1),
-            fontWeight: FontWeight.bold,
-          ),
+          child: Text("De tus amigos",
+            style: TextStyle(
+              fontSize: 25,
+              color: Color.fromRGBO(98, 69, 108, 1),
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Google Sans',
+            ),
           ),
         ),
         FutureBuilder<List<Evento>>(
-          future: Consultas().EventosGustos(),
+
+          future: Consultas().EventosAmigos(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Column(
-
-                  children:[SizedBox(height: 58,),CircularProgressIndicator(),SizedBox(height: 55,)]);
+              return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
