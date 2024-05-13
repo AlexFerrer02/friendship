@@ -685,7 +685,7 @@ class GroupPageState extends State<GroupPage> {
                     ),
                   ],
                 ),
-              ),
+              )
             );
           }
         }
