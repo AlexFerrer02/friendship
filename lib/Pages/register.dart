@@ -107,7 +107,8 @@ class _RegisterState extends State<Register> {
             'email': usernameController.text,
             'gustos': widget.gustos,
             'codigo_amigo': codigoAmigo,
-            'lista_amigos': []
+            'lista_amigos': [],
+            'id_grupo': 0
           },
         ]);
         UserData.emailActual=usernameController.text;

@@ -289,11 +289,22 @@ class _CreateEventPageState extends State<CreateEventPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.delete, color: Color(0xFFC62828),),
-            onPressed: () {
-              if(widget.event.userName == UserData.usuarioLog!.username){
-                mostrarDialogo(context);
+            onPressed: () async {
+              int idGrupo = await Consultas().getIdGrupoPorUser(widget.event.userName);
+              if(idGrupo == 0){
+                if(widget.event.userName == UserData.usuarioLog!.username){
+                  mostrarDialogo(context);
+                } else {
+                  _dialogoEventoAjeno(context);
+                }
               } else {
-                _dialogoEventoAjeno(context);
+                var group = await supabase.from("gruposamigos").select("*").eq("id", idGrupo);
+                String creador = group[0]['creador'];
+                if(creador == UserData.usuarioLog!.username){
+                  mostrarDialogo(context);
+                } else {
+                  _dialogoEventoAjeno(context);
+                }
               }
             },
           ),

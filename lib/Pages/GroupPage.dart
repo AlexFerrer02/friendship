@@ -594,63 +594,67 @@ class GroupPageState extends State<GroupPage> {
                                         margin: const EdgeInsets.only(top: 7),
                                         child: ElevatedButton(
                                           onPressed: () async {
-                                            provider.Provider.of<
-                                                AppBarProvider>(
-                                                context, listen: false)
-                                                .updateAppBar(
-                                              AppBar(
-                                                title: const Text("Crear Evento"),
-                                                centerTitle: true,
-                                                leading: IconButton(
-                                                  icon: const Icon(
-                                                      Icons.arrow_back),
-                                                  onPressed: () {
-                                                    UserData.idGrupoAmigos =
-                                                    null;
-                                                    Navigator.of(context)
-                                                        .pushReplacement(
-                                                      MaterialPageRoute(
-                                                          builder: (
-                                                              context) =>
-                                                              Home(
-                                                                indiceInicial: 2,
-                                                                isFriendGroup: false,)),
-                                                    );
-                                                  },
-                                                ),
-                                                flexibleSpace: Container(
-                                                  decoration: BoxDecoration(
-                                                    border: Border(
-                                                      bottom: BorderSide(
-                                                        color: Colors
-                                                            .grey[300]!,
-                                                        // Color del borde sombreado
-                                                        width: 3.0, // Ancho del borde
+                                            if(UserData.usuarioLog!.username == widget.group.creador.username){
+                                              provider.Provider.of<
+                                                  AppBarProvider>(
+                                                  context, listen: false)
+                                                  .updateAppBar(
+                                                AppBar(
+                                                  title: const Text("Crear Evento"),
+                                                  centerTitle: true,
+                                                  leading: IconButton(
+                                                    icon: const Icon(
+                                                        Icons.arrow_back),
+                                                    onPressed: () {
+                                                      UserData.idGrupoAmigos =
+                                                      null;
+                                                      Navigator.of(context)
+                                                          .pushReplacement(
+                                                        MaterialPageRoute(
+                                                            builder: (
+                                                                context) =>
+                                                                Home(
+                                                                  indiceInicial: 2,
+                                                                  isFriendGroup: false,)),
+                                                      );
+                                                    },
+                                                  ),
+                                                  flexibleSpace: Container(
+                                                    decoration: BoxDecoration(
+                                                      border: Border(
+                                                        bottom: BorderSide(
+                                                          color: Colors
+                                                              .grey[300]!,
+                                                          // Color del borde sombreado
+                                                          width: 3.0, // Ancho del borde
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            );
-                                            /*Navigator.of(context).pushReplacement(
+                                              );
+                                              /*Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(builder: (context) => Home(indiceInicial: 3,isFriendGroup: true,grupoAmigos: widget.group,)),
                                       );*/
-                                            var response = await supabase
-                                                .from('gruposamigos')
-                                                .select('id')
-                                                .eq(
-                                                "nombre", widget.group.name)
-                                                .eq("descripcion",
-                                                widget.group.descripcion);
-                                            UserData.idGrupoAmigos =
-                                            response[0]['id'];
-                                            Navigator.of(context)
-                                                .pushReplacement(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CrearEventoGrupo(
-                                                        isFriendGroup: true,)),
-                                            );
+                                              var response = await supabase
+                                                  .from('gruposamigos')
+                                                  .select('id')
+                                                  .eq(
+                                                  "nombre", widget.group.name)
+                                                  .eq("descripcion",
+                                                  widget.group.descripcion);
+                                              UserData.idGrupoAmigos =
+                                              response[0]['id'];
+                                              Navigator.of(context)
+                                                  .pushReplacement(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CrearEventoGrupo(
+                                                          isFriendGroup: true,)),
+                                              );
+                                            } else {
+                                              _dialogoEventoAjeno(context);
+                                            }
                                           },
                                           child: const Icon(Icons.add),
                                         ),
