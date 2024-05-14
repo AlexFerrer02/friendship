@@ -179,14 +179,14 @@ class _RegisterState extends State<Register> {
                     hintText: 'Nombre o Alias',
                     obscureText: false,
                   ),
-                  //Numero de telefono textfield
+                  const SizedBox(height: 10,),
                   PhoneTextField(
                     controller: phoneController,
                     hintText: 'Phone number ej. 666 666 666',
                     obscureText: false,
                     maxLength: 9,
                   ),
-                  //username textfield
+                  const SizedBox(height: 10,),
                   MyTextField(
                     controller: usernameController,
                     hintText: 'username@correo.es',

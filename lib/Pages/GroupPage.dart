@@ -105,6 +105,105 @@ class GroupPageState extends State<GroupPage> {
     return avatars;
   }
 
+  Future<void> showAvatar(BuildContext context, Users.User user) async {
+    final tempDir = await getTemporaryDirectory();
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final tempFileName = 'temp_image_$timestamp.png';
+
+    final tempFile = File('${tempDir.path}/$tempFileName');
+    final storageResponse = await supabase
+        .storage
+        .from('perfiles')
+        .download(user.username);
+    await tempFile.writeAsBytes(storageResponse);
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          elevation: 0.0, // Sin sombra
+          backgroundColor: Colors.transparent,
+          child: Container(
+            height: 280,
+            width: 100,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(220.0),
+              color: Colors.white,
+              image: DecorationImage(
+                image: FileImage(tempFile),
+                fit: BoxFit.cover,
+              ), // No hay imagen si image es null
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<List<Widget>> mostrarParticipantesGrupo(BuildContext contexto) async {
+    List<Widget> avatars = [];
+
+    for (Users.User amigo in widget.group.amigos) {
+      final tempDir = await getTemporaryDirectory();
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final tempFileName = 'temp_image_$timestamp.png';
+
+      final tempFile = File('${tempDir.path}/$tempFileName');
+      final storageResponse = await supabase
+          .storage
+          .from('perfiles')
+          .download(amigo.username);
+      await tempFile.writeAsBytes(storageResponse);
+      avatars.add(
+          Container(
+            margin: const EdgeInsets.only(left: 20, right: 10, bottom: 10),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.grey[300]!,
+                  width: 1.0,
+                ),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    showAvatar(contexto, amigo);
+                  } ,
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white, // Color de fondo gris claro
+                        image: DecorationImage(
+                          image: FileImage(tempFile),
+                          fit: BoxFit.cover,
+                        ) // No hay imagen si image es null
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    amigo.username,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: 20
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+      );
+    }
+
+    return avatars;
+  }
+
   Future<List<Widget>> getParticipantesGrupo(BuildContext contexto) async {
     List<Widget> avatars = [];
 
@@ -274,9 +373,42 @@ class GroupPageState extends State<GroupPage> {
                 return Center(child: Text('Error: ${snapshot.error}'));
               } else {
                 // Si la data ha sido cargada exitosamente, muestra la lista de widgets.
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: snapshot.data!,
+                return SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: snapshot.data!,
+                  ),
+                );
+              }
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> mostrarParticipantesGrupoDialog(BuildContext context) async {
+    return showDialog<void>(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: FutureBuilder<List<Widget>>(
+            future: mostrarParticipantesGrupo(context), // Llama a la función asincrónica que devuelve una lista de widgets
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                // Mientras se está cargando la data, muestra un indicador de carga.
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                // Si hay un error al cargar los datos, muestra un mensaje de error.
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else {
+                // Si la data ha sido cargada exitosamente, muestra la lista de widgets.
+                return SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: snapshot.data!,
+                  ),
                 );
               }
             },
@@ -303,9 +435,11 @@ class GroupPageState extends State<GroupPage> {
                 return Center(child: Text('Error: ${snapshot.error}'));
               } else {
                 // Si la data ha sido cargada exitosamente, muestra la lista de widgets.
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: snapshot.data!,
+                return SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: snapshot.data!,
+                  ),
                 );
               }
             },
@@ -553,22 +687,27 @@ class GroupPageState extends State<GroupPage> {
                                         )
                                       )
                                     ]),
-                                FutureBuilder<List<Widget>>(
-                                  future: _buildAvatars(), // Llama a la función asincrónica que devuelve una lista de widgets
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState == ConnectionState.waiting) {
-                                      // Mientras se está cargando la data, muestra un indicador de carga.
-                                      return Center(child: CircularProgressIndicator());
-                                    } else if (snapshot.hasError) {
-                                      // Si hay un error al cargar los datos, muestra un mensaje de error.
-                                      return Center(child: Text('Error: ${snapshot.error}'));
-                                    } else {
-                                      // Si la data ha sido cargada exitosamente, muestra la lista de widgets.
-                                      return Row(
-                                        children: snapshot.data!,
-                                      );
-                                    }
+                                GestureDetector(
+                                  onTap: () async {
+                                    await mostrarParticipantesGrupoDialog(context);
                                   },
+                                  child: FutureBuilder<List<Widget>>(
+                                    future: _buildAvatars(), // Llama a la función asincrónica que devuelve una lista de widgets
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                        // Mientras se está cargando la data, muestra un indicador de carga.
+                                        return Center(child: CircularProgressIndicator());
+                                      } else if (snapshot.hasError) {
+                                        // Si hay un error al cargar los datos, muestra un mensaje de error.
+                                        return Center(child: Text('Error: ${snapshot.error}'));
+                                      } else {
+                                        // Si la data ha sido cargada exitosamente, muestra la lista de widgets.
+                                        return Row(
+                                          children: snapshot.data!,
+                                        );
+                                      }
+                                    },
+                                  ),
                                 ),
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment

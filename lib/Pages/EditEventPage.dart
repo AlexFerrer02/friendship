@@ -543,6 +543,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                               ),
                               const SizedBox(height: 5,),
                               Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   GestureDetector(
                                     onTap: () {
@@ -564,9 +565,10 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                           ),
                                         ),
                                       ),
-                                      child: SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal, // Para hacer que la lista sea deslizable horizontalmente
+                                      child: Align(
+                                        alignment: Alignment.center,
                                         child: Row(
+                                          mainAxisSize: MainAxisSize.min,
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: widget.event.filtros.map((filtro) {
                                             return Padding(
