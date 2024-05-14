@@ -197,7 +197,7 @@ class HomeState extends State<Home> {
                     BottomNavigationBarItem(
                         icon: Icon(Icons.add), label: "Crear Evento"),
                     BottomNavigationBarItem(
-                        icon: Icon(Icons.search), label: "Recomendaciones"),
+                        icon: Icon(Icons.search), label: "Sugerencias"),
                     BottomNavigationBarItem(
                         icon: Icon(Icons.account_circle), label: "Perfil"),
                   ]))),

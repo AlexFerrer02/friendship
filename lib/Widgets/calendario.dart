@@ -174,12 +174,16 @@ class _CalendarioState extends State<Calendario> {
               Stack(
                 children: [
                   TableCalendar<Event>(
+                    locale: 'es_ES',
                     firstDay: kFirstDay,
                     lastDay: kLastDay,
+                    headerStyle: const HeaderStyle(
+                      formatButtonTextStyle: TextStyle(fontSize: 12.0)
+                    ),
                     calendarBuilders: CalendarBuilders(
                       dowBuilder: (context, day) {
                         if (day.weekday == DateTime.sunday || day.weekday == DateTime.saturday) {
-                          final text = DateFormat.E().format(day);
+                          final text = DateFormat.E('es_ES').format(day);
 
                           return Center(
                             child: Text(
@@ -228,7 +232,7 @@ class _CalendarioState extends State<Calendario> {
                     },
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 18.0, left: 55),
+                    padding: const EdgeInsets.only(top: 19.0, left: 90),
                     child: Align(
                       alignment: Alignment.center,
                       child: GestureDetector(
@@ -252,8 +256,8 @@ class _CalendarioState extends State<Calendario> {
                             });
                           },
                           child: Container(
-                            width: MediaQuery.of(context).size.width / 8,
-                            height: 29,
+                            width: MediaQuery.of(context).size.width / 11,
+                            height: 27,
                             decoration: BoxDecoration(
                               color: containerColor, // Usa la variable de color definida
                               border: Border.all(color: Colors.black),
@@ -264,7 +268,7 @@ class _CalendarioState extends State<Calendario> {
                               'Hoy',
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 14.0,
+                                fontSize: 12.0,
                               ),
                               textAlign: TextAlign.center,
                             ),
