@@ -59,16 +59,36 @@ class GroupsWidget extends StatelessWidget {
     }
 
     if(grupo.amigos.length>3){
+      int amigos = grupo.amigos.length - 3;
+      String amigosStr ='+$amigos';
       avatars.add(
-        const Text(
-          '...',
-          style: TextStyle(
-              color: Colors.grey,
-              fontSize: 20,
-              fontFamily: 'Google Sans',
-              fontWeight: FontWeight.w500
-          ),
-        ),
+        Row(
+          children: [
+            const SizedBox(width: 5,),
+            Center(
+              child: Container(
+                width: 30,
+                height: 30,
+                decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xFF5094F9),
+                ),
+                child: Center(
+                  child: Text(
+                    amigosStr,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontFamily: 'Google Sans',
+                        fontWeight: FontWeight.w500
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        )
       );
     }
 
