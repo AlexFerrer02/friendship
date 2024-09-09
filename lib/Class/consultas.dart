@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:friendship/Class/grupo-amigos.dart';
 import 'package:friendship/Class/usernameAuxiliar.dart';
+import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'evento.dart';
 import 'package:friendship/Class/filtro.dart';
@@ -16,10 +17,12 @@ class Consultas{
 
   Future<List<Evento>> BuscarEventos({required String nombreEvento}) async
   {
+    String fechaFormateada = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
     var response = await  supabase.from('eventos')
         .select('*')
-        .eq("tipo", "publico")
-        .gte("fechainicio", DateTime.now())
+        .eq("tipo", "Publico")
+        .gte("fechainicio", fechaFormateada)
         .ilike("nombre", '$nombreEvento%');
     List<Evento> eventos = [];
     for (var item in response) {
@@ -40,6 +43,7 @@ class Consultas{
   {
     List<Evento> eventos = [];
     final username =UserData.usuarioLog?.username;
+    String fechaFormateada = DateFormat('yyyy-MM-dd').format(DateTime.now());
     var response = await  supabase.from('usuarios')
         .select('*')
         .eq("username", username);
@@ -48,9 +52,9 @@ class Consultas{
       for (var amigo in response[0]["lista_amigos"]) {
         var rowAmigo = await  supabase.from('eventos')
             .select('*')
-            .gte("fechainicio", DateTime.now())
+            .gte("fechainicio", fechaFormateada)
             .eq("usuario", amigo)
-            .eq("tipo", "publico");
+            .eq("tipo", "Publico");
         for(var evento in rowAmigo){
           //print(rowAmigo);
           //List<Filtro> filtros = [Filtro(1, evento["filtro"]), Filtro(2, evento["filtro2"])];
@@ -71,12 +75,13 @@ class Consultas{
   Future<List<Evento>> EventosGustos() async
   {
     List<Evento> eventos = [];
-    final username =UserData.usuarioLog?.username;
+    String fechaFormateada = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    final username =UserData.usuarioLog!.username;
     final gustosUsuario = UserData.usuarioLog!.gustos;
     var eventosG = await  supabase.from('eventos')
         .select('*')
         .neq("usuario", username)
-        .eq("tipo", "publico").gte("fechainicio", DateTime.now());
+        .eq("tipo", "Publico").gte("fechainicio", fechaFormateada);
 
     for(var eventoAux in eventosG){
       List<String> gustosAux = [];
@@ -97,11 +102,14 @@ class Consultas{
   Future<List<Evento>> EventosRecomendados() async
   {
     List<Evento> eventos = [];
+
+    String fechaFormateada = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
     var response = await  supabase.from('eventos')
         .select('*')
-        .eq("tipo", "publico")
-        .neq("usuario", UserData.usuarioLog?.username)
-        .gte("fechainicio", DateTime.now())
+        .eq("tipo", "Publico")
+        .neq("usuario", UserData.usuarioLog!.username)
+        .gte("fechainicio", fechaFormateada)
     ;
 
     for (var item in response) {
@@ -156,10 +164,12 @@ class Consultas{
 
   Future<List<Evento>> EventosFiltro({required String filtro1, required String filtro2}) async
   {
+    String fechaFormateada = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
     var response = await  supabase.from('eventos')
         .select('*')
-        .eq("tipo", "publico")
-        .gte("fechainicio", DateTime.now());
+        .eq("tipo", "Publico")
+        .gte("fechainicio", fechaFormateada);
     List<Evento> eventos = [];
     for (var item in response) {
       if(item["filtro1"] == filtro1 || item["filtro2"] == filtro1 || item["filtro1"] == filtro2 || item["filtro2"] == filtro2){
@@ -178,10 +188,12 @@ class Consultas{
   }
   Future<List<Evento>> EventosFiltro1({required String filtro1}) async
   {
+    String fechaFormateada = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
     var response = await  supabase.from('eventos')
         .select('*')
-        .eq("tipo", "publico")
-        .gte("fechainicio", DateTime.now());
+        .eq("tipo", "Publico")
+        .gte("fechainicio", fechaFormateada);
     List<Evento> eventos = [];
     for (var item in response) {
       if(item["filtro1"] == filtro1 || item["filtro2"] == filtro1){
@@ -204,10 +216,12 @@ class Consultas{
   }
   Future<List<Evento>> EventosPropios() async
   {
+    String fechaFormateada = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
     var response = await  supabase.from('eventos')
         .select('*')
         .eq("usuario", UserData.usuarioLog?.username)
-        .gte("fechainicio", DateTime.now());
+        .gte("fechainicio", fechaFormateada);
     List<Evento> eventos = [];
     for (var item in response) {
       //List<Filtro> filtros = [Filtro(1, item["filtro"]), Filtro(2, item["filtro2"])];
