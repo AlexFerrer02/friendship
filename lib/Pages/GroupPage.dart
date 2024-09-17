@@ -27,7 +27,10 @@ class GroupPage extends StatefulWidget {
 class GroupPageState extends State<GroupPage> {
   late TextEditingController _descriptionController;
   bool isEditingDescription = false;
-  final supabase = Supabase.instance.client;
+  final supabase = SupabaseClient(
+    'https://peaoifidogwgoxzrpjft.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBlYW9pZmlkb2d3Z294enJwamZ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTY2MDExNDcsImV4cCI6MjAxMjE3NzE0N30.xPOHo3wz93O9S0kWU9gbGofVWlFOZuA7JB9UMAMoBbA',
+  );
   List<Users.User> amigos = [];
   late Future<void> _fetchDataFuture;
   List<String> participantes = [];
@@ -549,7 +552,7 @@ class GroupPageState extends State<GroupPage> {
     int id = await widget.group.ObtenerId();
     setState(() {
       if (isEditingDescription) {
-        widget.group.descripcion = '"${_descriptionController.text}"';
+        widget.group.descripcion = '${_descriptionController.text}';
         Consultas().EditGrupo(id, widget.group.descripcion);
       }
       isEditingDescription = !isEditingDescription;
@@ -792,12 +795,10 @@ class GroupPageState extends State<GroupPage> {
                                               var response = await supabase
                                                   .from('gruposamigos')
                                                   .select('id')
-                                                  .eq(
-                                                  "nombre", widget.group.name)
-                                                  .eq("descripcion",
-                                                  widget.group.descripcion);
-                                              UserData.idGrupoAmigos =
-                                              response[0]['id'];
+                                                  .eq("nombre", widget.group.name)
+                                                  .eq("descripcion", widget.group.descripcion);
+                                              print(response);
+                                              UserData.idGrupoAmigos = response[0]['id'];
                                               Navigator.of(context)
                                                   .pushReplacement(
                                                 MaterialPageRoute(
@@ -823,12 +824,12 @@ class GroupPageState extends State<GroupPage> {
                                         ConnectionState.waiting) {
                                       return const CircularProgressIndicator();
                                     } else if (snapshot.hasError) {
-                                      return Text('Error: ${snapshot.error}');
+                                      return const Text('No hay eventos');
                                     } else {
                                       List<Evento> eventos = snapshot.data ??
                                           [];
                                       return Center(
-                                        child: EventosWidget(
+                                        child: eventos.isEmpty ? Text('No hay eventos'): EventosWidget(
                                             eventos: eventos),
                                       );
                                     }
